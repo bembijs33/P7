@@ -1,28 +1,34 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+
 
 public class Employee {
 	
-	public String firstName; 
-	public String lastName;
-	public String phoneNumber;
-	public String role;
+	public static String firstName; 
+	public static String lastName;
+	public static int phoneNumber;
+	public static String role;
 	
-public Employee(String firstName, String lastName, String string, String role){
-		this.firstName=firstName;
-		this.lastName=lastName;
-		this.phoneNumber=string;
-		this.role=role;
+public Employee(String firstName, String lastName, int phoneNumber, String role){
+		Employee.firstName=firstName;
+		Employee.lastName=lastName;
+		Employee.phoneNumber=phoneNumber;
+		Employee.role=role;
 }
 
 
-public void setName(){
-	
+ // change all Employee values to String. 
+public String toString(){
+	String s = "First name: " + firstName + " Last name: " + lastName +
+			" Phone number: " + phoneNumber + " Role: " + role;
+	return s;
+}
+
+public void setName(String a , String b){
+	a= firstName;
+	b=lastName;
 	}
 
-public void changePhoneNumber(){
-	
+public void changePhoneNumber(int n){
+	n=phoneNumber;
 	}
 
 public void changeRole(){
