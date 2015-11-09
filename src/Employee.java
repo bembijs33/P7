@@ -27,7 +27,6 @@ public void changePhoneNumber(){
 public void changeRole(){
 	
 	}
-public toString()
 public static void main (String[]args){
 	List<Employee> employee = new ArrayList<Employee>();
 
