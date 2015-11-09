@@ -27,16 +27,12 @@ public void changePhoneNumber(){
 public void changeRole(){
 	
 	}
-public static void main (String[]args){
-	List<Employee> employee = new ArrayList<Employee>();
 
-	Employee numb1 = new Employee("Rob", "oeb", "555", "ww" );
+
+public static void main (String[]args){
+
 	
 	
-	employee.add(numb1);
-	
-	
-	System.out.println(employee);
 	
 	}
 }
