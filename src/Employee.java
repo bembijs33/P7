@@ -15,7 +15,9 @@ public Employee(String firstName, String lastName, String string, String role){
 		this.role=role;
 }
 
-
+public void ArrayList(){
+	
+}
 
 public void setName(){
 	
