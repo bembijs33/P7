@@ -16,11 +16,6 @@ public Employee(String firstName, String lastName, String string, String role){
 		this.role=role;
 }
 
-public void ArrayList(){
-	ArrayList<Employee> emps = new ArrayList<Employee>();
-emps.add(new Employee(firstName, lastName, phoneNumber, role));
-}
-
 
 public void setName(){
 	
@@ -34,11 +29,4 @@ public void changeRole(){
 	
 	}
 
-
-public static void main (String[]args){
-	new Employee ("as","it","was","working"); 
-	System.out.println(ArrayList(emps));
-	
-	
-	}
 }
