@@ -8,6 +8,7 @@ public class Test {
 		System.out.println("conflict");
 		System.out.println("I love github");
 		System.out.println("No way we're passing this exam");
+		System.out.println("Sure we are!!");
 	}
 
 }
