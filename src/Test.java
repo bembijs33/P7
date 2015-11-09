@@ -5,5 +5,7 @@ public class Test {
 		System.out.println("hello to you too");
 		System.out.println("conflict");
 // leave the comment, to check if you are committing :)
+		// Help, I'm trapped inside a Java program! 
+		
 	}
 }
