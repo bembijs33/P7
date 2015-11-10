@@ -17,12 +17,14 @@ public Employee(String firstName, String lastName, int phoneNumber, String role)
 
  // change all Employee values to String. 
 public String toString(){
-	String s = "First name: " + firstName + " Last name: " + lastName +
-			" Phone number: " + phoneNumber + " Role: " + role;
-	return s;
+	String e = "First name: " + firstName
+			+ " Last name: " + lastName +
+			" Phone number: " + phoneNumber +
+			" Role: " + role;
+	return e;
 }
 
-public void setName(String a , String b){
+public static void setName(String a , String b){
 	a= firstName;
 	b=lastName;
 	}

@@ -1,36 +1,30 @@
 import java.util.ArrayList;
+
 import java.util.List;
+import java.util.*;
 
 // This is the class, that will run our program
 
 
 public class Main {
 	
-	private final static List<Employee> employeeList = new ArrayList<>();
-	
-	public boolean addEmployee (Employee newEmployee){
-		employeeList.add(newEmployee);
-		return true;
-	}
-	
-	
-	
-	
-	public List<Employee> getEmployeeList() {
-		return employeeList;
-	}
+	 static List<Employee> employeeList = new ArrayList<Employee>();
+
 	
 	
 	public static void main (String[] ars){
 		// Here we write the "main" code
 		
-		final Main main = new Main();
 		final Employee e1 = new Employee("Rob", "Rak", 1236, "full time");
-		main.addEmployee(e1);
-		// need to test setName method
-		//employeeList.get(0);
-		
+		 employeeList.add(1,e1);
+		final Employee e2 = new Employee("Jak", "UU", 222, "Part time");
+		employeeList.add(2,e2);
+	
+
 		System.out.print(employeeList);
+		
+		
+		
 		System.exit(0); // Terminates virtual machine
 	}
 
