@@ -14,7 +14,7 @@ public class Skill {
 				String s = "addSkill: " + addSkill;
 				return s;
 			}
-	//How do I get this toString thing to work?! I DONT KNOW WHAT IM DOING.
+	//How do I get this toString thing to work?!
 		
 }
 }

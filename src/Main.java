@@ -31,6 +31,21 @@ public class Main {
 		//employeeList.get(0);
 		
 		System.out.print(employeeList);
+		
+	}
+	private final static List<Skill> skillList = new ArrayList<> ();
+	
+	public boolean newSkill (Skill newSkill){
+		skillList.add(newSkill);
+		return true;
+	}
+	
+	
+	public List<Skill> getSkillList (){ 	
+	}
+	//Jakob tried to do the same thing with skills as with employee
+	
+	
 		System.exit(0); // Terminates virtual machine
 	}
 
@@ -38,4 +53,4 @@ public class Main {
 
 
 
-}
+
