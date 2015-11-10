@@ -10,7 +10,7 @@ public class Skill {
 			Skill.addSkill=addSkill;
 	// Where and how do I add the names of the skill?
 			
-	public String toString(){
+	public void String toString(){
 				String s = "addSkill: " + addSkill;
 				return s;
 			}

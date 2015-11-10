@@ -40,12 +40,14 @@ public class Main {
 		return true;
 	}
 	
-	
 	public List<Skill> getSkillList (){ 	
 	}
+	final Main main = new Main();
+	final Skill s1 = new Skill ("KitchenHelp");
+	main.addSkill(s1);
 	//Jakob tried to do the same thing with skills as with employee
 	
-	
+
 		System.exit(0); // Terminates virtual machine
 	}
 
