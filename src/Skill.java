@@ -8,7 +8,13 @@ public class Skill {
 	
 	public Skill(String addSkill){
 			Skill.addSkill=addSkill;
-	
+	// Where and how do I add the names of the skill?
+			
+	public void String toString(){
+				String s = "addSkill: " + addSkill;
+				return s;
+			}
+	//How do I get this toString thing to work?!
 		
 }
 }

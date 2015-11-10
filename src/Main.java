@@ -21,15 +21,31 @@ public class Main {
 		employeeList.add(2,e2);
 	
 
-		System.out.print(employeeList);
+		//System.out.print(employeeList);
 		
-		
-		
+
+	
+	private final static List<Skill> skillList = new ArrayList<> ();
+	
+	public boolean newSkill (Skill newSkill){
+		skillList.add(newSkill);
+		return true;
+	}
+	
+	public List<Skill> getSkillList (){ 	
+	}
+	final Main main = new Main();
+	final Skill s1 = new Skill ("KitchenHelp");
+	main.addSkill(s1);
+	//Jakob tried to do the same thing with skills as with employee
+	// Need to be revised both!!
+
 		System.exit(0); // Terminates virtual machine
+	
 	}
 
 	
 
 
 
-}
+
