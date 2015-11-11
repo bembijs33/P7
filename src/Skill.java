@@ -1,9 +1,15 @@
 
 public class Skill {
 
-	int skillID;
+	static int skillID;
 	//list of skill ID's 
-
+	static String skillName;
+	
+	public Skill (int skillID, String skillName ){
+		Skill.skillID=skillID;
+		Skill.skillName=skillName;
+	}
+	
 	public static String addSkill;
 	
 	public Skill(String addSkill){
