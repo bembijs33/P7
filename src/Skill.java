@@ -5,7 +5,7 @@ public class Skill {
 	//list of skill ID's 
 	static String skillName;
 	
-	public Skill (int skillID, String skillName ){
+	public Skill (int skillID, String skillName){
 		Skill.skillID=skillID;
 		Skill.skillName=skillName;
 	}
