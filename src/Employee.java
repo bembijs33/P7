@@ -7,21 +7,28 @@ public class Employee {
 	public static int phoneNumber;
 	public static String role;
 	
+	
+	public static void main (String[]args){
+		Employee e1 = new Employee("Rob","Rak",123,"full time");
+		System.out.println(e1);
+		e1.changePhoneNumber(233);
+		System.out.println(e1);
+	}
+	
 public Employee(String firstName, String lastName, int phoneNumber, String role){
 		Employee.firstName=firstName;
 		Employee.lastName=lastName;
 		Employee.phoneNumber=phoneNumber;
-		Employee.role=role;
+		Employee.role=role;	
 }
 
-
- // change all Employee values to String. 
+ // change to String. 
 public String toString(){
-	String e = "First name: " + firstName
+	
+	return "First name: " + firstName
 			+ " Last name: " + lastName +
 			" Phone number: " + phoneNumber +
 			" Role: " + role;
-	return e;
 }
 
 public static void setName(String a , String b){
@@ -29,8 +36,8 @@ public static void setName(String a , String b){
 	b=lastName;
 	}
 
-public void changePhoneNumber(int n){
-	n=phoneNumber;
+public void changePhoneNumber(int p){
+	p=phoneNumber;
 	}
 
 public void changeRole(){
