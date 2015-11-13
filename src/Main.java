@@ -25,6 +25,10 @@ public class Main {
 		employeeList.add(e1);
 		employeeList.add(e2);
 		employeeList.add(e3);
+		e1.changePhoneNumber(1111);
+		e1.changeRole("Not Working");
+		e1.changeFirstName("Little");
+		e1.changeLastName("Boy");
 			
 		
 		Skill s1= new Skill("first training", 1);
@@ -36,7 +40,7 @@ public class Main {
 		
 		
 		// printing out array list... change which list to print out. 
-		System.out.print(skillList);
+		System.out.print(employeeList);
 	
 	}
 	

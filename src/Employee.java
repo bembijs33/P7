@@ -19,18 +19,25 @@ public String toString(){
 			" Role: " + role;
 }
 
-public void setName(){
-	
+public String changeFirstName(String a){
+		firstName=a;
+	return a; 	
 	}
 
+public String changeLastName(String b){
+	lastName=b;
+return b; 	
+}
+
 public int changePhoneNumber(int x){
-	this.phoneNumber = x;	
+	phoneNumber = x;	
 	return x;
 	
 	}
 
-public void changeRole(){
-	
+public String changeRole(String y){
+	role=y;
+	return y;
 	}
 
 }
