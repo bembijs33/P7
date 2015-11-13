@@ -1,10 +1,13 @@
+import java.util.Date;
 
 public class Shift {
 
 	
 	int shiftID;
 	
-	// time: date - I do not know how to do this? 
+	Date time;
+	
+	
 	public void addDateTime () {
 		
 	}
