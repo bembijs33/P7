@@ -2,6 +2,8 @@ import java.util.Date;
 
 public class Shift {
 
+	
+	
 	int shiftID;
 	Date time;
 	
