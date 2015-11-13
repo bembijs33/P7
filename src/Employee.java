@@ -1,28 +1,27 @@
 
-
 public class Employee {
+	public String firstName; 
+	public String lastName;
+	public int phoneNumber;
+	public String role;
 	
-	public static String firstName; 
-	public static String lastName;
-	public static int phoneNumber;
-	public static String role;
-	
-	
-	public static void main (String[]args){
-		Employee e1 = new Employee("Rob","Rak",123,"full time");
-		System.out.println(e1);
-		e1.changePhoneNumber(233);
-		System.out.println(e1);
+public static void main (String[]args){
+	Employee numb1=new Employee("Rob", "Rak", 2311, "wrong");
+	Employee numb2=new Employee("NoRob", "Rak", 2311, "wrong");
+	System.out.println(numb1);
+	System.out.println(numb2);
+	numb2.changePhoneNumber(1111);
 	}
-	
+
+
+
 public Employee(String firstName, String lastName, int phoneNumber, String role){
-		Employee.firstName=firstName;
-		Employee.lastName=lastName;
-		Employee.phoneNumber=phoneNumber;
-		Employee.role=role;	
+		this.firstName=firstName;
+		this.lastName=lastName;
+		this.phoneNumber=phoneNumber;
+		this.role=role;
 }
 
- // change to String. 
 public String toString(){
 	
 	return "First name: " + firstName
@@ -31,13 +30,15 @@ public String toString(){
 			" Role: " + role;
 }
 
-public static void setName(String a , String b){
-	a= firstName;
-	b=lastName;
+
+public void setName(){
+	
 	}
 
-public void changePhoneNumber(int p){
-	p=phoneNumber;
+public int changePhoneNumber(int x){
+	this.phoneNumber = x;	
+	return x;
+	
 	}
 
 public void changeRole(){

@@ -2,21 +2,26 @@
 public class Skill {
 
 	int skillID;
+	private String addSkill;
+	
+	
 	//list of skill ID's 
 
-	public static String addSkill;
+
 	
-	public Skill(String addSkill){
-			Skill.addSkill=addSkill;
+	public Skill(String addSkill, int skillID){
+			this.addSkill=addSkill;
+			this.skillID=skillID;
 	// Where and how do I add the names of the skill?
 			
-	public void String toString(){
-				String s = "addSkill: " + addSkill;
-				return s;
+	}
+		public String toString(){
+			return " Skill ID: " + skillID + " Skill: "+ addSkill;	
+	
 			}
 	//How do I get this toString thing to work?!
 		
 }
-}
+
 
 
