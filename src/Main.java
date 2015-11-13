@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 
+
 // This is the class, that will run our program
 
 
@@ -10,13 +11,13 @@ public class Main {
 		 static ArrayList<Skill> skillList = new ArrayList<Skill> ();
 		 static ArrayList<Assignment> assignmentList = new ArrayList<Assignment>();
 		 static ArrayList<Shift> shiftList = new ArrayList<Shift> ();
+		  
 	
 	
 	
 	public static void main (String[] ars){
 		// Here we write the "main" code
-		
-		
+
 		
 		//creating two Employee objects	
 		Employee e1 = new Employee("Rob", "Rak", 1236, "full time");
@@ -32,11 +33,11 @@ public class Main {
 		e1.changeFirstName("Little");
 		e1.changeLastName("Boy");
 			
-		//TODO: creating new skill and adding it to skillList
+		//TODO: for creating new skill and adding it to skillList
 	
 		
 		
-		Assignment a1 =new Assignment("Assignment 1 ", null);
+		Assignment a1 =new Assignment("First", null);
 		
 		assignmentList.add(a1);
 		
@@ -44,35 +45,8 @@ public class Main {
 		// printing out array list... change which list to print out. 
 		//System.out.print(employeeList);
 		//System.out.println(skillList);
-		System.out.println(assignmentList);
-	
+		//System.out.println(employeeList);
+		System.exit(0);
 	}
 	
 }
-	
-
-	
-	
-	
-//	public boolean newSkill (Skill newSkill){
-//		skillList.add(newSkill);
-//		return true;
-//	}
-	
-//	public List<Skill> getSkillList (){ 	
-//	}
-//	final Main main = new Main();
-//	final Skill s1 = new Skill ("KitchenHelp");
-//	main.addSkill(s1);
-	//Jakob tried to do the same thing with skills as with employee
-	// Need to be revised both!!
-
-//		System.exit(0); // Terminates virtual machine
-	
-	
-	
-	
-
-
-
-
