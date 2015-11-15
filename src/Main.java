@@ -33,7 +33,7 @@ public class Main {
 		e1.changeFirstName("Little");
 		e1.changeLastName("Boy");
 			
-		//TODO: for creating new skill and adding it to skillList
+		// creating all skills
 	
 		Skill skill1 = new Skill("Basic", 1);
 		Skill skill2 = new Skill("Dialysis", 2);
@@ -43,6 +43,8 @@ public class Main {
 		Skill skill6 = new Skill("Kitchen Help Evening", 6);
 		Skill skill7 = new Skill("AMA Kitchen Morning", 7);
 		
+		
+		//TODO: add skills to the skillList
 		
 		Assignment a1 =new Assignment("First", null);
 		
