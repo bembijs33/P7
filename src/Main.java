@@ -35,6 +35,13 @@ public class Main {
 			
 		//TODO: for creating new skill and adding it to skillList
 	
+		Skill skill1 = new Skill("Basic", 1);
+		Skill skill2 = new Skill("Dialysis", 2);
+		Skill skill3 = new Skill("Kitchen Morning", 3);
+		Skill skill4 = new Skill("Kitchen Evening", 4);
+		Skill skill5 = new Skill("Kitchen Help Morning", 5);
+		Skill skill6 = new Skill("Kitchen Help Evening", 6);
+		Skill skill7 = new Skill("AMA Kitchen Morning", 7);
 		
 		
 		Assignment a1 =new Assignment("First", null);
