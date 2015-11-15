@@ -8,10 +8,12 @@ public class Shift {
 	Date time;
 	
 	
-	public void addDateTime () {
-		
+	public void addDateTime (int Date, int Time) {
+		this.Date=Date;
+		this.Time=Time;
+		//Heeeelp Roberts!!
 	}
-	
+	 
 	
 	public void getCleaningScheduleID () {
 		
