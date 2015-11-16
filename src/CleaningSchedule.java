@@ -1,12 +1,13 @@
 import java.util.ArrayList;
 
 public class CleaningSchedule {
-	
+
 	int CsID;
 	ArrayList<Skill> skillsRequired;
-	
-		
-	ArrayList CleaningSchedule = new ArrayList(); {
+
+	ArrayList CleaningSchedule = new ArrayList();
+
+	{
 		CleaningSchedule.add("CleaningSchedule 1");
 		CleaningSchedule.add("CleaningSchedule 2");
 		CleaningSchedule.add("CleaningSchedule 3");
@@ -55,22 +56,23 @@ public class CleaningSchedule {
 		CleaningSchedule.add("CleaningSchedule 46");
 		CleaningSchedule.add("CleaningSchedule 47");
 		CleaningSchedule.add("CleaningSchedule 48");
-		
-		
+
 	}
-	
-	//TODO: locations??? string from list            // You have written both skillsreq and reqskills?
-	
-	public CleaningSchedule(int CsID, String location, ArrayList<Skill> requiredSkill){
-		this.CsID=CsID; 
-		
-	//no idea what to do with this:	new CleaningSchedule(001, "Kitchen West 7", skillList.put(Basic, skill1)); 
-		
+
+	// TODO: locations??? string from list // You have written both skillsreq
+	// and reqskills?
+
+	public CleaningSchedule(int CsID, String location, ArrayList<Skill> requiredSkill) {
+		this.CsID = CsID;
+
+		// no idea what to do with this: new CleaningSchedule(001, "Kitchen West
+		// 7", skillList.put(Basic, skill1));
+
 	}
-	
-	//change cleaning schedule ID
-	public int changeID(int x){
-		x=CsID;
-		 return x;
+
+	// change cleaning schedule ID
+	public int changeID(int x) {
+		x = CsID;
+		return x;
 	}
 }

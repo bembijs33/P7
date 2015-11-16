@@ -11,6 +11,7 @@ public class Main {
 		 static ArrayList<Skill> skillList = new ArrayList<Skill> ();
 		 static ArrayList<Assignment> assignmentList = new ArrayList<Assignment>();
 		 static ArrayList<Shift> shiftList = new ArrayList<Shift> ();
+		 static ArrayList<CleaningSchedule> CleaningSchedule = new ArrayList<CleaningSchedule> ();
 		  
 	
 	
