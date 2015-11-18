@@ -46,6 +46,8 @@ public class Main {
 		
 		
 		//TODO: add skills to the skillList
+		//Roberts, add skills to the skillList is already done right??
+		
 		
 		Assignment a1 =new Assignment("First", null);
 		
