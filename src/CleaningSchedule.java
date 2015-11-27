@@ -19,7 +19,10 @@ public class CleaningSchedule {
 		// 7", skillList.put(Basic, skill1));
 
 	}
-
+	//Creating a method that adds cleaning schedules to the schedule arrayList... 
+	public void AddSchedule(CleaningSchedule schedule) {
+		schedule.AddSchedule(schedule);
+	}
 	// change cleaning schedule ID
 	public int changeID(int x) {
 		x = CsID;
