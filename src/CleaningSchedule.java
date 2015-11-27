@@ -6,9 +6,8 @@ public class CleaningSchedule {
 	int CsID;
 	ArrayList<Skill> skillsRequired = new ArrayList<Skill>();
 
-	
-	// TODO: locations??? string from list // You have written both skillsreq
-	// and reqskills?
+	// TODO: // You have written both skillsreq
+	// and reqskills? //Where? Did this get fixed?
 
 	public CleaningSchedule(int CsID, String name, ArrayList<Skill> requiredSkill) {
 		this.CsID = CsID;
@@ -23,6 +22,6 @@ public class CleaningSchedule {
 	// change cleaning schedule ID
 	public int changeID(int x) {
 		x = CsID;
-		return x;
+		return x; // Guess this could be deleted too
 	}
 }

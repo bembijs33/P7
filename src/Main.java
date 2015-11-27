@@ -15,7 +15,7 @@ public class Main {
 
 	public static void main(String[] ars) {
 		// Here we write the "main" code
-		
+
 		// creating all skills
 
 		Skill skill1 = new Skill("Basic", 1);
@@ -25,32 +25,36 @@ public class Main {
 		Skill skill5 = new Skill("Kitchen Help Morning", 5);
 		Skill skill6 = new Skill("Kitchen Help Evening", 6);
 		Skill skill7 = new Skill("AMA Kitchen Morning", 7);
+
+		// Adding all skills to the SkillList
 		skillList.add(skill1);
-		
-		
-		
-		
+		skillList.add(skill2);
+		skillList.add(skill3);
+		skillList.add(skill4);
+		skillList.add(skill5);
+		skillList.add(skill6);
+		skillList.add(skill7);
+
 		// creating two Employee objects
 		Employee e1 = new Employee("Rob", "Rak", 1236);
 		Employee e2 = new Employee("Jak", "Una", 2223);
-		Employee e3 = new Employee("Hai", "Luu", 9999);	
-		
+		Employee e3 = new Employee("Hai", "Luu", 9999);
+
 		e1.AddSkill(skill2);
-		
+
 		ArrayList<Skill> requiredSkills = new ArrayList<Skill>();
 		requiredSkills.add(skill2);
 		requiredSkills.add(skill3);
 
 		CleaningSchedule schedule = createSchedule(1, "something", requiredSkills);
-		
+
 		Date start = createDate(2015, 9, 9, 12, 00);
 		Date end = createDate(2015, 9, 9, 18, 00);
-		Shift shift = new Shift(1, start, end, schedule);	
-		
+		Shift shift = new Shift(1, start, end, schedule);
 
 		e1.skillList.containsAll(schedule.skillsRequired);
-		
-		// adding two employees to the array employeeList 
+
+		// adding two employees to the array employeeList
 		employeeList.add(e1);
 		employeeList.add(e2);
 		employeeList.add(e3);
@@ -58,9 +62,6 @@ public class Main {
 		e1.changePhoneNumber(1111);
 		e1.changeFirstName("Little");
 		e1.changeLastName("Boy");
-
-
-		
 
 		// TODO: add skills to the skillList
 
@@ -72,23 +73,25 @@ public class Main {
 		// System.out.print(employeeList);
 		// System.out.println(skillList);
 		// System.out.println(employeeList);
-		System.exit(0);	
+		System.exit(0);
 	}
-	
+
 	public static CleaningSchedule createSchedule(int id, String name, ArrayList<Skill> skills) {
 		CleaningSchedule schedule = new CleaningSchedule(id, name, skills);
 		return schedule;
 	}
-	
+
 	public static Date createDate(int year, int month, int day, int hour, int minute) {
 		Date date = new Date();
-		
+
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy/HH/mm");
-		
+
 		try {
-		date = sdf.parse(day + "/" + month + "/" + year + "/" + hour + "/" + minute);
-		} catch (Exception e){}
-		
+			date = sdf.parse(day + "/" + month + "/" + year + "/" + hour + "/" + minute);
+		} catch (Exception e) {
+			System.err.println("error"); //If the date is not written correctly, an error message will print
+		}
+
 		return date;
 	}
 }

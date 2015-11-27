@@ -5,11 +5,13 @@ public class Employee {
 	public String lastName;
 	public int phoneNumber;
 	public ArrayList<Skill> skillList = new ArrayList<Skill>();
+	//And perhaps working hours allowed?
 
 	public Employee(String firstName, String lastName, int phoneNumber){
 		this.firstName=firstName;
 		this.lastName=lastName;
 		this.phoneNumber=phoneNumber;
+		//Should skill be somewhere here?  
 		}
 
 	public String toString(){
@@ -24,16 +26,16 @@ public class Employee {
 
 	public String changeFirstName(String a){
 		firstName=a;
-		return a; 	
+		return a; 	//Need of return? 
 		}
 
 	public String changeLastName(String b){
 		lastName=b;
-		return b; 	
+		return b; 	//Need of return?
 	}
 
 	public int changePhoneNumber(int x){
 		phoneNumber = x;	
-		return x;
+		return x; //Need of return?
 	}
 }
