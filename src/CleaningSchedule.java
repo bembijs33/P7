@@ -6,8 +6,9 @@ public class CleaningSchedule {
 	int CsID;
 	ArrayList<Skill> skillsRequired = new ArrayList<Skill>();
 
-	// TODO: // You have written both skillsreq
-	// and reqskills? //Where? Did this get fixed?
+	
+	// You have written both skillsreq
+	// and reqskills?
 
 	public CleaningSchedule(int CsID, String name, ArrayList<Skill> requiredSkill) {
 		this.CsID = CsID;
@@ -18,10 +19,14 @@ public class CleaningSchedule {
 		// 7", skillList.put(Basic, skill1));
 
 	}
-
+	//Creating a method that adds cleaning schedules to the schedule arrayList... 
+	public void AddSchedule(CleaningSchedule schedule) {
+		schedule.AddSchedule(schedule);
+	}
+	
 	// change cleaning schedule ID
 	public int changeID(int x) {
 		x = CsID;
-		return x; // Guess this could be deleted too
+		return x; // is it necessary to return something?
 	}
 }
