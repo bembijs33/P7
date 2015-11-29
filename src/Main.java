@@ -38,7 +38,7 @@ public class Main {
 		
 		
 		
-		// creating two Employee objects
+		// creating  Employees objects
 		Employee e1 = new Employee("Pia", "Larsen", 12362152);
 		Employee e2 = new Employee("Mona", "Madsen", 22233586);
 		Employee e3 = new Employee("Helle", "Lundgren", 99998888);	
@@ -46,7 +46,7 @@ public class Main {
 		Employee e5 = new Employee("Iben", "Pedersen", 66431782);
 		Employee e6 = new Employee("Kirsten", "Nielsen", 16563815);	
 		
-		// adding two employees to the array employeeList 
+		// adding employees to the array employeeList 
 		employeeList.add(e1);
 		employeeList.add(e2);
 		employeeList.add(e3);
@@ -92,18 +92,22 @@ public class Main {
 		CleaningSchedule scheduleAMA = createSchedule(03, "AMA", requiredSkillsSchedule3);
 
 		//schedule.AddSchedule(schedule7W); WHY DOESN'T THIS WORK?!!! 
+		//if you want to add CS to array list it should be like
+		schedule.add(schedule7W);
+		schedule.add(scheduleAMA);
+		schedule.add(schedule7KM);
 		
 		
 		
 		//Creating a shift
 		Date start = createDate(2015, 9, 9, 12, 00);
-		Date end = createDate(2015, 9, 9, 18, 00);
+		Date end = createDate(2015, 10, 9, 18, 00);
 		Shift shift00001 = new Shift(00001, start, end, schedule7W);	
 		
 		//Checking whether Employee 1 can have the shift
 		e1.skillList.contains(schedule7W); //does containAll and contain do the same thing? we replace e1.skillList.containsAll(schedule.skillsRequired);
-		
-		
+	
+		shiftList.add(shift00001);
 
 		//Creating assignments
 		Assignment a1 = new Assignment("First", null);
@@ -115,23 +119,25 @@ public class Main {
 		// System.out.print(employeeList);
 		// System.out.println(skillList);
 		// System.out.println(employeeList);
+		System.out.println(shiftList);
 		System.exit(0);	
 	}
 	
+	
+	// Method to create new Cleaning schedule
 	public static CleaningSchedule createSchedule(int id, String name, ArrayList<Skill> skills) {
 		CleaningSchedule schedule = new CleaningSchedule(id, name, skills);
 		return schedule;
 	}
 	
-	public static Date createDate(int year, int month, int day, int hour, int minute) {
+	//
+	public static Date createDate(int day,  int month, int year, int hour, int minute) {
 		Date date = new Date();
-		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy/HH/mm");
-		
-		try {
-		date = sdf.parse(day + "/" + month + "/" + year + "/" + hour + "/" + minute);
-		} catch (Exception e){}
-		System.err.println("error");
-		return date;
+			try {
+				date = sdf.parse(day + "/" + month + "/" + year + "/" + hour + "/" + minute);
+			} catch (Exception e){}
+			System.err.println("date error ");
+			return date;
 	}
 }

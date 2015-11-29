@@ -4,7 +4,7 @@ public class Employee {
 	public String firstName; 
 	public String lastName;
 	public int phoneNumber;
-	public ArrayList<Skill> skillList = new ArrayList<Skill>();
+	public ArrayList<Skill> skillList = new ArrayList<Skill>(); // Instantiating arrayList for skills
 	//And perhaps working hours allowed?
 
 	public Employee(String firstName, String lastName, int phoneNumber){
@@ -12,6 +12,7 @@ public class Employee {
 		this.lastName=lastName;
 		this.phoneNumber=phoneNumber;
 		//Should skill be somewhere here?  
+		//Rob: Employee is created without any skill. It is added afterwards in method AddSkill(). 
 		}
 
 	public String toString(){
@@ -20,22 +21,25 @@ public class Employee {
 			" Phone number: " + phoneNumber;
 		}
 	
+	// Adding skill to employees skill list
 	public void AddSkill(Skill skill) {
 		skillList.add(skill);
 	}
 
-	public String changeFirstName(String a){
-		firstName=a;
-		return a; 	//Need of return? 
+	//Changing first name
+	public void changeFirstName(String newName){
+		firstName=newName; 
 		}
 
-	public String changeLastName(String b){
-		lastName=b;
-		return b; 	//Need of return?
+	//Changing last name
+	public void changeLastName(String newLatName){
+		lastName=newLatName;
+		
 	}
-
-	public int changePhoneNumber(int x){
-		phoneNumber = x;	
-		return x; //Need of return?
+	
+	//Changing phone number
+	public void changePhoneNumber(int newPhoneNumb){
+		phoneNumber = newPhoneNumb;	
+		
 	}
 }

@@ -4,7 +4,7 @@ public class CleaningSchedule {
 
 	String Name;
 	int CsID;
-	ArrayList<Skill> skillsRequired = new ArrayList<Skill>();
+	ArrayList<Skill> skillRequired = new ArrayList<Skill>();
 
 	
 	// You have written both skillsreq
@@ -13,20 +13,22 @@ public class CleaningSchedule {
 	public CleaningSchedule(int CsID, String name, ArrayList<Skill> requiredSkill) {
 		this.CsID = CsID;
 		this.Name = name;
-		this.skillsRequired = requiredSkill;
-
-		// no idea what to do with this: new CleaningSchedule(001, "Kitchen West
-		// 7", skillList.put(Basic, skill1));
-
-	}
+		this.skillRequired = requiredSkill;
+		}
+	
+	public void AddSkill(Skill skill) {
+		skillRequired.add(skill);
+		}
+	
 	//Creating a method that adds cleaning schedules to the schedule arrayList... 
 	public void AddSchedule(CleaningSchedule schedule) {
 		schedule.AddSchedule(schedule);
 	}
 	
+	
 	// change cleaning schedule ID
-	public int changeID(int x) {
-		x = CsID;
-		return x; // is it necessary to return something?
+	public void  changeID(int newID) {
+		newID = CsID;
 	}
+	
 }
