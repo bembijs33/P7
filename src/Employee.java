@@ -32,8 +32,8 @@ public class Employee {
 		}
 
 	//Changing last name
-	public void changeLastName(String newLatName){
-		lastName=newLatName;
+	public void changeLastName(String newLastName){
+		lastName=newLastName;
 		
 	}
 	

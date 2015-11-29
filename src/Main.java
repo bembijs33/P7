@@ -13,7 +13,7 @@ public class Main {
 	static ArrayList<Shift> shiftList = new ArrayList<Shift>();
 	static ArrayList<CleaningSchedule> schedule = new ArrayList<CleaningSchedule>();
 
-	public static void main(String[] ars) {
+	public static void main(String[] args) {
 		// Here we write the "main" code
 		
 		// creating all skills
@@ -99,9 +99,11 @@ public class Main {
 		
 		
 		
-		//Creating a shift
+		//Creating a date  shift
 		Date start = createDate(2015, 9, 9, 12, 00);
 		Date end = createDate(2015, 10, 9, 18, 00);
+		
+		//Creating a shift
 		Shift shift00001 = new Shift(00001, start, end, schedule7W);	
 		
 		//Checking whether Employee 1 can have the shift
@@ -131,7 +133,7 @@ public class Main {
 	}
 	
 	//
-	public static Date createDate(int day,  int month, int year, int hour, int minute) {
+	public static Date createDate( int day, int month, int year, int hour, int minute) {
 		Date date = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy/HH/mm");
 			try {
