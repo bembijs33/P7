@@ -15,10 +15,14 @@ import java.awt.event.ActionEvent;
 import javax.swing.JTable;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.JLabel;
+import java.awt.FlowLayout;
 
 public class Windows {
 
 	private JFrame frmWindows;
+	private JTextField textField;
 
 	/**
 	 * Launch the application.
@@ -58,16 +62,29 @@ public class Windows {
 		
 		JPanel wsPanel = new JPanel();
 		tabbedPane.addTab("Work Schedule", null, wsPanel, null);
+		wsPanel.setLayout(null);
+		
+		JPanel skillPanel = new JPanel();
+		tabbedPane.addTab("Skill", null, skillPanel, null);
+		skillPanel.setLayout(null);
 		
 				
 		JPanel empPanel = new JPanel();
 		tabbedPane.addTab("Employee", null, empPanel, null);
+		empPanel.setLayout(null);
 		
-		JPanel skillPanel = new JPanel();
-		tabbedPane.addTab("Skill", null, skillPanel, null);
+		JLabel lblNewLabel = new JLabel("New label");
+		lblNewLabel.setBounds(34, 48, 46, 14);
+		empPanel.add(lblNewLabel);
+		
+		textField = new JTextField();
+		textField.setBounds(124, 45, 86, 20);
+		empPanel.add(textField);
+		textField.setColumns(10);
 		
 		JPanel csPanel = new JPanel();
 		tabbedPane.addTab("Cleaning Schedule", null, csPanel, null);
+		csPanel.setLayout(null);
 		
 		JPanel assigPanel = new JPanel();
 		tabbedPane.addTab("Assignment", null, assigPanel, null);
