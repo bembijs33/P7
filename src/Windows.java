@@ -18,11 +18,17 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import java.awt.FlowLayout;
+import javax.swing.JList;
+import javax.swing.border.LineBorder;
+import java.awt.Color;
+import javax.swing.JScrollBar;
 
 public class Windows {
 
 	private JFrame frmWindows;
 	private JTextField textField;
+	private JTextField textField_1;
+	private JTextField textField_2;
 
 	/**
 	 * Launch the application.
@@ -64,9 +70,13 @@ public class Windows {
 		tabbedPane.addTab("Work Schedule", null, wsPanel, null);
 		wsPanel.setLayout(null);
 		
-		JPanel skillPanel = new JPanel();
-		tabbedPane.addTab("Skill", null, skillPanel, null);
-		skillPanel.setLayout(null);
+		JList list = new JList();
+		list.setBounds(50, 46, 310, 240);
+		wsPanel.add(list);
+		
+		JLabel lblWorkSchedule = new JLabel("Work schedule");
+		lblWorkSchedule.setBounds(50, 21, 99, 14);
+		wsPanel.add(lblWorkSchedule);
 		
 				
 		JPanel empPanel = new JPanel();
@@ -89,8 +99,49 @@ public class Windows {
 		JPanel assigPanel = new JPanel();
 		tabbedPane.addTab("Assignment", null, assigPanel, null);
 		assigPanel.setLayout(null);
+		
+		JPanel skillPanel = new JPanel();
+		tabbedPane.addTab("Skill", null, skillPanel, null);
+		skillPanel.setLayout(null);
+		
+		JList list_1 = new JList();
+		list_1.setBounds(70, 49, 367, 158);
+		skillPanel.add(list_1);
+		
+		JButton btnDelete = new JButton("Delete");
+		btnDelete.setBounds(348, 210, 89, 23);
+		skillPanel.add(btnDelete);
+		
+		JButton btnEdit = new JButton("Edit");
+		btnEdit.setBounds(249, 210, 89, 23);
+		skillPanel.add(btnEdit);
+		
+		JLabel lblAddSkill = new JLabel("Add/edit skill");
+		lblAddSkill.setBounds(70, 247, 65, 14);
+		skillPanel.add(lblAddSkill);
+		
+		textField_1 = new JTextField();
+		textField_1.setBounds(70, 268, 86, 20);
+		skillPanel.add(textField_1);
+		textField_1.setColumns(10);
+		
+		textField_2 = new JTextField();
+		textField_2.setBounds(70, 299, 86, 20);
+		skillPanel.add(textField_2);
+		textField_2.setColumns(10);
+		
+		JLabel lblSkillId = new JLabel("Skill ID");
+		lblSkillId.setBounds(166, 271, 46, 14);
+		skillPanel.add(lblSkillId);
+		
+		JLabel lblSkillName = new JLabel("Skill name");
+		lblSkillName.setBounds(166, 302, 46, 14);
+		skillPanel.add(lblSkillName);
+		
+		JButton btnAdd = new JButton("Add/edit");
+		btnAdd.setBounds(123, 330, 89, 23);
+		skillPanel.add(btnAdd);
 	
 		frmWindows.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{frmWindows.getContentPane()}));
 	}
-
 }
