@@ -5,14 +5,11 @@ import org.eclipse.wb.swing.FocusTraversalOnArray;
 import java.awt.Component;
 import javax.swing.JTabbedPane;
 import java.awt.GridLayout;
-import java.util.ArrayList;
-
 import javax.swing.JCheckBox;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.ListCellRenderer;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollBar;
@@ -22,7 +19,10 @@ import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.AbstractListModel;
+import java.util.ArrayList;
+
+import javax.swing.Box;
+import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -38,14 +38,29 @@ public class Windows {
 	
 	private static DefaultListModel employeeList = new DefaultListModel();
 	private static DefaultListModel skillList = new DefaultListModel();
+	private static DefaultListModel csList = new DefaultListModel();
 	
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		 Skill s1 = new Skill("as", 3);
-		 skillList.addElement(s1);
+		Employee e1 = new Employee ("Bob", "Fan", 123456);
+			employeeList.addElement(e1);
+			Skill skill1 = new Skill("Basic", 1);
+			Skill skill2 = new Skill("Dialysis", 2);
+			Skill skill3 = new Skill("Kitchen Morning", 3);
+			Skill skill4 = new Skill("Kitchen Evening", 4);
+			Skill skill5 = new Skill("Kitchen Help Morning", 5);
+			Skill skill6 = new Skill("Kitchen Help Evening", 6);
+			Skill skill7 = new Skill("AMA Kitchen Morning", 7);
+		 skillList.addElement(skill1);
+		 skillList.addElement(skill2);
+		 skillList.addElement(skill3);
+		 skillList.addElement(skill4);
+		 skillList.addElement(skill5);
+		 skillList.addElement(skill6);
+		 skillList.addElement(skill1);
 				
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -72,7 +87,7 @@ public class Windows {
 	private void initialize() {
 		frmWindows = new JFrame();
 		frmWindows.setTitle("Windows");
-		frmWindows.setBounds(100, 100, 530, 424);
+		frmWindows.setBounds(150, 150, 700, 700);
 		frmWindows.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmWindows.getContentPane().setLayout(new GridLayout(0, 1, 0, 0));
 		
@@ -159,7 +174,7 @@ public class Windows {
 		empPanel.add(Deleteemployee);
 		
 		JEditorPane nameOfEmployee = new JEditorPane();
-		nameOfEmployee.setBounds(97, 235, 106, 20);
+		nameOfEmployee.setBounds(97, 232, 106, 20);
 		empPanel.add(nameOfEmployee);
 		
 		JEditorPane lastName = new JEditorPane();
@@ -395,10 +410,6 @@ public class Windows {
 		tabbedPane.addTab("Cleaning Schedule", null, csPanel, null);
 		csPanel.setLayout(null);
 		
-		JScrollBar scrollBarCSlist = new JScrollBar();
-		scrollBarCSlist.setBounds(435, 33, 17, 107);
-		csPanel.add(scrollBarCSlist);
-		
 		JButton DeleteCS = new JButton("Delete");
 		DeleteCS.setBounds(347, 151, 89, 23);
 		csPanel.add(DeleteCS);
@@ -409,16 +420,21 @@ public class Windows {
 		
 		//List containing all cleaning schedules 
 		JList ListOfCS = new JList();
-		ListOfCS.setBounds(39, 33, 397, 107);
+		ListOfCS.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		ListOfCS.setBounds(39, 33, 89, 49);
 		csPanel.add(ListOfCS);
+		JScrollPane scrollPane_4 = new JScrollPane(ListOfCS);
+		scrollPane_4.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane_4.setBounds(49, 33, 387, 107);
+		csPanel.add(scrollPane_4);
 		
-		JEditorPane dtrpnCsId = new JEditorPane();
-		dtrpnCsId.setBounds(82, 182, 106, 20);
-		csPanel.add(dtrpnCsId);
+		JEditorPane csIdField = new JEditorPane();
+		csIdField.setBounds(82, 182, 106, 20);
+		csPanel.add(csIdField);
 		
-		JEditorPane dtrpnCsName = new JEditorPane();
-		dtrpnCsName.setBounds(82, 214, 106, 20);
-		csPanel.add(dtrpnCsName);
+		JEditorPane csNameField = new JEditorPane();
+		csNameField.setBounds(82, 214, 106, 20);
+		csPanel.add(csNameField);
 		
 		//check boxes for the required skill to the cleaning schedule
 		
@@ -451,6 +467,8 @@ public class Windows {
 		csPanel.add(Skill7forCS);
 		
 		JButton AddCS = new JButton("Save");
+	
+		
 		AddCS.setBounds(347, 299, 89, 23);
 		csPanel.add(AddCS);
 		
@@ -461,6 +479,8 @@ public class Windows {
 		JLabel lblNewLabel = new JLabel("CS name");
 		lblNewLabel.setBounds(39, 220, 46, 14);
 		csPanel.add(lblNewLabel);
+		
+		
 	
 		frmWindows.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{frmWindows.getContentPane()}));
 	}

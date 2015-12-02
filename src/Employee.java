@@ -17,8 +17,8 @@ public class Employee {
 
 	public String toString(){
 		return "First name: " + firstName
-			+ " Last name: " + lastName +
-			" Phone number: " + phoneNumber;
+			+ " Last name: " + lastName; 
+			
 		}
 	
 	// Adding skill to employees skill list

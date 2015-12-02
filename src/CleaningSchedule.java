@@ -7,8 +7,7 @@ public class CleaningSchedule {
 	ArrayList<Skill> skillRequired = new ArrayList<Skill>();
 
 	
-	// You have written both skillsreq
-	// and reqskills?
+
 
 	public CleaningSchedule(int CsID, String name, ArrayList<Skill> requiredSkill) {
 		this.CsID = CsID;
