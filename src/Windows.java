@@ -4,42 +4,49 @@ import javax.swing.JFrame;
 import org.eclipse.wb.swing.FocusTraversalOnArray;
 import java.awt.Component;
 import javax.swing.JTabbedPane;
-import java.awt.BorderLayout;
-import javax.swing.JTextArea;
-import javax.swing.JTextPane;
 import java.awt.GridLayout;
+import java.util.ArrayList;
+
 import javax.swing.JCheckBox;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.JTable;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ListCellRenderer;
 import javax.swing.JLabel;
-import java.awt.FlowLayout;
 import javax.swing.JList;
-import javax.swing.border.LineBorder;
-import java.awt.Color;
 import javax.swing.JScrollBar;
 import javax.swing.JEditorPane;
-import javax.swing.JRadioButton;
-import javax.swing.JSlider;
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.ScrollPaneConstants;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.AbstractListModel;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Windows {
 
 	private JFrame frmWindows;
-	private JTextField textField_1;
-	private JTextField textField_2;
+	private JTextField skillIDField;
+	private JTextField skillNameField;
 	private JTextField typeShiftName;
 	private JTextField ChooseCs;
 	private JTextField chooseassignmentDate;
 	private JTextField chooseTime;
+	
+	private static DefaultListModel employeeList = new DefaultListModel();
+	private static DefaultListModel skillList = new DefaultListModel();
+	
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		 Skill s1 = new Skill("as", 3);
+		 skillList.addElement(s1);
+				
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -72,135 +79,119 @@ public class Windows {
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		frmWindows.getContentPane().add(tabbedPane);
 		
+	// Work schedule tab		
 		JPanel wsPanel = new JPanel();
 		tabbedPane.addTab("Work Schedule", null, wsPanel, null);
 		wsPanel.setLayout(null);
 		
+		// list containing all shifts
 		JList workschedulelist = new JList();
-		workschedulelist.setBounds(50, 46, 376, 240);
+		workschedulelist.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		workschedulelist.setBounds(153, 106, 273, 180);
 		wsPanel.add(workschedulelist);
 		
 		JLabel lblWorkSchedule = new JLabel("Work schedule");
 		lblWorkSchedule.setBounds(50, 21, 99, 14);
 		wsPanel.add(lblWorkSchedule);
 		
-		JScrollBar scrollBar = new JScrollBar();
-		scrollBar.setBounds(424, 46, 17, 240);
-		wsPanel.add(scrollBar);
+		JScrollPane scrollPane = new JScrollPane(workschedulelist);
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane.setBounds(78, 68, 347, 207);
+		wsPanel.add(scrollPane);
 		
-		JPanel csPanel = new JPanel();
-		tabbedPane.addTab("Cleaning Schedule", null, csPanel, null);
-		csPanel.setLayout(null);
 		
-		JScrollBar scrollBarCSlist = new JScrollBar();
-		scrollBarCSlist.setBounds(435, 33, 17, 107);
-		csPanel.add(scrollBarCSlist);
+	// Employee tab
 		
-		JButton DeleteCS = new JButton("Delete");
-		DeleteCS.setBounds(347, 151, 89, 23);
-		csPanel.add(DeleteCS);
-		
-		JButton EditCS = new JButton("Edit");
-		EditCS.setBounds(250, 151, 89, 23);
-		csPanel.add(EditCS);
-		
-		JList ListOfCS = new JList();
-		ListOfCS.setBounds(39, 33, 397, 107);
-		csPanel.add(ListOfCS);
-		
-		JEditorPane dtrpnCsId = new JEditorPane();
-		dtrpnCsId.setBounds(82, 182, 106, 20);
-		csPanel.add(dtrpnCsId);
-		
-		JEditorPane dtrpnCsName = new JEditorPane();
-		dtrpnCsName.setBounds(82, 214, 106, 20);
-		csPanel.add(dtrpnCsName);
-		
-		JCheckBox Skill1forCS = new JCheckBox("Skill 1");
-		Skill1forCS.setBounds(39, 247, 62, 23);
-		csPanel.add(Skill1forCS);
-		
-		JCheckBox Skill2forCS = new JCheckBox("Skill 2");
-		Skill2forCS.setBounds(39, 273, 62, 23);
-		csPanel.add(Skill2forCS);
-		
-		JCheckBox Skill3forCS = new JCheckBox("Skill 3");
-		Skill3forCS.setBounds(39, 299, 62, 23);
-		csPanel.add(Skill3forCS);
-		
-		JCheckBox Skill4forCS = new JCheckBox("Skill 4");
-		Skill4forCS.setBounds(103, 247, 62, 23);
-		csPanel.add(Skill4forCS);
-		
-		JCheckBox Skill5forCS = new JCheckBox("Skill 5");
-		Skill5forCS.setBounds(103, 273, 97, 23);
-		csPanel.add(Skill5forCS);
-		
-		JCheckBox Skill6forCS = new JCheckBox("Skill 6");
-		Skill6forCS.setBounds(103, 299, 97, 23);
-		csPanel.add(Skill6forCS);
-		
-		JCheckBox Skill7forCS = new JCheckBox("Skill 7");
-		Skill7forCS.setBounds(167, 247, 62, 23);
-		csPanel.add(Skill7forCS);
-		
-		JButton AddCS = new JButton("Save");
-		AddCS.setBounds(347, 299, 89, 23);
-		csPanel.add(AddCS);
-		
-		JLabel lblCsId = new JLabel("CS ID");
-		lblCsId.setBounds(39, 188, 46, 14);
-		csPanel.add(lblCsId);
-		
-		JLabel lblNewLabel = new JLabel("CS name");
-		lblNewLabel.setBounds(39, 220, 46, 14);
-		csPanel.add(lblNewLabel);
-		
-				
 		JPanel empPanel = new JPanel();
 		tabbedPane.addTab("Employee", null, empPanel, null);
 		empPanel.setLayout(null);
 		
-		JList listofemployees = new JList();
-		listofemployees.setBounds(38, 34, 199, 137);
-		empPanel.add(listofemployees);
+		JList listOfEmp = new JList(employeeList);
+		listOfEmp.setBounds(32, 39, 185, 137);
+		empPanel.add(listOfEmp);
 		
-		JList infoofemployees = new JList();
-		infoofemployees.setBounds(282, 34, 185, 137);
-		empPanel.add(infoofemployees);
+		JScrollPane scrollListEmployee = new JScrollPane(listOfEmp);
+		scrollListEmployee.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollListEmployee .setBounds(32, 38, 202, 133);
+		empPanel.add(scrollListEmployee );
 		
-		JScrollBar scrollBarlistofemployees = new JScrollBar();
-		scrollBarlistofemployees.setBounds(238, 34, 17, 137);
-		empPanel.add(scrollBarlistofemployees);
+		// list showing information about employee
+		JList infoOfEmployeesList = new JList();
 		
-		JScrollBar scrollBarinfoofemployees = new JScrollBar();
-		scrollBarinfoofemployees.setBounds(471, 34, 17, 136);
-		empPanel.add(scrollBarinfoofemployees);
+		infoOfEmployeesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		infoOfEmployeesList.setBounds(282, 34, 185, 137);
+		empPanel.add(infoOfEmployeesList);
+		
+		JScrollPane scrollListEmployeeInfo = new JScrollPane(infoOfEmployeesList);
+		scrollListEmployeeInfo.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollListEmployeeInfo .setBounds(267, 38, 202, 133);
+		empPanel.add(scrollListEmployeeInfo );
+		
+		
+		// edit employee
 		
 		JButton editemployee = new JButton("Edit");
+		editemployee.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				
+				
+			}
+		});
 		editemployee.setBounds(38, 182, 89, 23);
 		empPanel.add(editemployee);
 		
+		//Deleting employee String
+		
 		JButton Deleteemployee = new JButton("Delete");
+		Deleteemployee.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				// when button clicked, create new String that has selected string and delete it.
+				String tempEmp = (String) listOfEmp.getSelectedValue();
+				employeeList.removeElement(tempEmp);
+				
+			}
+		});
 		Deleteemployee.setBounds(137, 182, 89, 23);
 		empPanel.add(Deleteemployee);
 		
-		JEditorPane dtrpnNameOfEmployee = new JEditorPane();
-		dtrpnNameOfEmployee.setBounds(97, 235, 106, 20);
-		empPanel.add(dtrpnNameOfEmployee);
+		JEditorPane nameOfEmployee = new JEditorPane();
+		nameOfEmployee.setBounds(97, 235, 106, 20);
+		empPanel.add(nameOfEmployee);
 		
-		JEditorPane dtrpnSirName = new JEditorPane();
-		dtrpnSirName.setBounds(97, 266, 106, 20);
-		empPanel.add(dtrpnSirName);
+		JEditorPane lastName = new JEditorPane();
+		lastName.setBounds(97, 266, 106, 20);
+		empPanel.add(lastName);
 		
-		JEditorPane dtrpnPhoneNumber = new JEditorPane();
-		dtrpnPhoneNumber.setBounds(97, 296, 106, 20);
-		empPanel.add(dtrpnPhoneNumber);
+		JEditorPane phoneNumber = new JEditorPane();
+		phoneNumber.setBounds(97, 296, 106, 20);
+		empPanel.add(phoneNumber);
+		
+		
+		//Saving Employee to the STRING!!!!!
 		
 		JButton Saveemployeeinfo = new JButton("Save");
+		Saveemployeeinfo.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// creating new strings that captures text field value
+				String employeeName = nameOfEmployee.getText();
+				String surname = lastName.getText();
+				// making sure that input is only int
+				int number = Integer.parseInt( phoneNumber.getText());
+			Employee e3 = new Employee (employeeName, surname, number);
+			employeeList.addElement(e3);
+			
+			}
+		});
 		Saveemployeeinfo.setBounds(383, 311, 89, 23);
 		empPanel.add(Saveemployeeinfo);
 		
+		
+		// skills to for the employee
 		JCheckBox Skill1forEmp = new JCheckBox("Skill 1");
 		Skill1forEmp.setBounds(238, 232, 51, 23);
 		empPanel.add(Skill1forEmp);
@@ -241,6 +232,84 @@ public class Windows {
 		lblPhoneNumber.setBounds(41, 302, 64, 14);
 		empPanel.add(lblPhoneNumber);
 		
+		
+		
+		
+		
+	// Skill Tab	
+		JPanel skillPanel = new JPanel();
+		tabbedPane.addTab("Skill", null, skillPanel, null);
+		skillPanel.setLayout(null);
+		
+		JList listOfSkills = new JList(skillList);
+		listOfSkills.setBounds(70, 49, 350, 158);
+		skillPanel.add(listOfSkills);
+		
+		JScrollPane scrollPane_1 = new JScrollPane(listOfSkills);
+		scrollPane_1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane_1.setBounds(57, 38, 380, 167);
+		skillPanel.add(scrollPane_1);
+		
+	
+		JButton btnDelete = new JButton("Delete");
+		btnDelete.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				String tempSkill = (String) listOfSkills.getSelectedValue();
+				skillList.removeElement(tempSkill);
+	
+			}
+		});
+		btnDelete.setBounds(348, 210, 89, 23);
+		skillPanel.add(btnDelete);
+		
+		JButton btnEdit = new JButton("Edit");
+		btnEdit.setBounds(249, 210, 89, 23);
+		skillPanel.add(btnEdit);
+		
+		skillIDField = new JTextField();
+		skillIDField.setBounds(121, 252, 86, 20);
+		skillPanel.add(skillIDField);
+		skillIDField.setColumns(10);
+		
+		skillNameField = new JTextField();
+		skillNameField.setBounds(121, 282, 86, 20);
+		skillPanel.add(skillNameField);
+		skillNameField.setColumns(10);
+		
+		JLabel lblSkillId = new JLabel("Skill ID");
+		lblSkillId.setBounds(70, 255, 46, 14);
+		skillPanel.add(lblSkillId);
+		
+		JLabel lblSkillName = new JLabel("Skill name");
+		lblSkillName.setBounds(70, 285, 46, 14);
+		skillPanel.add(lblSkillName);
+		
+		
+		//Save a skill
+		
+				
+		JButton btnSaveSkill = new JButton("Save");
+		btnSaveSkill.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				int skillIDnumber = Integer.parseInt( skillIDField.getText());
+				String skillsname = skillNameField.getText();
+				
+			Skill tempSkill = new Skill (skillsname, skillIDnumber);
+			skillList.addElement(tempSkill);
+				
+			}
+		});
+		
+		btnSaveSkill.setBounds(348, 310, 89, 23);
+		skillPanel.add(btnSaveSkill);
+		
+		
+		
+	
+	// Assignment tab	
 		JPanel assigPanel = new JPanel();
 		tabbedPane.addTab("Assignment", null, assigPanel, null);
 		assigPanel.setLayout(null);
@@ -249,21 +318,23 @@ public class Windows {
 		scrollBar_5.setBounds(216, 249, 17, 20);
 		assigPanel.add(scrollBar_5);
 		
-		JList shiftlist = new JList();
-		shiftlist.setBounds(37, 11, 193, 162);
-		assigPanel.add(shiftlist);
+		JList shiftList = new JList();
+		shiftList.setBounds(37, 11, 193, 162);
+		assigPanel.add(shiftList);
 		
-		JList shiftinformation = new JList();
-		shiftinformation.setBounds(288, 11, 193, 162);
-		assigPanel.add(shiftinformation);
+		JScrollPane scrollPane_2 = new JScrollPane(shiftList);
+		scrollPane_2.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane_2.setBounds(37, 11, 205, 162);
+		assigPanel.add(scrollPane_2);
 		
-		JScrollBar scrollBar_3 = new JScrollBar();
-		scrollBar_3.setBounds(227, 11, 17, 158);
-		assigPanel.add(scrollBar_3);
+		JList shiftInformationList = new JList();
+		shiftInformationList.setBounds(288, 11, 193, 162);
+		assigPanel.add(shiftInformationList);
 		
-		JScrollBar scrollBar_4 = new JScrollBar();
-		scrollBar_4.setBounds(482, 11, 17, 162);
-		assigPanel.add(scrollBar_4);
+		JScrollPane scrollPane_3 = new JScrollPane(shiftInformationList);
+		scrollPane_3.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane_3.setBounds(480, 172, -190, -158);
+		assigPanel.add(scrollPane_3);
 		
 		JButton btnEdit_1 = new JButton("Edit");
 		btnEdit_1.setBounds(37, 184, 89, 23);
@@ -314,47 +385,82 @@ public class Windows {
 		lblTime.setBounds(47, 314, 46, 14);
 		assigPanel.add(lblTime);
 		
-		JPanel skillPanel = new JPanel();
-		tabbedPane.addTab("Skill", null, skillPanel, null);
-		skillPanel.setLayout(null);
+	
 		
-		JList list_1 = new JList();
-		list_1.setBounds(70, 49, 350, 158);
-		skillPanel.add(list_1);
 		
-		JButton btnDelete = new JButton("Delete");
-		btnDelete.setBounds(348, 210, 89, 23);
-		skillPanel.add(btnDelete);
 		
-		JButton btnEdit = new JButton("Edit");
-		btnEdit.setBounds(249, 210, 89, 23);
-		skillPanel.add(btnEdit);
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(121, 252, 86, 20);
-		skillPanel.add(textField_1);
-		textField_1.setColumns(10);
+	// Cleaning schedule tab	
+		JPanel csPanel = new JPanel();
+		tabbedPane.addTab("Cleaning Schedule", null, csPanel, null);
+		csPanel.setLayout(null);
 		
-		textField_2 = new JTextField();
-		textField_2.setBounds(121, 282, 86, 20);
-		skillPanel.add(textField_2);
-		textField_2.setColumns(10);
+		JScrollBar scrollBarCSlist = new JScrollBar();
+		scrollBarCSlist.setBounds(435, 33, 17, 107);
+		csPanel.add(scrollBarCSlist);
 		
-		JLabel lblSkillId = new JLabel("Skill ID");
-		lblSkillId.setBounds(70, 255, 46, 14);
-		skillPanel.add(lblSkillId);
+		JButton DeleteCS = new JButton("Delete");
+		DeleteCS.setBounds(347, 151, 89, 23);
+		csPanel.add(DeleteCS);
 		
-		JLabel lblSkillName = new JLabel("Skill name");
-		lblSkillName.setBounds(70, 285, 46, 14);
-		skillPanel.add(lblSkillName);
+		JButton EditCS = new JButton("Edit");
+		EditCS.setBounds(250, 151, 89, 23);
+		csPanel.add(EditCS);
 		
-		JButton btnAdd = new JButton("Save");
-		btnAdd.setBounds(348, 310, 89, 23);
-		skillPanel.add(btnAdd);
+		//List containing all cleaning schedules 
+		JList ListOfCS = new JList();
+		ListOfCS.setBounds(39, 33, 397, 107);
+		csPanel.add(ListOfCS);
 		
-		JScrollBar scrollBar_1 = new JScrollBar();
-		scrollBar_1.setBounds(420, 49, 17, 158);
-		skillPanel.add(scrollBar_1);
+		JEditorPane dtrpnCsId = new JEditorPane();
+		dtrpnCsId.setBounds(82, 182, 106, 20);
+		csPanel.add(dtrpnCsId);
+		
+		JEditorPane dtrpnCsName = new JEditorPane();
+		dtrpnCsName.setBounds(82, 214, 106, 20);
+		csPanel.add(dtrpnCsName);
+		
+		//check boxes for the required skill to the cleaning schedule
+		
+		JCheckBox Skill1forCS = new JCheckBox("Skill 1");
+		Skill1forCS.setBounds(39, 247, 62, 23);
+		csPanel.add(Skill1forCS);
+		
+		JCheckBox Skill2forCS = new JCheckBox("Skill 2");
+		Skill2forCS.setBounds(39, 273, 62, 23);
+		csPanel.add(Skill2forCS);
+		
+		JCheckBox Skill3forCS = new JCheckBox("Skill 3");
+		Skill3forCS.setBounds(39, 299, 62, 23);
+		csPanel.add(Skill3forCS);
+		
+		JCheckBox Skill4forCS = new JCheckBox("Skill 4");
+		Skill4forCS.setBounds(103, 247, 62, 23);
+		csPanel.add(Skill4forCS);
+		
+		JCheckBox Skill5forCS = new JCheckBox("Skill 5");
+		Skill5forCS.setBounds(103, 273, 97, 23);
+		csPanel.add(Skill5forCS);
+		
+		JCheckBox Skill6forCS = new JCheckBox("Skill 6");
+		Skill6forCS.setBounds(103, 299, 97, 23);
+		csPanel.add(Skill6forCS);
+		
+		JCheckBox Skill7forCS = new JCheckBox("Skill 7");
+		Skill7forCS.setBounds(167, 247, 62, 23);
+		csPanel.add(Skill7forCS);
+		
+		JButton AddCS = new JButton("Save");
+		AddCS.setBounds(347, 299, 89, 23);
+		csPanel.add(AddCS);
+		
+		JLabel lblCsId = new JLabel("CS ID");
+		lblCsId.setBounds(39, 188, 46, 14);
+		csPanel.add(lblCsId);
+		
+		JLabel lblNewLabel = new JLabel("CS name");
+		lblNewLabel.setBounds(39, 220, 46, 14);
+		csPanel.add(lblNewLabel);
 	
 		frmWindows.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{frmWindows.getContentPane()}));
 	}
