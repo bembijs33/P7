@@ -114,33 +114,33 @@ public class Windows {
 		dtrpnCsName.setBounds(39, 234, 106, 20);
 		csPanel.add(dtrpnCsName);
 		
-		JCheckBox chckbxSkill = new JCheckBox("Skill 1");
-		chckbxSkill.setBounds(39, 261, 62, 23);
-		csPanel.add(chckbxSkill);
+		JCheckBox Skill1forCS = new JCheckBox("Skill 1");
+		Skill1forCS.setBounds(39, 261, 62, 23);
+		csPanel.add(Skill1forCS);
 		
-		JCheckBox chckbxSkill_1 = new JCheckBox("Skill 2");
-		chckbxSkill_1.setBounds(39, 287, 62, 23);
-		csPanel.add(chckbxSkill_1);
+		JCheckBox Skill2forCS = new JCheckBox("Skill 2");
+		Skill2forCS.setBounds(39, 287, 62, 23);
+		csPanel.add(Skill2forCS);
 		
-		JCheckBox chckbxSkill_2 = new JCheckBox("Skill 3");
-		chckbxSkill_2.setBounds(39, 313, 62, 23);
-		csPanel.add(chckbxSkill_2);
+		JCheckBox Skill3forCS = new JCheckBox("Skill 3");
+		Skill3forCS.setBounds(39, 313, 62, 23);
+		csPanel.add(Skill3forCS);
 		
-		JCheckBox chckbxSkill_3 = new JCheckBox("Skill 4");
-		chckbxSkill_3.setBounds(103, 261, 62, 23);
-		csPanel.add(chckbxSkill_3);
+		JCheckBox Skill4forCS = new JCheckBox("Skill 4");
+		Skill4forCS.setBounds(103, 261, 62, 23);
+		csPanel.add(Skill4forCS);
 		
-		JCheckBox chckbxSkill_4 = new JCheckBox("Skill 5");
-		chckbxSkill_4.setBounds(103, 287, 97, 23);
-		csPanel.add(chckbxSkill_4);
+		JCheckBox Skill5forCS = new JCheckBox("Skill 5");
+		Skill5forCS.setBounds(103, 287, 97, 23);
+		csPanel.add(Skill5forCS);
 		
-		JCheckBox chckbxSkill_5 = new JCheckBox("Skill 6");
-		chckbxSkill_5.setBounds(103, 313, 97, 23);
-		csPanel.add(chckbxSkill_5);
+		JCheckBox Skill6forCS = new JCheckBox("Skill 6");
+		Skill6forCS.setBounds(103, 313, 97, 23);
+		csPanel.add(Skill6forCS);
 		
-		JCheckBox chckbxSkill_6 = new JCheckBox("Skill 7");
-		chckbxSkill_6.setBounds(167, 261, 62, 23);
-		csPanel.add(chckbxSkill_6);
+		JCheckBox Skill7forCS = new JCheckBox("Skill 7");
+		Skill7forCS.setBounds(167, 261, 62, 23);
+		csPanel.add(Skill7forCS);
 		
 		JButton AddCS = new JButton("Add cleaning schedule");
 		AddCS.setBounds(39, 175, 161, 23);
