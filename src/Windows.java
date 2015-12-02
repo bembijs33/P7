@@ -194,33 +194,33 @@ public class Windows {
 		Saveemployeeinfo.setBounds(287, 323, 89, 23);
 		empPanel.add(Saveemployeeinfo);
 		
-		JCheckBox chckbxSkill_7 = new JCheckBox("Skill 1");
-		chckbxSkill_7.setBounds(38, 269, 51, 23);
-		empPanel.add(chckbxSkill_7);
+		JCheckBox Skill1forEmp = new JCheckBox("Skill 1");
+		Skill1forEmp.setBounds(38, 269, 51, 23);
+		empPanel.add(Skill1forEmp);
 		
-		JCheckBox chckbxSkill_8 = new JCheckBox("Skill 2");
-		chckbxSkill_8.setBounds(38, 295, 51, 23);
-		empPanel.add(chckbxSkill_8);
+		JCheckBox Skill2forEmp = new JCheckBox("Skill 2");
+		Skill2forEmp.setBounds(38, 295, 51, 23);
+		empPanel.add(Skill2forEmp);
 		
-		JCheckBox chckbxSkill_9 = new JCheckBox("Skill 3");
-		chckbxSkill_9.setBounds(38, 323, 51, 23);
-		empPanel.add(chckbxSkill_9);
+		JCheckBox Skill3forEmp = new JCheckBox("Skill 3");
+		Skill3forEmp.setBounds(38, 323, 51, 23);
+		empPanel.add(Skill3forEmp);
 		
-		JCheckBox chckbxSkill_10 = new JCheckBox("Skill 4");
-		chckbxSkill_10.setBounds(100, 269, 51, 23);
-		empPanel.add(chckbxSkill_10);
+		JCheckBox Skill4forEmp = new JCheckBox("Skill 4");
+		Skill4forEmp.setBounds(100, 269, 51, 23);
+		empPanel.add(Skill4forEmp);
 		
-		JCheckBox chckbxSkill_11 = new JCheckBox("Skill 5");
-		chckbxSkill_11.setBounds(100, 295, 97, 23);
-		empPanel.add(chckbxSkill_11);
+		JCheckBox Skill5forEmp = new JCheckBox("Skill 5");
+		Skill5forEmp.setBounds(100, 295, 97, 23);
+		empPanel.add(Skill5forEmp);
 		
-		JCheckBox chckbxSkill_12 = new JCheckBox("Skill 6");
-		chckbxSkill_12.setBounds(100, 323, 97, 23);
-		empPanel.add(chckbxSkill_12);
+		JCheckBox Skill6forEmp = new JCheckBox("Skill 6");
+		Skill6forEmp.setBounds(100, 323, 97, 23);
+		empPanel.add(Skill6forEmp);
 		
-		JCheckBox chckbxSkill_13 = new JCheckBox("Skill 7");
-		chckbxSkill_13.setBounds(168, 269, 51, 23);
-		empPanel.add(chckbxSkill_13);
+		JCheckBox Skill7forEmp = new JCheckBox("Skill 7");
+		Skill7forEmp.setBounds(168, 269, 51, 23);
+		empPanel.add(Skill7forEmp);
 		
 		JPanel assigPanel = new JPanel();
 		tabbedPane.addTab("Assignment", null, assigPanel, null);
