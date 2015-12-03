@@ -39,6 +39,7 @@ public class Windows {
 	private static DefaultListModel employeeList = new DefaultListModel();
 	private static DefaultListModel skillList = new DefaultListModel();
 	private static DefaultListModel csList = new DefaultListModel();
+
 	
 
 	/**
@@ -47,6 +48,7 @@ public class Windows {
 	public static void main(String[] args) {
 		Employee e1 = new Employee ("Bob", "Fan", 123456);
 			employeeList.addElement(e1);
+			
 			Skill skill1 = new Skill("Basic", 1);
 			Skill skill2 = new Skill("Dialysis", 2);
 			Skill skill3 = new Skill("Kitchen Morning", 3);
@@ -54,13 +56,13 @@ public class Windows {
 			Skill skill5 = new Skill("Kitchen Help Morning", 5);
 			Skill skill6 = new Skill("Kitchen Help Evening", 6);
 			Skill skill7 = new Skill("AMA Kitchen Morning", 7);
-		 skillList.addElement(skill1);
-		 skillList.addElement(skill2);
-		 skillList.addElement(skill3);
-		 skillList.addElement(skill4);
-		 skillList.addElement(skill5);
-		 skillList.addElement(skill6);
-		 skillList.addElement(skill1);
+			skillList.addElement(skill1);
+			skillList.addElement(skill2);
+			skillList.addElement(skill3);
+			skillList.addElement(skill4);
+			skillList.addElement(skill5);
+			skillList.addElement(skill6);
+			skillList.addElement(skill7);
 				
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -88,6 +90,7 @@ public class Windows {
 		frmWindows = new JFrame();
 		frmWindows.setTitle("Windows");
 		frmWindows.setBounds(150, 150, 700, 700);
+		frmWindows.setResizable(false);
 		frmWindows.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmWindows.getContentPane().setLayout(new GridLayout(0, 1, 0, 0));
 		
@@ -143,18 +146,14 @@ public class Windows {
 		empPanel.add(scrollListEmployeeInfo );
 		
 		
+		
+		
+		
+		
 		// edit employee
 		
 		JButton editemployee = new JButton("Edit");
-		editemployee.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				
-				
-				
-			}
-		});
-		editemployee.setBounds(38, 182, 89, 23);
+			editemployee.setBounds(38, 182, 89, 23);
 		empPanel.add(editemployee);
 		
 		//Deleting employee String
@@ -164,8 +163,8 @@ public class Windows {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
-				// when button clicked, create new String that has selected string and delete it.
-				String tempEmp = (String) listOfEmp.getSelectedValue();
+				// 
+				Employee tempEmp = (Employee) listOfEmp.getSelectedValue();
 				employeeList.removeElement(tempEmp);
 				
 			}
@@ -270,7 +269,7 @@ public class Windows {
 		btnDelete.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				String tempSkill = (String) listOfSkills.getSelectedValue();
+				Skill tempSkill = (Skill) listOfSkills.getSelectedValue();
 				skillList.removeElement(tempSkill);
 	
 			}
@@ -410,16 +409,15 @@ public class Windows {
 		tabbedPane.addTab("Cleaning Schedule", null, csPanel, null);
 		csPanel.setLayout(null);
 		
-		JButton DeleteCS = new JButton("Delete");
-		DeleteCS.setBounds(347, 151, 89, 23);
-		csPanel.add(DeleteCS);
+	
+	
 		
 		JButton EditCS = new JButton("Edit");
 		EditCS.setBounds(250, 151, 89, 23);
 		csPanel.add(EditCS);
 		
 		//List containing all cleaning schedules 
-		JList ListOfCS = new JList();
+		JList ListOfCS = new JList(csList);
 		ListOfCS.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		ListOfCS.setBounds(39, 33, 89, 49);
 		csPanel.add(ListOfCS);
@@ -467,6 +465,36 @@ public class Windows {
 		csPanel.add(Skill7forCS);
 		
 		JButton AddCS = new JButton("Save");
+		AddCS.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				// create a list that contains required skills for schedule
+				
+				// fetch from the text fields
+				
+				String newCSname = csNameField.getText();
+				int newCsID = Integer.parseInt( csIdField.getText());
+				 
+			
+							
+				// create loop for checking all the checkbox
+				 // if checkbox.isselected
+				 	// get checkbox text
+					// and add to required list skill
+				
+				if(Skill1forCS.isSelected()){
+				//requiredSkillSchedule.add(skill1);
+				}else{
+				}
+				
+				// create tempCs
+				CleaningSchedule tempCs = new CleaningSchedule(newCsID,newCSname);
+				// add new tempCs to csList
+				csList.addElement(tempCs);
+				
+			}
+		});
 	
 		
 		AddCS.setBounds(347, 299, 89, 23);
@@ -481,7 +509,20 @@ public class Windows {
 		csPanel.add(lblNewLabel);
 		
 		
-	
+		// Delete CS
+		
+		JButton DeleteCS = new JButton("Delete");
+		DeleteCS.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				CleaningSchedule tempCs = (CleaningSchedule) ListOfCS.getSelectedValue();
+				csList.removeElement(tempCs);
+				
+			}
+		});	
+		DeleteCS.setBounds(347, 151, 89, 23);
+		csPanel.add(DeleteCS);	
 		frmWindows.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{frmWindows.getContentPane()}));
 	}
-}
+	}

@@ -127,10 +127,10 @@ public class Main {
 	
 	
 	// Method to create new Cleaning schedule
-	public static CleaningSchedule createSchedule(int id, String name, ArrayList<Skill> skills) {
-		CleaningSchedule schedule = new CleaningSchedule(id, name, skills);
-		return schedule;
-	}
+	//public static CleaningSchedule createSchedule(int id, String name, ArrayList<Skill> skills) {
+		//CleaningSchedule schedule = new CleaningSchedule(id, name, skills);
+		//return schedule;
+	//}
 	
 	//
 	public static Date createDate( int day, int month, int year, int hour, int minute) {
