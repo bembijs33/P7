@@ -11,7 +11,7 @@ public class Skill {
 	}
 
 	public String toString() {
-		return " Skill ID: " + skillID + " Skill name: " + skillName;
+		return " " + skillID + " " + skillName;
 
 	}
 
