@@ -6,21 +6,14 @@ public class CleaningSchedule {
 	int CsID;
 	ArrayList<Skill> skillRequired = new ArrayList<Skill>();
 
-	//public CleaningSchedule(int CsID, String name, ArrayList<Skill> requiredSkill) {
-		//this.CsID = CsID;
-		//this.Name = name;
-		//this.skillRequired = requiredSkill;
-		//}
-
-
 	public CleaningSchedule(int CsID, String name) {
 		this.CsID = CsID;
 		this.Name = name;
 		}
 	
 	public String toString(){
-		return "ID: " + CsID
-			+ " CS : " + Name + " Skill: " + skillRequired; 
+		return " " + CsID
+			+ "  " + Name; 
 			
 		}
 	
@@ -36,7 +29,13 @@ public class CleaningSchedule {
 	
 	// change cleaning schedule ID
 	public void  changeID(int newID) {
-		newID = CsID;
+		CsID=newID;
 	}
+	
+	// change cs name
+	public void changeCSName(String newName){
+		Name=newName;
+	}
+	
 	
 }

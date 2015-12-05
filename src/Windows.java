@@ -29,6 +29,8 @@ import java.awt.Font;
 import javax.swing.JPopupMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JTable;
+import java.awt.event.ContainerAdapter;
+import java.awt.event.ContainerEvent;
 
 
 public class Windows {
@@ -42,7 +44,7 @@ public class Windows {
 	private static DefaultListModel employeeList = new DefaultListModel();
 	private static DefaultListModel<Skill> skillList = new DefaultListModel<Skill>();
 	private static DefaultListModel<CleaningSchedule> csList = new DefaultListModel<CleaningSchedule>();
-
+	
 	
 
 	/**
@@ -68,6 +70,9 @@ public class Windows {
 			skillList.addElement(skill6);
 			skillList.addElement(skill7);
 
+		CleaningSchedule cs1 = new CleaningSchedule(1, "Something");	
+			csList.addElement(cs1);
+			
 				
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -336,6 +341,9 @@ public class Windows {
 				}
 						
 		});
+		
+		
+		
 		editemployee.setBounds(51, 286, 89, 23);
 		empPanel.add(editemployee);
 
@@ -401,17 +409,6 @@ public class Windows {
 		csPanel.setLayout(null);
 		
 		JButton DeleteCS = new JButton("Delete");
-		
-		btnDelete.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				Skill tempSkill = (Skill) listOfSkills.getSelectedValue();
-				skillList.removeElement(tempSkill);
-	
-			}
-		});
-
-		
 		DeleteCS.setBounds(148, 287, 89, 23);
 		csPanel.add(DeleteCS);
 
@@ -421,7 +418,7 @@ public class Windows {
 		csPanel.add(EditCS);
 		
 		//List containing all cleaning schedules 
-		JList ListOfCS = new JList();
+		JList ListOfCS = new JList(csList);
 		ListOfCS.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		ListOfCS.setBounds(39, 33, 89, 49);
 		csPanel.add(ListOfCS);
@@ -469,8 +466,6 @@ public class Windows {
 		csPanel.add(Skill7forCS);
 		
 		JButton AddCS = new JButton("Save");
-	
-		
 		AddCS.setBounds(279, 462, 89, 23);
 		csPanel.add(AddCS);
 		
@@ -486,6 +481,56 @@ public class Windows {
 		lblCleaningSchedules.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblCleaningSchedules.setBounds(49, 19, 170, 14);
 		csPanel.add(lblCleaningSchedules);
+		
+		
+		// Save CS
+		
+		AddCS.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				String csName = csNameField.getText();
+				int csID = Integer.parseInt( csIdField.getText());
+			CleaningSchedule tempCS = new CleaningSchedule(csID, csName);
+			csList.addElement(tempCS);
+			}
+		});
+		
+		
+		
+		//Delete CS
+			
+		DeleteCS.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				CleaningSchedule tempCS = (CleaningSchedule) ListOfCS.getSelectedValue();
+				csList.removeElement(tempCS);
+			}
+		});
+		
+		// Editing CS
+		
+		EditCS.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				CleaningSchedule tempCS = (CleaningSchedule) ListOfCS.getSelectedValue();
+				int tempCSID =ListOfCS.getSelectedIndex();
+				
+					if (!csNameField.getText().isEmpty() ){
+							String newCSName = csNameField.getText();
+							tempCS.changeCSName(newCSName);
+							csList.setElementAt(tempCS, tempCSID);
+							}
+					if (!csIdField.getText().isEmpty()){
+						
+						int newCSID= Integer.parseInt(csIdField.getText());
+						tempCS.changeID(newCSID);	
+						csList.setElementAt(tempCS, tempCSID);
+					}
+				}
+		});
+		
 		
 		
 		
@@ -562,7 +607,15 @@ public class Windows {
 		lblShifts.setBounds(56, 12, 58, 14);
 		assigPanel.add(lblShifts);
 
-		JComboBox comboBox = new JComboBox();
+		JComboBox<JList<CleaningSchedule>> comboBox = new JComboBox();
+		comboBox.addContainerListener(new ContainerAdapter() {
+			@Override
+			public void componentAdded(ContainerEvent e) {
+				
+			//	comboBox.addItem(csList);
+				
+			}
+		});
 		comboBox.setBounds(133, 312, 86, 20);
 		assigPanel.add(comboBox);
 		frmWindows.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{frmWindows.getContentPane()}));
