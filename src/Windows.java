@@ -16,11 +16,19 @@ import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JComboBox;
 import java.awt.Font;
 import javax.swing.JPopupMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JTable;
+
 
 public class Windows {
 
@@ -52,6 +60,7 @@ public class Windows {
 			Skill skill5 = new Skill("Kitchen Help Morning", 5);
 			Skill skill6 = new Skill("Kitchen Help Evening", 6);
 			Skill skill7 = new Skill("AMA Kitchen Morning", 7);
+
 			skillList.addElement(skill1);
 			skillList.addElement(skill2);
 			skillList.addElement(skill3);
@@ -59,6 +68,7 @@ public class Windows {
 			skillList.addElement(skill5);
 			skillList.addElement(skill6);
 			skillList.addElement(skill7);
+
 				
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -222,11 +232,7 @@ public class Windows {
 		scrollListEmployeeInfo.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollListEmployeeInfo .setBounds(382, 38, 248, 235);
 		empPanel.add(scrollListEmployeeInfo );
-		
-		
-		
-		
-		
+
 		
 		// edit employee
 		
@@ -243,7 +249,7 @@ public class Windows {
 		editemployee.setBounds(51, 286, 89, 23);
 
 		empPanel.add(editemployee);
-		
+
 		
 		
 		
@@ -255,8 +261,9 @@ public class Windows {
 		Deleteemployee.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
-				// 
+
+				// when button clicked, create new String that has selected string and delete it.
+
 				Employee tempEmp = (Employee) listOfEmp.getSelectedValue();
 				employeeList.removeElement(tempEmp);
 				
@@ -349,7 +356,23 @@ public class Windows {
 		lblEmployeeInfo.setBounds(447, 13, 122, 14);
 		empPanel.add(lblEmployeeInfo);
 		
-	
+		// edit employee
+		
+		JButton editemployee1 = new JButton("Edit");
+			editemployee1.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent arg0) {
+						Employee tempEmp = (Employee) listOfEmp.getSelectedValue();
+						int tempEmpInd = (int) listOfEmp.getSelectedIndex();
+						String newName = nameOfEmployee.getText();
+						
+						tempEmp.changeFirstName(newName);
+						employeeList.add(tempEmpInd, tempEmp);
+						
+					}
+				});
+				editemployee1.setBounds(51, 286, 89, 23);
+				empPanel.add(editemployee1);
 		
 		
 		
