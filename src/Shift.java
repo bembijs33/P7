@@ -15,12 +15,21 @@ public class Shift {
 
 	}
 
-	public Date changeDateTime(Date time) {
-		// this.time=time;
-
-		return time; // is this needed?
-
+	// change ID
+	public void changeShiftID(int newID){
+		shiftID=newID;
+		}
+	
+	// change start time
+	public void changeStartTime (Date newStart){
+		Start=newStart;
+		}
+	
+	//Change end time
+	public void changeEndTime (Date newEnd){
+		End=newEnd;
 	}
+	
 
 	public void getCleaningScheduleID() {
 
