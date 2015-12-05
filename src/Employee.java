@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class Employee {
-	public String firstName; 
+	public  String firstName; 
 	public String lastName;
 	public int phoneNumber;
 	public ArrayList<Skill> skillList = new ArrayList<Skill>(); // Instantiating arrayList for skills

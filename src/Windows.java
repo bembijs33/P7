@@ -16,6 +16,7 @@ import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.event.DocumentEvent;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
@@ -33,14 +34,12 @@ import javax.swing.JTable;
 public class Windows {
 
 	private JFrame frmWindows;
-	private JTextField skillIDField;
-	private JTextField skillNameField;
 	private JTextField typeShiftName;
 	private JTextField chooseassignmentDate;
 	private JTextField chooseTime;
 	
 	
-	private static DefaultListModel<Employee> employeeList = new DefaultListModel<Employee>();
+	private static DefaultListModel employeeList = new DefaultListModel();
 	private static DefaultListModel<Skill> skillList = new DefaultListModel<Skill>();
 	private static DefaultListModel<CleaningSchedule> csList = new DefaultListModel<CleaningSchedule>();
 
@@ -146,30 +145,12 @@ public class Windows {
 		
 	
 		JButton btnDelete = new JButton("Delete");
-		btnDelete.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				Skill tempSkill = (Skill) listOfSkills.getSelectedValue();
-				skillList.removeElement(tempSkill);
-	
-			}
-		});
 		btnDelete.setBounds(152, 217, 89, 23);
 		skillPanel.add(btnDelete);
 		
 		JButton btnEdit = new JButton("Edit");
 		btnEdit.setBounds(57, 217, 89, 23);
 		skillPanel.add(btnEdit);
-		
-		skillIDField = new JTextField();
-		skillIDField.setBounds(123, 254, 86, 20);
-		skillPanel.add(skillIDField);
-		skillIDField.setColumns(10);
-		
-		skillNameField = new JTextField();
-		skillNameField.setBounds(123, 282, 86, 20);
-		skillPanel.add(skillNameField);
-		skillNameField.setColumns(10);
 		
 		JLabel lblSkillId = new JLabel("Skill ID");
 		lblSkillId.setBounds(57, 257, 46, 14);
@@ -178,12 +159,38 @@ public class Windows {
 		JLabel lblSkillName = new JLabel("Skill name");
 		lblSkillName.setBounds(57, 285, 76, 14);
 		skillPanel.add(lblSkillName);
+		JButton btnSaveSkill = new JButton("Save");
+		btnSaveSkill.setBounds(123, 313, 86, 23);
+		skillPanel.add(btnSaveSkill);
+	
+		JLabel lblSkillList = new JLabel("Skill list");
+		lblSkillList.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblSkillList.setBounds(57, 13, 167, 14);
+		skillPanel.add(lblSkillList);
+		
+		JEditorPane skillIDField = new JEditorPane();
+		skillIDField.setBounds(123, 254, 106, 20);
+		skillPanel.add(skillIDField);
+		
+		JEditorPane skillNameField = new JEditorPane();
+		skillNameField.setBounds(123, 279, 106, 20);
+		skillPanel.add(skillNameField);
 		
 		
-		//Save a skill
+		//Delete skill
+		
+		btnDelete.addMouseListener(new MouseAdapter() {
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			Skill tempSkill = (Skill) listOfSkills.getSelectedValue();
+			skillList.removeElement(tempSkill);
+
+			}
+		});
 		
 				
-		JButton btnSaveSkill = new JButton("Save");
+		//Save a skill
+		
 		btnSaveSkill.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -196,14 +203,31 @@ public class Windows {
 				
 			}
 		});
+	
 		
-		btnSaveSkill.setBounds(123, 313, 86, 23);
-		skillPanel.add(btnSaveSkill);
+		// Edit skill
 		
-		JLabel lblSkillList = new JLabel("Skill list");
-		lblSkillList.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblSkillList.setBounds(57, 13, 167, 14);
-		skillPanel.add(lblSkillList);
+		btnEdit.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				Skill tempSkill = (Skill) listOfSkills.getSelectedValue(); 
+				int tempSkillID = (int) listOfSkills.getSelectedIndex();
+				
+				
+				if (!skillNameField.getText().isEmpty() ){
+					String newSkillName = skillNameField.getText();
+					tempSkill.changeName(newSkillName);
+					skillList.setElementAt(tempSkill, tempSkillID);
+					}
+				
+				if (!skillIDField.getText().isEmpty()){
+					int newSkillID =Integer.parseInt( skillIDField.getText());
+					tempSkill.changeID(newSkillID);
+					skillList.setElementAt(tempSkill, tempSkillID);
+				}
+			}
+		});
 		
 		
 	// Employee tab
@@ -233,26 +257,6 @@ public class Windows {
 		scrollListEmployeeInfo .setBounds(382, 38, 248, 235);
 		empPanel.add(scrollListEmployeeInfo );
 
-		
-		// edit employee
-		
-		JButton editemployee = new JButton("Edit");
-
-		editemployee.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				
-				
-				
-			}
-		});
-		editemployee.setBounds(51, 286, 89, 23);
-
-		empPanel.add(editemployee);
-
-		
-		
-		
 		
 		
 		//Deleting employee String
@@ -285,9 +289,10 @@ public class Windows {
 		empPanel.add(phoneNumber);
 		
 		
-		//Saving Employee to the STRING!!!!!
-		
+		//Saving Employee		
 		JButton Saveemployeeinfo = new JButton("Save");
+		Saveemployeeinfo.setBounds(218, 490, 89, 23);
+		empPanel.add(Saveemployeeinfo);
 		Saveemployeeinfo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -301,8 +306,41 @@ public class Windows {
 			
 			}
 		});
-		Saveemployeeinfo.setBounds(218, 490, 89, 23);
-		empPanel.add(Saveemployeeinfo);
+		
+		
+		// edit employee		
+		JButton editemployee = new JButton("Edit");
+
+		editemployee.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				Employee tempEmp = (Employee) listOfEmp.getSelectedValue();
+				int tempEmpID =listOfEmp.getSelectedIndex();
+				
+					if (!nameOfEmployee.getText().isEmpty() ){
+							String newName = nameOfEmployee.getText();
+							tempEmp.changeFirstName(newName);
+							employeeList.setElementAt(tempEmp, tempEmpID);
+					}
+					if (!lastName.getText().isEmpty() ){
+							String newLastName = lastName.getText();
+							tempEmp.changeLastName(newLastName);
+							employeeList.setElementAt(tempEmp, tempEmpID);
+							}
+					if (!phoneNumber.getText().isEmpty() ){
+							int newphone = Integer.parseInt (phoneNumber.getText());
+							tempEmp.changePhoneNumber(newphone);
+							employeeList.setElementAt(tempEmp, tempEmpID);
+							}
+				}
+						
+		});
+		editemployee.setBounds(51, 286, 89, 23);
+		empPanel.add(editemployee);
+
+		
+		
 		
 		
 		// skills to for the employee
@@ -355,26 +393,6 @@ public class Windows {
 		lblEmployeeInfo.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblEmployeeInfo.setBounds(447, 13, 122, 14);
 		empPanel.add(lblEmployeeInfo);
-		
-		// edit employee
-		
-		JButton editemployee1 = new JButton("Edit");
-			editemployee1.addMouseListener(new MouseAdapter() {
-					@Override
-					public void mouseClicked(MouseEvent arg0) {
-						Employee tempEmp = (Employee) listOfEmp.getSelectedValue();
-						int tempEmpInd = (int) listOfEmp.getSelectedIndex();
-						String newName = nameOfEmployee.getText();
-						
-						tempEmp.changeFirstName(newName);
-						employeeList.add(tempEmpInd, tempEmp);
-						
-					}
-				});
-				editemployee1.setBounds(51, 286, 89, 23);
-				empPanel.add(editemployee1);
-		
-		
 		
 		
 	// Cleaning schedule tab	

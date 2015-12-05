@@ -14,5 +14,12 @@ public class Skill {
 		return " " + skillID + " " + skillName;
 
 	}
-
+	
+	public void changeName(String newName){
+		skillName=newName;
+	}
+	public void changeID(int newID){
+		skillID=newID;
+	}
+	
 }
