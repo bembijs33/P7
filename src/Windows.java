@@ -26,6 +26,8 @@ import java.awt.Font;
 import javax.swing.JPopupMenu;
 import java.awt.event.ContainerAdapter;
 import java.awt.event.ContainerEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 
 public class Windows {
@@ -107,6 +109,8 @@ public class Windows {
 		// adding tab panel to Windows
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		frmWindows.getContentPane().add(tabbedPane);
+		
+		
 		
 		
 	//////////////////////   WORK SCHEDULE TAB  ////////////////////////////////////////////////////	
@@ -191,7 +195,19 @@ public class Windows {
 		skillPanel.add(skillNameField);
 		
 		
+		// check for int in ID field
 		
+		skillIDField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c=e.getKeyChar();
+				if(!(Character.isDigit(c) || (c==KeyEvent.VK_BACK_SPACE) || c==KeyEvent.VK_DELETE)){		
+				e.consume();
+				
+				
+			}
+			}
+		});
 		
 		//Delete skill
 		
@@ -355,6 +371,22 @@ public class Windows {
 		lblEmployeeInfo.setBounds(447, 13, 122, 14);
 		empPanel.add(lblEmployeeInfo);
 		
+		// key listener to input only int and length
+		phoneNumber.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				char c=arg0.getKeyChar();
+				if(!(Character.isDigit(c) || (c==KeyEvent.VK_BACK_SPACE) || c==KeyEvent.VK_DELETE)){		
+				arg0.consume();
+					
+				}
+				if(!(phoneNumber.getText().length()<8)){		
+					arg0.consume();
+					
+					}
+			}
+		});
+	
 		
 		// Save employee
 		Saveemployeeinfo.addMouseListener(new MouseAdapter() {
@@ -500,7 +532,21 @@ public class Windows {
 		Skill7forCS.setBounds(237, 410, 62, 23);
 		csPanel.add(Skill7forCS);
 		
+		// check for input only int and length
+		csIdField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c=e.getKeyChar();
+				if(!(Character.isDigit(c) || (c==KeyEvent.VK_BACK_SPACE) || c==KeyEvent.VK_DELETE)){		
+				e.consume();
 				
+				}
+				if(!(csIdField.getText().length()<8)){		
+					e.consume();
+					
+					}
+			}
+		});
 		// Save CS
 		AddCS.addMouseListener(new MouseAdapter() {
 			@Override
