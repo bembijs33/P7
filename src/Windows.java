@@ -5,6 +5,8 @@ import org.eclipse.wb.swing.FocusTraversalOnArray;
 import java.awt.Component;
 import javax.swing.JTabbedPane;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
+
 import javax.swing.JCheckBox;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -16,9 +18,13 @@ import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.JComboBox;
@@ -163,6 +169,7 @@ public class Windows {
 		skillPanel.add(btnDelete);
 		
 		JButton btnEdit = new JButton("Edit");
+		btnEdit.setEnabled(false);
 		btnEdit.setBounds(57, 217, 89, 23);
 		skillPanel.add(btnEdit);
 		
@@ -194,6 +201,10 @@ public class Windows {
 		skillNameField.setBounds(123, 279, 106, 20);
 		skillPanel.add(skillNameField);
 		
+		JButton btnTest = new JButton("Test");
+		btnTest.setBounds(330, 253, 89, 23);
+		skillPanel.add(btnTest);
+		
 		
 		// check for int in ID field
 		
@@ -202,7 +213,8 @@ public class Windows {
 			public void keyTyped(KeyEvent e) {
 				char c=e.getKeyChar();
 				if(!(Character.isDigit(c) || (c==KeyEvent.VK_BACK_SPACE) || c==KeyEvent.VK_DELETE)){		
-				e.consume();
+					Toolkit.getDefaultToolkit().beep();
+					e.consume();// if wrong argument it is deleted
 				
 				
 			}
@@ -238,8 +250,7 @@ public class Windows {
 	
 		
 		// Edit skill
-		
-		btnEdit.addMouseListener(new MouseAdapter() {
+			btnEdit.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
@@ -377,11 +388,13 @@ public class Windows {
 			public void keyTyped(KeyEvent arg0) {
 				char c=arg0.getKeyChar();
 				if(!(Character.isDigit(c) || (c==KeyEvent.VK_BACK_SPACE) || c==KeyEvent.VK_DELETE)){		
-				arg0.consume();
+					Toolkit.getDefaultToolkit().beep();
+					arg0.consume(); // if wrong argument it is deleted
 					
 				}
 				if(!(phoneNumber.getText().length()<8)){		
-					arg0.consume();
+					Toolkit.getDefaultToolkit().beep();
+					arg0.consume();// if wrong argument it is deleted
 					
 					}
 			}
@@ -538,10 +551,12 @@ public class Windows {
 			public void keyTyped(KeyEvent e) {
 				char c=e.getKeyChar();
 				if(!(Character.isDigit(c) || (c==KeyEvent.VK_BACK_SPACE) || c==KeyEvent.VK_DELETE)){		
-				e.consume();
+					Toolkit.getDefaultToolkit().beep();
+					e.consume();
 				
 				}
 				if(!(csIdField.getText().length()<8)){		
+					Toolkit.getDefaultToolkit().beep();
 					e.consume();
 					
 					}

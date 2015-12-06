@@ -1,9 +1,12 @@
 import java.util.ArrayList;
 
+import javax.swing.DefaultListModel;
+
 public class Employee {
 	public  String firstName; 
 	public String lastName;
 	public int phoneNumber;
+	//public DefaultListModel<Skill> skillList = new DefaultListModel<Skill>();
 	public ArrayList<Skill> skillList = new ArrayList<Skill>(); // Instantiating arrayList for skills
 	//And perhaps working hours allowed?
 
