@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
@@ -74,7 +75,8 @@ public class Windows {
 			skillList.addElement(skill5);
 			skillList.addElement(skill6);
 			skillList.addElement(skill7);
-
+			
+			
 		CleaningSchedule cs1 = new CleaningSchedule(1, "Something");	
 			csList.addElement(cs1);
 			
@@ -214,6 +216,7 @@ public class Windows {
 				char c=e.getKeyChar();
 				if(!(Character.isDigit(c) || (c==KeyEvent.VK_BACK_SPACE) || c==KeyEvent.VK_DELETE)){		
 					Toolkit.getDefaultToolkit().beep();
+					JOptionPane.showMessageDialog(skillIDField, "Please enter numbers! ");
 					e.consume();// if wrong argument it is deleted
 				
 				
@@ -242,9 +245,19 @@ public class Windows {
 				int skillIDnumber = Integer.parseInt( skillIDField.getText());
 				String skillsname = skillNameField.getText();
 				
-			Skill tempSkill = new Skill (skillsname, skillIDnumber);
-			skillList.addElement(tempSkill);
+				// checking that all fields are filled
+				if (skillIDField.getText().isEmpty()){
+					JOptionPane.showMessageDialog(skillIDField, "Please enter Skill ID!");
+				}
+				else if (skillNameField.getText().isEmpty()){
+					JOptionPane.showMessageDialog(skillNameField, "Please enter skill name! ");
+				}
 				
+				// saving skill
+				else {
+				Skill tempSkill = new Skill (skillsname, skillIDnumber);
+				skillList.addElement(tempSkill);
+				}
 			}
 		});
 	
@@ -389,11 +402,13 @@ public class Windows {
 				char c=arg0.getKeyChar();
 				if(!(Character.isDigit(c) || (c==KeyEvent.VK_BACK_SPACE) || c==KeyEvent.VK_DELETE)){		
 					Toolkit.getDefaultToolkit().beep();
+					JOptionPane.showMessageDialog(skillIDField, "Please enter numbers! ");
 					arg0.consume(); // if wrong argument it is deleted
 					
 				}
 				if(!(phoneNumber.getText().length()<8)){		
 					Toolkit.getDefaultToolkit().beep();
+					JOptionPane.showMessageDialog(skillIDField,"Phone number length should be 8 digits! ");
 					arg0.consume();// if wrong argument it is deleted
 					
 					}
@@ -410,9 +425,26 @@ public class Windows {
 				String surname = lastName.getText();
 				// making sure that input is only int
 				int number = Integer.parseInt( phoneNumber.getText());
-			Employee e3 = new Employee (employeeName, surname, number);
-			employeeList.addElement(e3);
-			
+				
+				
+				// checking tahat all fields are filled before saving
+				if(nameOfEmployee.getText().isEmpty()){
+					JOptionPane.showMessageDialog(nameOfEmployee,"Enter employee name! ");
+				}
+				
+				else if (lastName.getText().isEmpty()){
+					JOptionPane.showMessageDialog(lastName,"Enter employee last name! ");
+				}
+				
+				else if (phoneNumber.getText().isEmpty()){
+					JOptionPane.showMessageDialog(phoneNumber,"Enter employee phone number! ");
+				}
+				
+				else {
+					Employee e3 = new Employee (employeeName, surname, number);
+					employeeList.addElement(e3);
+				}
+				
 			}
 		});
 		
@@ -545,21 +577,18 @@ public class Windows {
 		Skill7forCS.setBounds(237, 410, 62, 23);
 		csPanel.add(Skill7forCS);
 		
-		// check for input only int and length
+		// check for input only int 
 		csIdField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				char c=e.getKeyChar();
 				if(!(Character.isDigit(c) || (c==KeyEvent.VK_BACK_SPACE) || c==KeyEvent.VK_DELETE)){		
 					Toolkit.getDefaultToolkit().beep();
+					JOptionPane.showMessageDialog(skillIDField, "Please enter numbers! ");
 					e.consume();
 				
 				}
-				if(!(csIdField.getText().length()<8)){		
-					Toolkit.getDefaultToolkit().beep();
-					e.consume();
-					
-					}
+			
 			}
 		});
 		// Save CS
@@ -569,8 +598,21 @@ public class Windows {
 				
 				String csName = csNameField.getText();
 				int csID = Integer.parseInt( csIdField.getText());
-			CleaningSchedule tempCS = new CleaningSchedule(csID, csName);
+				
+				
+				// checking that all fields are filled
+				if(csNameField.getText().isEmpty()){
+					JOptionPane.showMessageDialog(csNameField, "Please enter Cleaning Schedule name! ");
+				}
+				else if (csIdField.getText().isEmpty()){
+					JOptionPane.showMessageDialog(csIdField, "Please enter Cleaning Schedule ID! ");
+				}
+				
+				// saving CS
+				else {
+					CleaningSchedule tempCS = new CleaningSchedule(csID, csName);
 			csList.addElement(tempCS);
+				}
 			}
 		});
 				
