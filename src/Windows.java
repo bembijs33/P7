@@ -44,10 +44,22 @@ public class Windows {
 	private JTextField chooseassignmentDate;
 	private JTextField chooseTime;
 	
+	static ArrayList<Employee> employeeList = new ArrayList<Employee>();
+	static ArrayList<Skill> skillList = new ArrayList<Skill>();
+	static ArrayList<Assignment> assignmentList = new ArrayList<Assignment>();
+	static ArrayList<Shift> shiftList = new ArrayList<Shift>();
+	static ArrayList<CleaningSchedule> schedule = new ArrayList<CleaningSchedule>();
 	
-	private static DefaultListModel<Employee> employeeList = new DefaultListModel<Employee>();
-	private static DefaultListModel<Skill> skillList = new DefaultListModel<Skill>();
-	private static DefaultListModel<CleaningSchedule> csList = new DefaultListModel<CleaningSchedule>();
+	private static JList empList= new JList (employeeList.toArray()); 
+	
+	private static DefaultListModel<Employee> employeeListModel = new DefaultListModel<Employee>(employeeList.clone());
+	{for(Employee s:employeeList){
+	    employeeListModel.addElement(s);
+	    employeeListModel.removeElement(s);
+	    
+	}}
+	private static DefaultListModel<Skill> skillListModel = new DefaultListModel<Skill>();
+	private static DefaultListModel<CleaningSchedule> csListModel = new DefaultListModel<CleaningSchedule>();
 	
 	
 
@@ -56,10 +68,10 @@ public class Windows {
 	 */
 	public static void main(String[] args) {
 		Employee e1 = new Employee ("Bob", "Fan", 123456);
-			employeeList.addElement(e1);
-			Employee e2 = new Employee ("Kun", "Foo", 123456);
-			employeeList.addElement(e2);
-			
+			employeeListModel.addElement(e1);
+			//Employee e2 = new Employee ("Kun", "Foo", 123456);
+			//employeeList.add(e2);
+			//System.out.print(employeeList);
 			Skill skill1 = new Skill("Basic", 1);
 			Skill skill2 = new Skill("Dialysis", 2);
 			Skill skill3 = new Skill("Kitchen Morning", 3);
@@ -68,17 +80,17 @@ public class Windows {
 			Skill skill6 = new Skill("Kitchen Help Evening", 6);
 			Skill skill7 = new Skill("AMA Kitchen Morning", 7);
 
-			skillList.addElement(skill1);
-			skillList.addElement(skill2);
-			skillList.addElement(skill3);
-			skillList.addElement(skill4);
-			skillList.addElement(skill5);
-			skillList.addElement(skill6);
-			skillList.addElement(skill7);
+			skillListModel.addElement(skill1);
+			skillListModel.addElement(skill2);
+			skillListModel.addElement(skill3);
+			skillListModel.addElement(skill4);
+			skillListModel.addElement(skill5);
+			skillListModel.addElement(skill6);
+			skillListModel.addElement(skill7);
 			
 			
 		CleaningSchedule cs1 = new CleaningSchedule(1, "Something");	
-			csList.addElement(cs1);
+			csListModel.addElement(cs1);
 			
 				
 		EventQueue.invokeLater(new Runnable() {
@@ -154,7 +166,7 @@ public class Windows {
 		
 		
 		// creating JList that contains all the skills
-		JList listOfSkills = new JList(skillList);
+		JList listOfSkills = new JList(skillListModel);
 		listOfSkills.setBounds(70, 49, 350, 158);
 		skillPanel.add(listOfSkills);
 		
@@ -171,7 +183,7 @@ public class Windows {
 		skillPanel.add(btnDelete);
 		
 		JButton btnEdit = new JButton("Edit");
-		btnEdit.setEnabled(false);
+		btnEdit.setEnabled(true);
 		btnEdit.setBounds(57, 217, 89, 23);
 		skillPanel.add(btnEdit);
 		
@@ -230,7 +242,7 @@ public class Windows {
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			Skill tempSkill = (Skill) listOfSkills.getSelectedValue();
-			skillList.removeElement(tempSkill);
+			skillListModel.removeElement(tempSkill);
 
 			}
 		});
@@ -256,7 +268,8 @@ public class Windows {
 				// saving skill
 				else {
 				Skill tempSkill = new Skill (skillsname, skillIDnumber);
-				skillList.addElement(tempSkill);
+				skillListModel.addElement(tempSkill);
+				skillList.add(tempSkill);
 				}
 			}
 		});
@@ -275,13 +288,15 @@ public class Windows {
 				if (!skillNameField.getText().isEmpty() ){
 					String newSkillName = skillNameField.getText();
 					tempSkill.changeName(newSkillName);
-					skillList.setElementAt(tempSkill, tempSkillID);
+					skillListModel.setElementAt(tempSkill, tempSkillID);
+					skillList.set(tempSkillID, tempSkill);
 					}
 				
 				if (!skillIDField.getText().isEmpty()){
 					int newSkillID =Integer.parseInt( skillIDField.getText());
 					tempSkill.changeID(newSkillID);
-					skillList.setElementAt(tempSkill, tempSkillID);
+					skillListModel.setElementAt(tempSkill, tempSkillID);
+					skillList.set(tempSkillID, tempSkill);
 				}
 			}
 		});
@@ -293,26 +308,14 @@ public class Windows {
 		tabbedPane.addTab("Employee", null, empPanel, null);
 		empPanel.setLayout(null);
 		
-		JList listOfEmp = new JList(employeeList);
+		JList listOfEmp = new JList(employeeListModel);
 		listOfEmp.setBounds(32, 39, 185, 137);
 		empPanel.add(listOfEmp);
 		
 		JScrollPane scrollListEmployee = new JScrollPane(listOfEmp);
 		scrollListEmployee.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollListEmployee .setBounds(51, 38, 256, 237);
+		scrollListEmployee .setBounds(51, 38, 392, 237);
 		empPanel.add(scrollListEmployee );
-		
-		// list showing information about employee
-		JList infoOfEmployeesList = new JList();
-		
-		infoOfEmployeesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		infoOfEmployeesList.setBounds(282, 34, 185, 137);
-		empPanel.add(infoOfEmployeesList);
-		
-		JScrollPane scrollListEmployeeInfo = new JScrollPane(infoOfEmployeesList);
-		scrollListEmployeeInfo.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollListEmployeeInfo .setBounds(382, 38, 248, 235);
-		empPanel.add(scrollListEmployeeInfo );
 
 		
 		// Creating editing fields
@@ -339,6 +342,7 @@ public class Windows {
 		empPanel.add(Deleteemployee);
 	
 		JButton editemployee = new JButton("Edit");
+		editemployee.setToolTipText("To edit employee:\r\n\t- select employee from the list\r\n\t- write new parameters in the text fields\r\n\t-click \"edit\" to save shanges");
 		editemployee.setBounds(51, 286, 89, 23);
 		empPanel.add(editemployee);
 		
@@ -387,13 +391,8 @@ public class Windows {
 		
 		JLabel lblNewLabel_1 = new JLabel("Employee list");
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblNewLabel_1.setBounds(122, 13, 115, 14);
+		lblNewLabel_1.setBounds(192, 13, 115, 14);
 		empPanel.add(lblNewLabel_1);
-		
-		JLabel lblEmployeeInfo = new JLabel("Employee info");
-		lblEmployeeInfo.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblEmployeeInfo.setBounds(447, 13, 122, 14);
-		empPanel.add(lblEmployeeInfo);
 		
 		// key listener to input only int and length
 		phoneNumber.addKeyListener(new KeyAdapter() {
@@ -427,7 +426,7 @@ public class Windows {
 				int number = Integer.parseInt( phoneNumber.getText());
 				
 				
-				// checking tahat all fields are filled before saving
+				// checking taht all fields are filled before saving
 				if(nameOfEmployee.getText().isEmpty()){
 					JOptionPane.showMessageDialog(nameOfEmployee,"Enter employee name! ");
 				}
@@ -441,8 +440,12 @@ public class Windows {
 				}
 				
 				else {
+					
 					Employee e3 = new Employee (employeeName, surname, number);
-					employeeList.addElement(e3);
+					
+					employeeListModel.addElement(e3);
+					
+					System.out.println(employeeList);
 				}
 				
 			}
@@ -458,7 +461,8 @@ public class Windows {
 				// when button clicked, create new String that has selected string and delete it.
 
 				Employee tempEmp = (Employee) listOfEmp.getSelectedValue();
-				employeeList.removeElement(tempEmp);
+				employeeListModel.removeElement(tempEmp);
+				employeeList.remove(tempEmp);
 				
 			}
 		});
@@ -471,22 +475,27 @@ public class Windows {
 				
 				Employee tempEmp = (Employee) listOfEmp.getSelectedValue();
 				int tempEmpID =listOfEmp.getSelectedIndex();
+			
 				
 					if (!nameOfEmployee.getText().isEmpty() ){
 							String newName = nameOfEmployee.getText();
 							tempEmp.changeFirstName(newName);
-							employeeList.setElementAt(tempEmp, tempEmpID);
+							employeeListModel.setElementAt(tempEmp, tempEmpID);
+							employeeList.set(tempEmpID, tempEmp);
 					}
 					if (!lastName.getText().isEmpty() ){
 							String newLastName = lastName.getText();
 							tempEmp.changeLastName(newLastName);
-							employeeList.setElementAt(tempEmp, tempEmpID);
+							employeeListModel.setElementAt(tempEmp, tempEmpID);
+							employeeList.set(tempEmpID, tempEmp);
 							}
 					if (!phoneNumber.getText().isEmpty() ){
 							int newphone = Integer.parseInt (phoneNumber.getText());
 							tempEmp.changePhoneNumber(newphone);
-							employeeList.setElementAt(tempEmp, tempEmpID);
+							employeeListModel.setElementAt(tempEmp, tempEmpID);
+							employeeList.set(tempEmpID, tempEmp);
 							}
+					System.out.println(employeeList);
 				}
 						
 		});
@@ -501,7 +510,7 @@ public class Windows {
 		csPanel.setLayout(null);
 		
 		//List containing all cleaning schedules 
-		JList ListOfCS = new JList(csList);
+		JList ListOfCS = new JList(csListModel);
 		ListOfCS.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		ListOfCS.setBounds(39, 33, 89, 49);
 		csPanel.add(ListOfCS);
@@ -513,20 +522,22 @@ public class Windows {
 		
 		// Creating buttons
 		JButton DeleteCS = new JButton("Delete");
+		DeleteCS.setToolTipText("To delete CS:  - select CS from the list;  - click \"Delete\" ");
 		DeleteCS.setBounds(148, 287, 89, 23);
 		csPanel.add(DeleteCS);
 		
 		JButton EditCS = new JButton("Edit");
+		EditCS.setToolTipText("To edit Cleaning schedule: - select CS form the list;    - enter new information in text fields;   - click \"edit\" to save changes");
 		EditCS.setBounds(49, 287, 89, 23);
 		csPanel.add(EditCS);
 		
 		//Creating editing fields		
 		JEditorPane csIdField = new JEditorPane();
-		csIdField.setBounds(113, 335, 106, 20);
+		csIdField.setBounds(160, 328, 106, 20);
 		csPanel.add(csIdField);
 		
 		JEditorPane csNameField = new JEditorPane();
-		csNameField.setBounds(113, 366, 106, 20);
+		csNameField.setBounds(160, 359, 106, 20);
 		csPanel.add(csNameField);
 		
 		JButton AddCS = new JButton("Save");
@@ -538,8 +549,8 @@ public class Windows {
 		lblCsId.setBounds(49, 335, 46, 14);
 		csPanel.add(lblCsId);
 		
-		JLabel lblNewLabel = new JLabel("CS name");
-		lblNewLabel.setBounds(49, 365, 54, 14);
+		JLabel lblNewLabel = new JLabel("Floor and department");
+		lblNewLabel.setBounds(49, 365, 124, 14);
 		csPanel.add(lblNewLabel);
 		
 		JLabel lblCleaningSchedules = new JLabel("Cleaning schedules");
@@ -611,7 +622,8 @@ public class Windows {
 				// saving CS
 				else {
 					CleaningSchedule tempCS = new CleaningSchedule(csID, csName);
-			csList.addElement(tempCS);
+			csListModel.addElement(tempCS);
+			schedule.add(tempCS);
 				}
 			}
 		});
@@ -621,7 +633,8 @@ public class Windows {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				CleaningSchedule tempCS = (CleaningSchedule) ListOfCS.getSelectedValue();
-				csList.removeElement(tempCS);
+				csListModel.removeElement(tempCS);
+				schedule.remove(tempCS);
 			}
 		});
 		
@@ -637,13 +650,15 @@ public class Windows {
 					if (!csNameField.getText().isEmpty() ){
 							String newCSName = csNameField.getText();
 							tempCS.changeCSName(newCSName);
-							csList.setElementAt(tempCS, tempCSID);
+							csListModel.setElementAt(tempCS, tempCSID);
+							schedule.set(tempCSID, tempCS);
 							}
 					if (!csIdField.getText().isEmpty()){
 						
 						int newCSID= Integer.parseInt(csIdField.getText());
 						tempCS.changeID(newCSID);	
-						csList.setElementAt(tempCS, tempCSID);
+						csListModel.setElementAt(tempCS, tempCSID);
+						schedule.set(tempCSID, tempCS);
 					}
 				}
 		});
