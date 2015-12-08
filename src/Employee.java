@@ -4,7 +4,7 @@ public class Employee {
 	public  String firstName; 
 	public String lastName;
 	public int phoneNumber;
-	public ArrayList<Skill> skillList = new ArrayList<Skill>(); // Instantiating arrayList for skills
+	public ArrayList<Skill> empSkillAry = new ArrayList<Skill>(); // Instantiating arrayList for skills
 
 
 	public Employee(String firstName, String lastName, int phoneNumber){
@@ -15,13 +15,13 @@ public class Employee {
 
 	public String toString(){
 		return " " + firstName
-			+ "      " + lastName + "       Phone:   " + phoneNumber; 
+			+ "      " + lastName + "       Phone:   " + phoneNumber + "    Skill   " + empSkillAry;
 			
 		}
 	
 	// Adding skill to employees skill list
 	public void AddSkill(Skill skill) {
-		skillList.add(skill);
+		empSkillAry.add(skill);
 	}
 
 	//Changing first name
@@ -40,4 +40,6 @@ public class Employee {
 		phoneNumber = newPhoneNumb;	
 		
 	}
+
+	
 }
