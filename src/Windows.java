@@ -21,7 +21,6 @@ import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
-
 import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -57,7 +56,6 @@ public class Windows {
 	static ArrayList<Shift> shiftAry = new ArrayList<Shift>();
 	static ArrayList<CleaningSchedule> csAry = new ArrayList<CleaningSchedule>();
 
-	
 	private static DefaultListModel<Employee> employeeListModel = new DefaultListModel<Employee>();
 	private static DefaultListModel<Skill> skillListModel = new DefaultListModel<Skill>();
 	private static DefaultListModel<CleaningSchedule> csListModel = new DefaultListModel<CleaningSchedule>();
@@ -184,7 +182,6 @@ public class Windows {
 		JButton btnEdit = new JButton("Edit");
 
 		btnEdit.setToolTipText("Select skill from list. Write ID & name. Click \u2018Edit\u2019 to save changes.");
-
 		btnEdit.setEnabled(true);
 
 		btnEdit.setBounds(57, 217, 89, 23);
@@ -317,6 +314,7 @@ public class Windows {
 		tabbedPane.addTab("Employee", null, empPanel, null);
 		empPanel.setLayout(null);
 		
+
 		
 		//JList listOfEmp = new JList( empList);
 		//listOfEmp.setBounds(32, 39, 185, 137);
@@ -327,6 +325,11 @@ public class Windows {
 		//JList listOfEmp = new JList( empList);
 		//listOfEmp.setBounds(32, 39, 185, 137);
 		//empPanel.add(listOfEmp);
+
+		//JList listOfEmp = new JList( empList);
+		//listOfEmp.setBounds(32, 39, 185, 137);
+		//empPanel.add(listOfEmp);
+		
 
 	//	JScrollPane scrollListEmployee = new JScrollPane(empList);
 		//scrollListEmployee.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
