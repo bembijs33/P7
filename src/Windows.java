@@ -21,13 +21,12 @@ import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
-<<<<<<< HEAD
-=======
+
 import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
->>>>>>>  try
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
@@ -57,18 +56,12 @@ public class Windows {
 	static ArrayList<Assignment> assignmentAry = new ArrayList<Assignment>();
 	static ArrayList<Shift> shiftAry = new ArrayList<Shift>();
 	static ArrayList<CleaningSchedule> csAry = new ArrayList<CleaningSchedule>();
-	
-	
-<<<<<<< HEAD
+
 	
 	private static DefaultListModel<Employee> employeeListModel = new DefaultListModel<Employee>();
 	private static DefaultListModel<Skill> skillListModel = new DefaultListModel<Skill>();
 	private static DefaultListModel<CleaningSchedule> csListModel = new DefaultListModel<CleaningSchedule>();
-	
-	
 
-=======
->>>>>>>  try
 	/**
 	 * Launch the application.
 	 */
@@ -191,12 +184,9 @@ public class Windows {
 		JButton btnEdit = new JButton("Edit");
 
 		btnEdit.setToolTipText("Select skill from list. Write ID & name. Click \u2018Edit\u2019 to save changes.");
-	
-<<<<<<< HEAD
+
 		btnEdit.setEnabled(true);
 
-=======
->>>>>>>  try
 		btnEdit.setBounds(57, 217, 89, 23);
 		skillPanel.add(btnEdit);
 		
@@ -332,6 +322,12 @@ public class Windows {
 		//listOfEmp.setBounds(32, 39, 185, 137);
 		//empPanel.add(listOfEmp);
 		
+
+		
+		//JList listOfEmp = new JList( empList);
+		//listOfEmp.setBounds(32, 39, 185, 137);
+		//empPanel.add(listOfEmp);
+
 	//	JScrollPane scrollListEmployee = new JScrollPane(empList);
 		//scrollListEmployee.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 	//	scrollListEmployee .setBounds(51, 38, 392, 237);
