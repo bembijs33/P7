@@ -8,10 +8,12 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 
 import javax.swing.JCheckBox;
+import javax.swing.AbstractListModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.ListModel;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -19,6 +21,7 @@ import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -35,6 +38,8 @@ import java.awt.event.ContainerAdapter;
 import java.awt.event.ContainerEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
 
 
 public class Windows {
@@ -44,53 +49,41 @@ public class Windows {
 	private JTextField chooseassignmentDate;
 	private JTextField chooseTime;
 	
-	static ArrayList<Employee> employeeList = new ArrayList<Employee>();
-	static ArrayList<Skill> skillList = new ArrayList<Skill>();
-	static ArrayList<Assignment> assignmentList = new ArrayList<Assignment>();
-	static ArrayList<Shift> shiftList = new ArrayList<Shift>();
-	static ArrayList<CleaningSchedule> schedule = new ArrayList<CleaningSchedule>();
-	
-	private static JList empList= new JList (employeeList.toArray()); 
-	
-	private static DefaultListModel<Employee> employeeListModel = new DefaultListModel<Employee>(employeeList.clone());
-	{for(Employee s:employeeList){
-	    employeeListModel.addElement(s);
-	    employeeListModel.removeElement(s);
-	    
-	}}
-	private static DefaultListModel<Skill> skillListModel = new DefaultListModel<Skill>();
-	private static DefaultListModel<CleaningSchedule> csListModel = new DefaultListModel<CleaningSchedule>();
+	//static ArrayList<Employee> employeeAry = new ArrayList<Employee>();
+	static ArrayList<Skill> skillAry = new ArrayList<Skill>();
+	static ArrayList<Assignment> assignmentAry = new ArrayList<Assignment>();
+	static ArrayList<Shift> shiftAry = new ArrayList<Shift>();
+	static ArrayList<CleaningSchedule> csAry = new ArrayList<CleaningSchedule>();
 	
 	
-
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		Employee e1 = new Employee ("Bob", "Fan", 123456);
-			employeeListModel.addElement(e1);
-			//Employee e2 = new Employee ("Kun", "Foo", 123456);
-			//employeeList.add(e2);
+		//Employee e1 = new Employee ("Bob", "Fan", 123456);
+			
+		//	Employee e2 = new Employee ("Kun", "Foo", 123456);
+		//	employeeAry.add(e2);
 			//System.out.print(employeeList);
-			Skill skill1 = new Skill("Basic", 1);
-			Skill skill2 = new Skill("Dialysis", 2);
-			Skill skill3 = new Skill("Kitchen Morning", 3);
-			Skill skill4 = new Skill("Kitchen Evening", 4);
-			Skill skill5 = new Skill("Kitchen Help Morning", 5);
-			Skill skill6 = new Skill("Kitchen Help Evening", 6);
-			Skill skill7 = new Skill("AMA Kitchen Morning", 7);
+		//	Skill skill1 = new Skill("Basic", 1);
+		//	Skill skill2 = new Skill("Dialysis", 2);
+		//	Skill skill3 = new Skill("Kitchen Morning", 3);
+		//	Skill skill4 = new Skill("Kitchen Evening", 4);
+		//	Skill skill5 = new Skill("Kitchen Help Morning", 5);
+		//	Skill skill6 = new Skill("Kitchen Help Evening", 6);
+		//	Skill skill7 = new Skill("AMA Kitchen Morning", 7);
 
-			skillListModel.addElement(skill1);
-			skillListModel.addElement(skill2);
-			skillListModel.addElement(skill3);
-			skillListModel.addElement(skill4);
-			skillListModel.addElement(skill5);
-			skillListModel.addElement(skill6);
-			skillListModel.addElement(skill7);
+		//	skillAry.add(skill1);
+		//	skillAry.add(skill2);
+		//	skillAry.add(skill3);
+		//	skillAry.add(skill4);
+		//	skillAry.add(skill5);
+		//	skillAry.add(skill6);
+		//	skillAry.add(skill7);
 			
 			
 		CleaningSchedule cs1 = new CleaningSchedule(1, "Something");	
-			csListModel.addElement(cs1);
+			csAry.add(cs1);
 			
 				
 		EventQueue.invokeLater(new Runnable() {
@@ -115,6 +108,7 @@ public class Windows {
 	/**
 	 * Initialize the contents of the frame.
 	 */
+	@SuppressWarnings("unchecked")
 	private void initialize() {
 		
 		// Creating windows for application
@@ -166,16 +160,14 @@ public class Windows {
 		
 		
 		// creating JList that contains all the skills
-		JList listOfSkills = new JList(skillListModel);
-		listOfSkills.setBounds(70, 49, 350, 158);
-		skillPanel.add(listOfSkills);
+		 JList skillList = new JList(skillAry.toArray());
 		
 		
 		// creating scroll panel that shows skill List
-		JScrollPane scrollPane_1 = new JScrollPane(listOfSkills);
-		scrollPane_1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPane_1.setBounds(57, 38, 566, 167);
-		skillPanel.add(scrollPane_1);
+		JScrollPane skillScrollPane = new JScrollPane(skillList);
+		skillScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		skillScrollPane.setBounds(57, 38, 566, 167);
+		skillPanel.add(skillScrollPane);
 		
 		// creating buttons
 		JButton btnDelete = new JButton("Delete");
@@ -184,12 +176,9 @@ public class Windows {
 		skillPanel.add(btnDelete);
 		
 		JButton btnEdit = new JButton("Edit");
-<<<<<<< HEAD
-		btnEdit.setEnabled(true);
-=======
+
 		btnEdit.setToolTipText("Select skill from list. Write ID & name. Click \u2018Edit\u2019 to save changes.");
-		btnEdit.setEnabled(false);
->>>>>>> b86e9f081653050203f72eb034a1b5d2bf3dc2af
+	
 		btnEdit.setBounds(57, 217, 89, 23);
 		skillPanel.add(btnEdit);
 		
@@ -222,10 +211,6 @@ public class Windows {
 		skillNameField.setBounds(123, 279, 106, 20);
 		skillPanel.add(skillNameField);
 		
-		JButton btnTest = new JButton("Test");
-		btnTest.setBounds(330, 253, 89, 23);
-		skillPanel.add(btnTest);
-		
 		
 		// check for int in ID field
 		
@@ -248,8 +233,8 @@ public class Windows {
 		btnDelete.addMouseListener(new MouseAdapter() {
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			Skill tempSkill = (Skill) listOfSkills.getSelectedValue();
-			skillListModel.removeElement(tempSkill);
+			Skill tempSkill = (Skill) skillList.getSelectedValue();
+			skillAry.remove(tempSkill);
 
 			}
 		});
@@ -275,8 +260,17 @@ public class Windows {
 				// saving skill
 				else {
 				Skill tempSkill = new Skill (skillsname, skillIDnumber);
-				skillListModel.addElement(tempSkill);
-				skillList.add(tempSkill);
+				
+				// clear text fields
+				skillIDField.setText("");
+				skillNameField.setText("");
+				
+			
+			
+				skillAry.add(tempSkill);
+				System.out.println(skillAry);
+				
+
 				}
 			}
 		});
@@ -287,23 +281,23 @@ public class Windows {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
-				Skill tempSkill = (Skill) listOfSkills.getSelectedValue(); 
-				int tempSkillID = (int) listOfSkills.getSelectedIndex();
+				Skill tempSkill = (Skill) skillList.getSelectedValue(); 
+				int tempSkillID = (int) skillList.getSelectedIndex();
 				
 				
 				
 				if (!skillNameField.getText().isEmpty() ){
 					String newSkillName = skillNameField.getText();
 					tempSkill.changeName(newSkillName);
-					skillListModel.setElementAt(tempSkill, tempSkillID);
-					skillList.set(tempSkillID, tempSkill);
+					//skillList.setElementAt(tempSkill, tempSkillID);
+					//skillList.set(tempSkillID, tempSkill);
 					}
 				
 				if (!skillIDField.getText().isEmpty()){
 					int newSkillID =Integer.parseInt( skillIDField.getText());
 					tempSkill.changeID(newSkillID);
-					skillListModel.setElementAt(tempSkill, tempSkillID);
-					skillList.set(tempSkillID, tempSkill);
+					//skillListModel.setElementAt(tempSkill, tempSkillID);
+					//skillList.set(tempSkillID, tempSkill);
 				}
 			}
 		});
@@ -315,14 +309,17 @@ public class Windows {
 		tabbedPane.addTab("Employee", null, empPanel, null);
 		empPanel.setLayout(null);
 		
-		JList listOfEmp = new JList(employeeListModel);
-		listOfEmp.setBounds(32, 39, 185, 137);
-		empPanel.add(listOfEmp);
 		
-		JScrollPane scrollListEmployee = new JScrollPane(listOfEmp);
-		scrollListEmployee.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollListEmployee .setBounds(51, 38, 392, 237);
-		empPanel.add(scrollListEmployee );
+		//JList listOfEmp = new JList( empList);
+		//listOfEmp.setBounds(32, 39, 185, 137);
+		//empPanel.add(listOfEmp);
+		
+	//	JScrollPane scrollListEmployee = new JScrollPane(empList);
+		//scrollListEmployee.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+	//	scrollListEmployee .setBounds(51, 38, 392, 237);
+	//	empPanel.add(scrollListEmployee );
+		//empList.setVisibleRowCount(10);
+		//empList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		
 		// Creating editing fields
@@ -351,11 +348,9 @@ public class Windows {
 		empPanel.add(Deleteemployee);
 	
 		JButton editemployee = new JButton("Edit");
-<<<<<<< HEAD
-		editemployee.setToolTipText("To edit employee:\r\n\t- select employee from the list\r\n\t- write new parameters in the text fields\r\n\t-click \"edit\" to save shanges");
-=======
+
 		editemployee.setToolTipText("Select employee from list. Write first name, last name, phone number & checkmark skill(s). Click \u2018Edit\u2019 to save changes.");
->>>>>>> b86e9f081653050203f72eb034a1b5d2bf3dc2af
+
 		editemployee.setBounds(51, 286, 89, 23);
 		empPanel.add(editemployee);
 		
@@ -454,11 +449,17 @@ public class Windows {
 				
 				else {
 					
-					Employee e3 = new Employee (employeeName, surname, number);
+				//	Employee e3 = new Employee (employeeName, surname, number);
 					
-					employeeListModel.addElement(e3);
+				// clear text fields
+					nameOfEmployee.setText("");
+					lastName.setText("");
+					phoneNumber.setText("");
 					
-					System.out.println(employeeList);
+				//	employeeList.add(e3);
+					//employeeListModel.addElement(e3);
+					
+					//System.out.println(employeeList);
 				}
 				
 			}
@@ -473,9 +474,9 @@ public class Windows {
 
 				// when button clicked, create new String that has selected string and delete it.
 
-				Employee tempEmp = (Employee) listOfEmp.getSelectedValue();
-				employeeListModel.removeElement(tempEmp);
-				employeeList.remove(tempEmp);
+			//	int tempEmp = empList.getSelectedIndex();
+				//empList.remove(tempEmp);
+				//employeeList.remove(tempEmp);
 				
 			}
 		});
@@ -486,30 +487,30 @@ public class Windows {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
-				Employee tempEmp = (Employee) listOfEmp.getSelectedValue();
-				int tempEmpID =listOfEmp.getSelectedIndex();
+			//	Employee tempEmp = (Employee) empList.getSelectedValue();
+			//	int tempEmpID =empList.getSelectedIndex();
 			
 				
-					if (!nameOfEmployee.getText().isEmpty() ){
-							String newName = nameOfEmployee.getText();
-							tempEmp.changeFirstName(newName);
-							employeeListModel.setElementAt(tempEmp, tempEmpID);
-							employeeList.set(tempEmpID, tempEmp);
-					}
-					if (!lastName.getText().isEmpty() ){
-							String newLastName = lastName.getText();
-							tempEmp.changeLastName(newLastName);
-							employeeListModel.setElementAt(tempEmp, tempEmpID);
-							employeeList.set(tempEmpID, tempEmp);
+					//if (!nameOfEmployee.getText().isEmpty() ){
+					//		String newName = nameOfEmployee.getText();
+					//		tempEmp.changeFirstName(newName);
+							//employeeListModel.setElementAt(tempEmp, tempEmpID);
+							//employeeList.set(tempEmpID, tempEmp);
+				//	}
+				//	if (!lastName.getText().isEmpty() ){
+				//		//	String newLastName = lastName.getText();
+					//		tempEmp.changeLastName(newLastName);
+							//employeeListModel.setElementAt(tempEmp, tempEmpID);
+							//employeeList.set(tempEmpID, tempEmp);
+					//		}
+				//	if (!phoneNumber.getText().isEmpty() ){
+				//			int newphone = Integer.parseInt (phoneNumber.getText());
+					//		tempEmp.changePhoneNumber(newphone);
+					//		//employeeListModel.setElementAt(tempEmp, tempEmpID);
+							//employeeList.set(tempEmpID, tempEmp);
 							}
-					if (!phoneNumber.getText().isEmpty() ){
-							int newphone = Integer.parseInt (phoneNumber.getText());
-							tempEmp.changePhoneNumber(newphone);
-							employeeListModel.setElementAt(tempEmp, tempEmpID);
-							employeeList.set(tempEmpID, tempEmp);
-							}
-					System.out.println(employeeList);
-				}
+				//	System.out.println(employeeList);
+		//		}
 						
 		});
 		
@@ -523,32 +524,28 @@ public class Windows {
 		csPanel.setLayout(null);
 		
 		//List containing all cleaning schedules 
-		JList ListOfCS = new JList(csListModel);
-		ListOfCS.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		ListOfCS.setBounds(39, 33, 89, 49);
-		csPanel.add(ListOfCS);
-		JScrollPane scrollPane_4 = new JScrollPane(ListOfCS);
-		scrollPane_4.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPane_4.setBounds(49, 44, 319, 232);
-		csPanel.add(scrollPane_4);
+		//JList ListOfCS = new JList(csListModel);
+		//ListOfCS.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		//ListOfCS.setBounds(39, 33, 89, 49);
+		//csPanel.add(ListOfCS);
+		//JScrollPane scrollPane_4 = new JScrollPane(ListOfCS);
+		//scrollPane_4.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		//scrollPane_4.setBounds(49, 44, 319, 232);
+		//csPanel.add(scrollPane_4);
 
 		
 		// Creating buttons
 		JButton DeleteCS = new JButton("Delete");
-<<<<<<< HEAD
-		DeleteCS.setToolTipText("To delete CS:  - select CS from the list;  - click \"Delete\" ");
-=======
+
 		DeleteCS.setToolTipText("Select cleaning schedule from list. Click \u2018Delete\u2019 to remove from list.");
->>>>>>> b86e9f081653050203f72eb034a1b5d2bf3dc2af
+
 		DeleteCS.setBounds(148, 287, 89, 23);
 		csPanel.add(DeleteCS);
 		
 		JButton EditCS = new JButton("Edit");
-<<<<<<< HEAD
-		EditCS.setToolTipText("To edit Cleaning schedule: - select CS form the list;    - enter new information in text fields;   - click \"edit\" to save changes");
-=======
+
 		EditCS.setToolTipText("Select cleaning schedule from list. Write new ID, name & checkmark skill(s). Click \u2018Edit\u2019 to save changes.");
->>>>>>> b86e9f081653050203f72eb034a1b5d2bf3dc2af
+
 		EditCS.setBounds(49, 287, 89, 23);
 		csPanel.add(EditCS);
 		
@@ -644,8 +641,8 @@ public class Windows {
 				// saving CS
 				else {
 					CleaningSchedule tempCS = new CleaningSchedule(csID, csName);
-			csListModel.addElement(tempCS);
-			schedule.add(tempCS);
+			//csListModel.addElement(tempCS);
+			//schedule.add(tempCS);
 				}
 			}
 		});
@@ -654,9 +651,9 @@ public class Windows {
 		DeleteCS.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				CleaningSchedule tempCS = (CleaningSchedule) ListOfCS.getSelectedValue();
-				csListModel.removeElement(tempCS);
-				schedule.remove(tempCS);
+				//CleaningSchedule tempCS = (CleaningSchedule) ListOfCS.getSelectedValue();
+				//csListModel.removeElement(tempCS);
+				//schedule.remove(tempCS);
 			}
 		});
 		
@@ -666,23 +663,23 @@ public class Windows {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
-				CleaningSchedule tempCS = (CleaningSchedule) ListOfCS.getSelectedValue();
-				int tempCSID =ListOfCS.getSelectedIndex();
+				//CleaningSchedule tempCS = (CleaningSchedule) ListOfCS.getSelectedValue();
+				//int tempCSID =ListOfCS.getSelectedIndex();
 				
-					if (!csNameField.getText().isEmpty() ){
-							String newCSName = csNameField.getText();
-							tempCS.changeCSName(newCSName);
-							csListModel.setElementAt(tempCS, tempCSID);
-							schedule.set(tempCSID, tempCS);
-							}
-					if (!csIdField.getText().isEmpty()){
+				//	if (!csNameField.getText().isEmpty() ){
+				//			String newCSName = csNameField.getText();
+					//		tempCS.changeCSName(newCSName);
+							//csListModel.setElementAt(tempCS, tempCSID);
+							//schedule.set(tempCSID, tempCS);
+				//			}
+				//	if (!csIdField.getText().isEmpty()){
 						
-						int newCSID= Integer.parseInt(csIdField.getText());
-						tempCS.changeID(newCSID);	
-						csListModel.setElementAt(tempCS, tempCSID);
-						schedule.set(tempCSID, tempCS);
+					//	int newCSID= Integer.parseInt(csIdField.getText());
+					//	tempCS.changeID(newCSID);	
+						//csListModel.setElementAt(tempCS, tempCSID);
+						///schedule.set(tempCSID, tempCS);
 					}
-				}
+				//}
 		});
 		
 		
