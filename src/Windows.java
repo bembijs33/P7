@@ -8,11 +8,8 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 
 import javax.swing.JCheckBox;
-import javax.swing.BoxLayout;
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
-import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -29,39 +26,22 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Vector;
-
 import javax.swing.JComboBox;
 import java.awt.Font;
 import javax.swing.JPopupMenu;
-import java.awt.event.ContainerAdapter;
-import java.awt.event.ContainerEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.GridBagLayout;
 import javax.swing.JFormattedTextField;
 import javax.swing.JTable;
-import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
-import java.awt.Checkbox;
-import java.awt.Color;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 import java.awt.FlowLayout;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.SpringLayout;
 
 
 public class Windows {
 
 	private JFrame frmWindows;
 	private JTextField typeShiftName;
-	private JFormattedTextField shiftStartDate;
-	private JFormattedTextField shiftStartTime;
 	protected Skill skill1;
 	
 	static ArrayList<Employee> empAry = new ArrayList<Employee>();
@@ -78,11 +58,12 @@ public class Windows {
 	private static DefaultListModel<Shift> shiftListModel = new DefaultListModel<Shift>();
 	private static DefaultListModel <CleaningSchedule> comboList = new DefaultListModel<>(); 
 	
-	
-	//private static DefaultListModel<JCheckBox> skillCheckBoxes = new DefaultListModel <JCheckBox>();
+	List<JCheckBox> chbxList = new ArrayList<JCheckBox>();
 	DefaultTableModel  scheduleTabelModel = new DefaultTableModel (); 
+	
 	private JComboBox csComBx;
 	private JPanel cbpanel;
+	private JPanel csSkillPanel;
 	private JTable table;
 
 	
@@ -233,10 +214,7 @@ public class Windows {
 		skillPanel.add(btnDelete);
 		
 		JButton btnEdit = new JButton("Update");
-
 		btnEdit.setToolTipText("Select skill from list. Write ID & name. Click \u2018Edit\u2019 to save changes.");
-		btnEdit.setEnabled(true);
-
 		btnEdit.setBounds(57, 340, 89, 23);
 		skillPanel.add(btnEdit);
 		
@@ -244,6 +222,11 @@ public class Windows {
 		btnSaveSkill.setToolTipText("Write new ID & name. Click \u2018Save\u2019 to add new skill to list.");
 		btnSaveSkill.setBounds(155, 340, 86, 23);
 		skillPanel.add(btnSaveSkill);
+		
+		JButton btnUpdate = new JButton("Edit");
+		btnUpdate.setBounds(57, 217, 89, 23);
+		skillPanel.add(btnUpdate);
+		
 		
 		// creating labels
 		JLabel lblSkillId = new JLabel("Skill ID");
@@ -259,11 +242,7 @@ public class Windows {
 		lblSkillList.setBounds(57, 13, 167, 14);
 		skillPanel.add(lblSkillList);
 	
-		
-		
-		
-		
-		
+	
 		// creating text fields (editor panel), where user can enter text
 		JEditorPane skillIDField = new JEditorPane();
 		skillIDField.setBounds(123, 254, 106, 20);
@@ -275,14 +254,6 @@ public class Windows {
 		
 		
 		
-		///////////////////////
-		
-		
-		
-		
-		JButton btnUpdate = new JButton("Edit");
-		btnUpdate.setBounds(57, 217, 89, 23);
-		skillPanel.add(btnUpdate);
 		
 		
 		// check for int in ID field
@@ -301,6 +272,8 @@ public class Windows {
 			}
 		});
 		
+		
+		
 		// update fields
 		btnUpdate.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e) {
@@ -311,6 +284,7 @@ public class Windows {
 				skillIDField.setText(String.valueOf(skillID));				
 			}
 		});
+		
 		
 		
 		//Delete skill
@@ -354,8 +328,8 @@ public class Windows {
 				skillListModel.addElement(tempSkill);
 				skillAry.add(tempSkill);
 				System.out.println(skillAry);
-				
-
+				repaintChBx();
+				repaintShiftChBx();
 				}
 			}
 		});
@@ -377,6 +351,7 @@ public class Windows {
 					skillListModel.setElementAt(tempSkill, tempSkillID);
 					skillAry.set(tempSkillID, tempSkill);
 					skillNameField.setText("");
+					
 					}
 				
 				if (!skillIDField.getText().isEmpty()){
@@ -386,26 +361,27 @@ public class Windows {
 					skillAry.set(tempSkillID, tempSkill);
 					skillIDField.setText("");
 					
+					
 				}
+				repaintChBx();
+				repaintShiftChBx();
 				System.out.println(skillAry);
 			}
 		});
 		
 		
-////////////////////////////////// EMPLOYEE TAB //////////////////////////////////
+////////////////////////////////// EMPLOYEE TAB /////////////////////////////////////////////////////////
 		
 		JPanel empPanel = new JPanel();
 		tabbedPane.addTab("Employee", null, empPanel, null);
 		empPanel.setLayout(null);
 		
-
 		
 		JList employeeList = new JList( employeeListModel);
 		employeeList.setBounds(32, 39, 185, 137);
 		empPanel.add(employeeList);
 		
 		
-
 		JScrollPane scrollListEmployee = new JScrollPane(employeeList);
 		scrollListEmployee.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollListEmployee .setBounds(51, 38, 555, 200);
@@ -441,9 +417,14 @@ public class Windows {
 	
 		JButton editemployee = new JButton("Update");
 		editemployee.setToolTipText("Select employee from list. Write first name, last name, phone number & checkmark skill(s). Click \u2018Edit\u2019 to save changes.");
-
 		editemployee.setBounds(51, 490, 89, 23);
 		empPanel.add(editemployee);
+		
+		
+		JButton btnUpdate_1 = new JButton("Edit");
+		btnUpdate_1.setBounds(51, 286, 89, 23);
+		empPanel.add(btnUpdate_1);
+		
 		
 		//Creating labels
 		JLabel lblFirstName = new JLabel("First name");
@@ -464,35 +445,20 @@ public class Windows {
 		empPanel.add(lblNewLabel_1);
 		
 	
-		
-		
-		
-		
-		//// CheckBox pannel///////////////
+		//// CheckBox panel///////////////
 		
 		cbpanel = new JPanel();
-		List<JCheckBox> chbxList = new ArrayList<JCheckBox>();
 		cbpanel.setBounds(51, 422, 600, 57);
 		empPanel.add(cbpanel);
 		cbpanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		
+		//adding skill check boxes
 		for(int i=0; i<skillAry.size();i++){
-			
 			JCheckBox box = new JCheckBox(skillAry.get(i).getName());
 			box.setName(skillAry.get(i).getName());
 			chbxList.add(box);
 			cbpanel.add(box);
-		}
-			
-		
-		JButton btnUpdate_1 = new JButton("Edit");
-		
-		
-		
-		
-		btnUpdate_1.setBounds(51, 286, 89, 23);
-		empPanel.add(btnUpdate_1);
+			}
 		
 		
 		// key listener to input only int and length
@@ -512,9 +478,10 @@ public class Windows {
 					arg0.consume();// if wrong argument it is deleted
 					
 					}
-			}
-		});
+				}
+			});
 	
+		
 		//update fields
 		btnUpdate_1.addMouseListener(new MouseAdapter() {
 			@Override
@@ -528,12 +495,10 @@ public class Windows {
 				lastName.setText(tempEmpLastName);
 				phoneNumber.setText(String.valueOf(tempEmpPh));
 				
-			}
-		});
+				}
+			});
 		
-		
-	
-		
+				
 		
 		// Save employee
 		Saveemployeeinfo.addMouseListener(new MouseAdapter() {
@@ -593,8 +558,9 @@ public class Windows {
 				empAry.remove(tempEmp);
 				employeeListModel.remove(tempEmp);
 				System.out.println(empAry);
-			}
-		});
+				}
+			});
+		
 		
 		// Edit selected employee
 
@@ -645,7 +611,9 @@ public class Windows {
 					System.out.println(skillAry);
 				}
 						
-		});
+			});
+		
+		
 		
 		
 //////////////////////////////// CLEANIGN SCHEDULE TAB /////////////////////////////////////////
@@ -669,18 +637,15 @@ public class Windows {
 		
 		// Creating buttons
 		JButton DeleteCS = new JButton("Delete");
-
 		DeleteCS.setToolTipText("Select cleaning schedule from list. Click \u2018Delete\u2019 to remove from list.");
-
 		DeleteCS.setBounds(148, 287, 89, 23);
 		csPanel.add(DeleteCS);
 		
 		JButton EditCS = new JButton("Update");
-
 		EditCS.setToolTipText("Select cleaning schedule from list. Write new ID, name & checkmark skill(s). Click \u2018Edit\u2019 to save changes.");
-
 		EditCS.setBounds(49, 462, 89, 23);
 		csPanel.add(EditCS);
+		
 		
 		//Creating editing fields		
 		JEditorPane csIdField = new JEditorPane();
@@ -696,6 +661,11 @@ public class Windows {
 		AddCS.setBounds(148, 462, 89, 23);
 		csPanel.add(AddCS);
 		
+		JButton btnUpdate_2 = new JButton("Edit");
+		btnUpdate_2.setBounds(49, 287, 89, 23);
+		csPanel.add(btnUpdate_2);
+		
+		
 		// Creating labels
 		JLabel lblCsId = new JLabel("CS ID");
 		lblCsId.setBounds(49, 335, 46, 14);
@@ -710,28 +680,22 @@ public class Windows {
 		lblCleaningSchedules.setBounds(49, 19, 170, 14);
 		csPanel.add(lblCleaningSchedules);
 		
-		JButton btnUpdate_2 = new JButton("Edit");
 		
-		btnUpdate_2.setBounds(49, 287, 89, 23);
-		csPanel.add(btnUpdate_2);
+		// pannel for skill check boxes
 		
-		JPanel csSkillPanel = new JPanel();
+		csSkillPanel = new JPanel();
 		csSkillPanel.setBounds(49, 402, 528, 58);
+		csPanel.add(csSkillPanel);		
+		// creating check boxes
 		
-		for(int i=0; i<skillAry.size();i++){
-			
+			for(int i=0; i<skillAry.size();i++){
 			JCheckBox box = new JCheckBox(skillAry.get(i).getName());
 			box.setName(skillAry.get(i).getName());
 			chbxList.add(box);
 			csSkillPanel.add(box);
 			}
-		
-		csPanel.add(csSkillPanel);
-		csSkillPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
-		
-		
-		/// add Skill checkbox
-		
+				
+		csSkillPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		
 		
@@ -745,10 +709,11 @@ public class Windows {
 					JOptionPane.showMessageDialog(skillIDField, "Please enter numbers! ");
 					e.consume();
 				
-				}
+					}
 			
-			}
-		});
+				}
+			});
+		
 		
 		//update fields
 		btnUpdate_2.addMouseListener(new MouseAdapter() {
@@ -766,8 +731,9 @@ public class Windows {
 				
 				
 				
-			}
-		});
+				}
+			});
+		
 		
 		// Save CS
 		AddCS.addMouseListener(new MouseAdapter() {
@@ -798,10 +764,11 @@ public class Windows {
 					csIdField.setText("");
 					System.out.println(csAry);
 					repaintCS();
+					}
 				}
-			}
-		});
-				
+			});
+			
+		
 		//Delete CS
 		DeleteCS.addMouseListener(new MouseAdapter() {
 			@Override
@@ -809,11 +776,11 @@ public class Windows {
 				CleaningSchedule tempCS = (CleaningSchedule) csList.getSelectedValue();
 				csListModel.removeElement(tempCS);
 				csAry.remove(tempCS);
-			}
-		});
+				}
+			});
+		
 		
 		// Update CS
-		
 		EditCS.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -830,14 +797,11 @@ public class Windows {
 								csListModel.setElementAt(tempCS, tempCSID);
 								csAry.set(tempCSID, tempCS);
 							
+								}
 							}
-						}
 						
+						}
 					}
-				}
-				
-				
-				
 				
 					if (!csNameField.getText().isEmpty() ){
 							String newCSName = csNameField.getText();
@@ -851,14 +815,15 @@ public class Windows {
 						tempCS.changeID(newCSID);	
 						csListModel.setElementAt(tempCS, tempCSID);
 						csAry.set(tempCSID, tempCS);
-					}
+						}
 					csNameField.setText("");
 					csIdField.setText("");
-				}
-		});
+					}
+			});
 		
 		
-/////////////////////////////////// shift TAB //////////////////////////////////////////		
+		
+/////////////////////////////////// shift TAB //////////////////////////////////////////////////////////		
 		
 		JPanel shiftPanel = new JPanel();
 		tabbedPane.addTab("Shift", null, shiftPanel, null);
@@ -876,23 +841,23 @@ public class Windows {
 		
 		//Creating buttons		
 		JButton btnEdit_1 = new JButton("Update");
-		
 		btnEdit_1.setToolTipText("Select shift from list. Write name, date, time & choose CS. Click \u2018Edit\u2019 to save changes.");
 		btnEdit_1.setBounds(56, 415, 89, 23);
 		shiftPanel.add(btnEdit_1);
 		
 		JButton btnDelete_2 = new JButton("Delete");
-		
 		btnDelete_2.setToolTipText("Select shift from list. Click \u2018Delete\u2019 to remove from list.");
 		btnDelete_2.setBounds(155, 250, 89, 23);
 		shiftPanel.add(btnDelete_2);
 		
-
 		JButton btnAddShift = new JButton("Save New");
-		
 		btnAddShift.setToolTipText("Write new name, date, time & choose CS. Click \u2018Save\u2019 to save changes.");
 		btnAddShift.setBounds(155, 415, 89, 23);
 		shiftPanel.add(btnAddShift);
+		
+		JButton btnEditShift = new JButton("Edit");
+		btnEditShift.setBounds(56, 250, 89, 23);
+		shiftPanel.add(btnEditShift);
 		
 		// Creating labels
 		JLabel lblShiftName = new JLabel("Shift name");
@@ -916,24 +881,27 @@ public class Windows {
 		lblShifts.setBounds(56, 12, 58, 14);
 		shiftPanel.add(lblShifts);
 
+		
 		// creating combo  box
 		csComBx = new JComboBox( );
 		csComBx.setMaximumRowCount(10);
+		
+		//setting combobox to default model to display CS
 		csComBx.setModel(new DefaultComboBoxModel( csAry.toArray()));
 		
-		csComBx.setBounds(158, 312, 193, 20);
+		csComBx.setBounds(158, 312, 422, 20);
 		shiftPanel.add(csComBx);
 		frmWindows.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{frmWindows.getContentPane()}));
+		
 		
 		// creating text fields
 		typeShiftName = new JTextField();
 		typeShiftName.setBounds(158, 281, 86, 20);
 		shiftPanel.add(typeShiftName);
 		
-		
+		// creting simple data format that will be applied to the Formated text fields, that takes/shows date for Shift
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy/HH/mm");
-	
-		
+			
 		JFormattedTextField shiftStartsField = new JFormattedTextField(sdf);
 		shiftStartsField.setBounds(158, 343, 89, 20);
 		shiftPanel.add(shiftStartsField);
@@ -942,19 +910,14 @@ public class Windows {
 		shiftEndsField.setBounds(158, 375, 89, 20);
 		shiftPanel.add(shiftEndsField);
 		
-		JButton btnEditShift = new JButton("Edit");
 		
-		btnEditShift.setBounds(56, 250, 89, 23);
-		shiftPanel.add(btnEditShift);
 		
 		// save shift
 		btnAddShift.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int newShiftName = Integer.parseInt(typeShiftName.getText());
-				CleaningSchedule schedule = (CleaningSchedule) csComBx.getSelectedItem();
-				//TODO: Date start = shiftStart.getText();
-				//TODO: Date end = shiftEnd.getText();
+				csComBx.getSelectedItem();
 
 				Shift shift = new Shift(newShiftName, null, null, null);
 				shiftListModel.addElement(shift);
@@ -974,7 +937,7 @@ public class Windows {
 				int shiftName = shiftListModel.getElementAt(tempShiftInd).shiftID;
 				Date shiftEnd = shiftListModel.getElementAt(tempShiftInd).End;
 				Date shiftStart = shiftListModel.getElementAt(tempShiftInd).Start;
-				CleaningSchedule CS = shiftListModel.getElementAt(tempShiftInd).Schedule;
+				shiftListModel.getElementAt(tempShiftInd);
 				
 				typeShiftName.setText(String.valueOf(shiftName));
 				shiftStartsField.setText(String.valueOf(shiftStart));
@@ -985,6 +948,7 @@ public class Windows {
 			}
 		});
 	
+		
 	// Update shift
 	btnEdit_1.addMouseListener(new MouseAdapter() {
 		@Override
@@ -1006,34 +970,58 @@ public class Windows {
 				// TODO: check for the CS change. 
 		}
 	});
+	
+	
 	// delete shift
 		
 		btnDelete_2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				int tempShiftID = shiftList.getSelectedIndex();
+				shiftList.remove(tempShiftID);
+				shiftAry.remove(tempShiftID);
+				
 			}
 		});
 }
 	
 	
-//Not used method
-		private  Object[] getSkills() {
-        return skillAry.toArray();
-	}
 	
-		private JComboBox getCombo(){
-			JComboBox box = new JComboBox(getSkills());
-			return box;
-		}
-		
-	///
-		
+	
+	
+
+	// This method repaints Combo box of CS in Shift tab	
 	private JComboBox repaintCS(){
 		csComBx.removeAll();
 		csComBx.setModel(new DefaultComboBoxModel( csAry.toArray()));
 		return csComBx;
 	}
-		
+	
+	
+	// This method repaints check boxes in Employee tab
+	private  JPanel repaintChBx(){
+		cbpanel.removeAll();
+		for(int i=0; i<skillAry.size();i++){
+			JCheckBox box = new JCheckBox(skillAry.get(i).getName());
+			box.setName(skillAry.get(i).getName());
+			chbxList.add(box);
+			cbpanel.add(box);
+		} 
+		return cbpanel;
+	}
+	
+	// This method repaints check boxes in CS tab
+	public JPanel repaintShiftChBx(){
+			csSkillPanel.removeAll();
+				for(int i=0; i<skillAry.size();i++){
+					JCheckBox box = new JCheckBox(skillAry.get(i).getName());
+					box.setName(skillAry.get(i).getName());
+					chbxList.add(box);
+					csSkillPanel.add(box);
+				} 
+			return csSkillPanel;
+	}
+	
 		
 	private static void addPopup(Component component, final JPopupMenu popup) {
 		component.addMouseListener(new MouseAdapter() {
@@ -1055,4 +1043,3 @@ public class Windows {
 		
 	}
 }
-
