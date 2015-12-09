@@ -29,6 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Vector;
 
 import javax.swing.JComboBox;
 import java.awt.Font;
@@ -45,6 +46,7 @@ import javax.swing.JTable;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
+import java.awt.Checkbox;
 import java.awt.Color;
 
 
@@ -52,8 +54,8 @@ public class Windows {
 
 	private JFrame frmWindows;
 	private JTextField typeShiftName;
-	private JFormattedTextField chooseassignmentDate;
-	private JTextField chooseTime;
+	private JFormattedTextField shiftStartDate;
+	private JFormattedTextField shiftStartTime;
 	protected Skill skill1;
 	
 	static ArrayList<Employee> empAry = new ArrayList<Employee>();
@@ -69,11 +71,27 @@ public class Windows {
 	private static DefaultListModel<Skill> skillListModel = new DefaultListModel<Skill>();
 	private static DefaultListModel<CleaningSchedule> csListModel = new DefaultListModel<CleaningSchedule>();
 	private static DefaultListModel<Shift> shiftListModel = new DefaultListModel<Shift>();
+	private static DefaultListModel <CleaningSchedule> comboList = new DefaultListModel<>(); 
+	
+	
 	private static DefaultListModel<JCheckBox> skillCheckBoxes = new DefaultListModel <JCheckBox>();
 	DefaultTableModel  scheduleTabelModel = new DefaultTableModel (); 
-	private JComboBox<JList<CleaningSchedule>> comboBox;
-	private JTable scheduleTable;
+	private JComboBox comboBox;
+	private JPanel cbpanel;
+	private JTable table;
 
+	
+	public static Date createDate( int day, int month, int year, int hour, int minute) {
+		Date date = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy/HH/mm");
+			try {
+				date = sdf.parse(day + "/" + month + "/" + year + "/" + hour + "/" + minute);
+			} catch (Exception e){}
+			System.err.println("date error ");
+			return date;
+	}
+	
+	
 	
 	/**
 	 * Launch the application.
@@ -111,8 +129,11 @@ public class Windows {
 			
 			
 		CleaningSchedule cs1 = new CleaningSchedule(1, "Something");	
+		CleaningSchedule cs2 = new CleaningSchedule(2, "SomethingElse");	
 			csAry.add(cs1);
 			csListModel.addElement(cs1);
+			csAry.add(cs2);
+			csListModel.addElement(cs2);
 				
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -162,21 +183,25 @@ public class Windows {
 		tabbedPane.addTab("Work Schedule", null, wsPanel, null);
 		wsPanel.setLayout(null);
 		
-		scheduleTable = new JTable(scheduleTabelModel);
+		JScrollPane tableScrollPane = new JScrollPane();
+		tableScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		tableScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		tableScrollPane.setBounds(69, 69, 555, 278);
+		wsPanel.add(tableScrollPane);
+		
+		table = new JTable();
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Shift name", "Cleaning Schedule", "Starts", "Ends", "Assigned employee"
+			}
+		));
+		table.getColumnModel().getColumn(1).setPreferredWidth(106);
+		table.getColumnModel().getColumn(4).setPreferredWidth(103);
+		tableScrollPane.setViewportView(table);
 		scheduleTabelModel.addColumn(3);
-		
-		//scheduleTable.setModel(model);
-		scheduleTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		scheduleTable.setBorder(new LineBorder(new Color(0, 0, 0), 3, true));
-		scheduleTable.setBounds(72, 106, 487, 294);
-		wsPanel.add(scheduleTable);
-		
-		// list containing all shifts
-		JList workschedulelist = new JList(shiftListModel);
-		
-		
-		
-		
+	
 		//////////////////////////// SKILL TAB ////////////////////////////////////////////////////
 		
 		JPanel skillPanel = new JPanel();
@@ -191,7 +216,7 @@ public class Windows {
 		// creating scroll panel that shows skill List
 		JScrollPane skillScrollPane = new JScrollPane(skillList);
 		skillScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		skillScrollPane.setBounds(57, 38, 566, 167);
+		skillScrollPane.setBounds(57, 38, 555, 167);
 		skillPanel.add(skillScrollPane);
 		
 		// creating buttons
@@ -227,6 +252,10 @@ public class Windows {
 		lblSkillList.setBounds(57, 13, 167, 14);
 		skillPanel.add(lblSkillList);
 	
+		
+		
+		
+		
 		
 		// creating text fields (editor panel), where user can enter text
 		JEditorPane skillIDField = new JEditorPane();
@@ -356,7 +385,7 @@ public class Windows {
 		});
 		
 		
-		/////////////////////// EMPLOYEE TAB //////////////////////////////////
+////////////////////////////////// EMPLOYEE TAB //////////////////////////////////
 		
 		JPanel empPanel = new JPanel();
 		tabbedPane.addTab("Employee", null, empPanel, null);
@@ -372,7 +401,7 @@ public class Windows {
 
 		JScrollPane scrollListEmployee = new JScrollPane(employeeList);
 		scrollListEmployee.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollListEmployee .setBounds(51, 38, 392, 237);
+		scrollListEmployee .setBounds(51, 38, 555, 200);
 		empPanel.add(scrollListEmployee );
 		employeeList.setVisibleRowCount(10);
 		employeeList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -393,20 +422,20 @@ public class Windows {
 		
 		
 		// Creating buttons
-		JButton Saveemployeeinfo = new JButton("Save");
+		JButton Saveemployeeinfo = new JButton("Save New");
 		Saveemployeeinfo.setToolTipText("Write first name, last name, phone number & checkmark skill(s). Click \u2018Save\u2019 to save changes.");
-		Saveemployeeinfo.setBounds(218, 490, 89, 23);
+		Saveemployeeinfo.setBounds(218, 490, 97, 23);
 		empPanel.add(Saveemployeeinfo);
 				
 		JButton Deleteemployee = new JButton("Delete");
 		Deleteemployee.setToolTipText("Select employee from list. Click \u2018Delete\u2019 to remove from list.");
-		Deleteemployee.setBounds(148, 286, 89, 23);
+		Deleteemployee.setBounds(160, 286, 89, 23);
 		empPanel.add(Deleteemployee);
 	
-		JButton editemployee = new JButton("Edit");
+		JButton editemployee = new JButton("Update");
 		editemployee.setToolTipText("Select employee from list. Write first name, last name, phone number & checkmark skill(s). Click \u2018Edit\u2019 to save changes.");
 
-		editemployee.setBounds(51, 286, 89, 23);
+		editemployee.setBounds(119, 490, 89, 23);
 		empPanel.add(editemployee);
 		
 		
@@ -457,30 +486,36 @@ public class Windows {
 		lblNewLabel_1.setBounds(192, 13, 115, 14);
 		empPanel.add(lblNewLabel_1);
 		
+	
 		
 		
-		JPanel cbpanel = new JPanel();
-		JList cbList = new JList(skillCheckBoxes);
+		
+		
+		//// CheckBox pannel///////////////
+		
+		cbpanel = new JPanel();
+		List<Checkbox> chbxList = new ArrayList<Checkbox>();
 		cbpanel.setBounds(292, 317, 363, 109);
-		
-		//for(Skill skill: skillAry){
-			//JCheckBox box = new JCheckBox(skill);
-			//box.add(skill);
-			//cbList.add(box);
-			//cbpanel.add(box);
-	//	}
-		
 		empPanel.add(cbpanel);
+		  String labels[] = {"A", "B", "C", "D", "E", "F"};
+		for(int i=0; i<labels.length;i++){
+			JCheckBox box = new JCheckBox(labels[i]);
+			chbxList.addAll(chbxList);
+			}
+				
 		GridBagLayout gbl_cbpanel = new GridBagLayout();
-		gbl_cbpanel.columnWidths = new int[]{0};
-		gbl_cbpanel.rowHeights = new int[]{0};
-		gbl_cbpanel.columnWeights = new double[]{Double.MIN_VALUE};
-		gbl_cbpanel.rowWeights = new double[]{Double.MIN_VALUE};
+		gbl_cbpanel.rowHeights = new int[] {15};
+		gbl_cbpanel.columnWidths = new int[] {15};
+	
 		cbpanel.setLayout(gbl_cbpanel);
 		
-		JButton btnUpdate_1 = new JButton("Update");
 		
-		btnUpdate_1.setBounds(247, 286, 89, 23);
+		JButton btnUpdate_1 = new JButton("Edit");
+		
+		
+		
+		
+		btnUpdate_1.setBounds(61, 286, 89, 23);
 		empPanel.add(btnUpdate_1);
 		
 		
@@ -646,7 +681,7 @@ public class Windows {
 		csPanel.add(csList);
 		JScrollPane scrollPane_4 = new JScrollPane(csList);
 		scrollPane_4.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPane_4.setBounds(49, 44, 319, 232);
+		scrollPane_4.setBounds(49, 44, 555, 200);
 		csPanel.add(scrollPane_4);
 
 		
@@ -783,6 +818,7 @@ public class Windows {
 					CleaningSchedule tempCS = new CleaningSchedule(csID, csName);
 					csListModel.addElement(tempCS);
 					csAry.add(tempCS);
+					comboList.addElement(tempCS);
 					csNameField.setText("");
 					csIdField.setText("");
 					System.out.println(csAry);
@@ -841,36 +877,28 @@ public class Windows {
 		
 		JScrollPane scrollPane_2 = new JScrollPane(shiftList);
 		scrollPane_2.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPane_2.setBounds(56, 37, 555, 181);
+		scrollPane_2.setBounds(56, 37, 555, 200);
 		shiftPanel.add(scrollPane_2);
 		
-		JList shiftInformationList = new JList();
-		shiftInformationList.setBounds(288, 11, 193, 162);
-		shiftPanel.add(shiftInformationList);
-		
-		JScrollPane scrollPane_3 = new JScrollPane(shiftInformationList);
-		scrollPane_3.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPane_3.setBounds(480, 172, -190, -158);
-		shiftPanel.add(scrollPane_3);
 		
 		//Creating buttons		
 		JButton btnEdit_1 = new JButton("Edit");
 		
 		btnEdit_1.setToolTipText("Select shift from list. Write name, date, time & choose CS. Click \u2018Edit\u2019 to save changes.");
-		btnEdit_1.setBounds(59, 229, 89, 23);
+		btnEdit_1.setBounds(56, 250, 89, 23);
 		shiftPanel.add(btnEdit_1);
 		
 		JButton btnDelete_2 = new JButton("Delete");
 		
 		btnDelete_2.setToolTipText("Select shift from list. Click \u2018Delete\u2019 to remove from list.");
-		btnDelete_2.setBounds(158, 229, 89, 23);
+		btnDelete_2.setBounds(155, 250, 89, 23);
 		shiftPanel.add(btnDelete_2);
 		
 
 		JButton btnAddShift = new JButton("Save");
 		
 		btnAddShift.setToolTipText("Write new name, date, time & choose CS. Click \u2018Save\u2019 to save changes.");
-		btnAddShift.setBounds(249, 374, 89, 23);
+		btnAddShift.setBounds(249, 409, 89, 23);
 		shiftPanel.add(btnAddShift);
 		
 		// Creating labels
@@ -882,12 +910,12 @@ public class Windows {
 		lblChooseCs.setBounds(56, 315, 77, 14);
 		shiftPanel.add(lblChooseCs);
 		
-		JLabel lblDate = new JLabel("Date");
-		lblDate.setBounds(56, 346, 46, 14);
+		JLabel lblDate = new JLabel("Starts");
+		lblDate.setBounds(56, 346, 67, 14);
 		shiftPanel.add(lblDate);
 		
-		JLabel lblTime = new JLabel("Time");
-		lblTime.setBounds(56, 378, 46, 14);
+		JLabel lblTime = new JLabel("Ends");
+		lblTime.setBounds(56, 378, 67, 14);
 		shiftPanel.add(lblTime);
 		
 		JLabel lblShifts = new JLabel("Shifts");
@@ -897,38 +925,41 @@ public class Windows {
 
 		// creating combo  box
 		comboBox = new JComboBox( );
-		comboBox.setModel(new DefaultComboBoxModel(csAry.toArray()));
+		comboBox.setMaximumRowCount(10);
+		comboBox.setModel(new DefaultComboBoxModel( csAry.toArray()));
 		
-		comboBox.setBounds(133, 312, 86, 20);
+		comboBox.setBounds(158, 312, 86, 20);
 		shiftPanel.add(comboBox);
 		frmWindows.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{frmWindows.getContentPane()}));
 		
 		// creating text fields
 		typeShiftName = new JTextField();
-		typeShiftName.setBounds(133, 281, 86, 20);
+		typeShiftName.setBounds(158, 281, 86, 20);
 		shiftPanel.add(typeShiftName);
-		typeShiftName.setColumns(10);
 		
-		chooseassignmentDate = new JFormattedTextField();
 		
-		chooseassignmentDate.setToolTipText("");
-		chooseassignmentDate.setBounds(133, 343, 86, 20);
-		shiftPanel.add(chooseassignmentDate);
-		chooseassignmentDate.setColumns(10);
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy/HH/mm");
+	
 		
-		chooseTime = new JTextField();
-		chooseTime.setBounds(133, 375, 86, 20);
-		shiftPanel.add(chooseTime);
-		chooseTime.setColumns(10);
+		JFormattedTextField shiftEnd = new JFormattedTextField(sdf);
+		shiftEnd.setBounds(158, 343, 89, 20);
+		shiftPanel.add(shiftEnd);
+		
+		JFormattedTextField shiftStart = new JFormattedTextField();
+		shiftStart.setBounds(158, 375, 89, 20);
+		shiftPanel.add(shiftStart);
 		
 		// save shift
 		btnAddShift.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				String newShiftName = typeShiftName.getText();
-				
-				int newtime = Integer.parseInt(chooseTime.getText());
-				
+				int newShiftName = Integer.parseInt(typeShiftName.getText());
+				CleaningSchedule schedule = (CleaningSchedule) comboBox.getSelectedItem();
+				//Date start = shiftStart.getText();
+				//Date end = shiftEnd.getText();
+
+				Shift shift = new Shift(newShiftName, null, null, null);
+				shiftListModel.addElement(shift);
 			}
 		});
 		
@@ -969,20 +1000,6 @@ public class Windows {
 		});
 		
 		
-	}
-	
-	
-	
-	
-	// date format method
-	public static Date createDate( int day, int month, int year, int hour, int minute) {
-		Date date = new Date();
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy/HH/mm");
-			try {
-				date = sdf.parse(day + "/" + month + "/" + year + "/" + hour + "/" + minute);
-			} catch (Exception e){}
-			System.err.println("date error ");
-			return date;
 	}
 }
 
