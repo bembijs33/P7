@@ -13,7 +13,7 @@ public class CleaningSchedule {
 	
 	public String toString(){
 		return " " + CsID
-			+ "  " + Name; 
+			+ "  " + Name +"           Skills Required: "+ skillRequired; 
 			
 		}
 	

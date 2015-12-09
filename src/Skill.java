@@ -14,7 +14,10 @@ public class Skill {
 		return " " + skillID + " " + skillName;
 
 	}
-	
+	public String getName(){
+		return skillName;
+		
+	}
 	public void changeName(String newName){
 		skillName=newName;
 	}
