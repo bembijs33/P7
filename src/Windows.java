@@ -245,7 +245,7 @@ public class Windows {
 		
 		
 		JButton btnUpdate = new JButton("Update");
-		btnUpdate.setBounds(272, 216, 89, 23);
+		btnUpdate.setBounds(251, 217, 89, 23);
 		skillPanel.add(btnUpdate);
 		
 		
