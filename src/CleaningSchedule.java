@@ -11,12 +11,15 @@ public class CleaningSchedule {
 		this.Name = name;
 		}
 	
+	
 	public String toString(){
 		return " " + CsID
 			+ "  " + Name +"           Skills Required: "+ skillRequired; 
 			
 		}
-	
+	public String getName(){
+		return Name;
+	}
 	public void AddSkill(Skill skill) {
 		skillRequired.add(skill);
 		}

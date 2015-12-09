@@ -138,7 +138,9 @@ public class Main {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy/HH/mm");
 			try {
 				date = sdf.parse(day + "/" + month + "/" + year + "/" + hour + "/" + minute);
-			} catch (Exception e){}
+			} catch (Exception e){
+				
+			}
 			System.err.println("date error ");
 			return date;
 	}

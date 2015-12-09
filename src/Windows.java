@@ -22,6 +22,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,6 +35,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.DateFormatter;
 
 import java.awt.FlowLayout;
 
@@ -67,17 +69,7 @@ public class Windows {
 	private JTable table;
 
 	
-	public static Date createDate( int day, int month, int year, int hour, int minute) {
-		Date date = new Date();
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy/HH/mm");
-			try {
-				date = sdf.parse(day + "/" + month + "/" + year + "/" + hour + "/" + minute);
-			} catch (Exception e){}
-			System.err.println("date error ");
-			return date;
-	}
-	
-	
+		
 	
 	/**
 	 * Launch the application.
@@ -220,7 +212,7 @@ public class Windows {
 		
 		JButton btnSaveSkill = new JButton("Save New");
 		btnSaveSkill.setToolTipText("Write new ID & name. Click \u2018Save\u2019 to add new skill to list.");
-		btnSaveSkill.setBounds(155, 340, 86, 23);
+		btnSaveSkill.setBounds(155, 340, 100, 23);
 		skillPanel.add(btnSaveSkill);
 		
 		JButton btnUpdate = new JButton("Edit");
@@ -407,7 +399,7 @@ public class Windows {
 		// Creating buttons
 		JButton Saveemployeeinfo = new JButton("Save New");
 		Saveemployeeinfo.setToolTipText("Write first name, last name, phone number & checkmark skill(s). Click \u2018Save\u2019 to save changes.");
-		Saveemployeeinfo.setBounds(152, 490, 97, 23);
+		Saveemployeeinfo.setBounds(152, 490, 115, 23);
 		empPanel.add(Saveemployeeinfo);
 				
 		JButton Deleteemployee = new JButton("Delete");
@@ -658,7 +650,7 @@ public class Windows {
 		
 		JButton AddCS = new JButton("Save New");
 		AddCS.setToolTipText("Write new ID, name & checkmark skill(s). Click \u2018Save\u2019 to add new cleaning schedule to list.");
-		AddCS.setBounds(148, 462, 89, 23);
+		AddCS.setBounds(148, 462, 106, 23);
 		csPanel.add(AddCS);
 		
 		JButton btnUpdate_2 = new JButton("Edit");
@@ -829,7 +821,7 @@ public class Windows {
 		tabbedPane.addTab("Shift", null, shiftPanel, null);
 		shiftPanel.setLayout(null);
 		
-		JList shiftList = new JList();
+		JList shiftList = new JList(shiftListModel);
 		shiftList.setBounds(37, 11, 193, 162);
 		shiftPanel.add(shiftList);
 		
@@ -852,7 +844,7 @@ public class Windows {
 		
 		JButton btnAddShift = new JButton("Save New");
 		btnAddShift.setToolTipText("Write new name, date, time & choose CS. Click \u2018Save\u2019 to save changes.");
-		btnAddShift.setBounds(155, 415, 89, 23);
+		btnAddShift.setBounds(155, 415, 106, 23);
 		shiftPanel.add(btnAddShift);
 		
 		JButton btnEditShift = new JButton("Edit");
@@ -887,28 +879,67 @@ public class Windows {
 		csComBx.setMaximumRowCount(10);
 		
 		//setting combobox to default model to display CS
-		csComBx.setModel(new DefaultComboBoxModel( csAry.toArray()));
+		csComBx.setModel(new DefaultComboBoxModel<Object>( csAry.toArray()));
 		
-		csComBx.setBounds(158, 312, 422, 20);
+		csComBx.setBounds(155, 312, 422, 20);
 		shiftPanel.add(csComBx);
 		frmWindows.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{frmWindows.getContentPane()}));
 		
 		
 		// creating text fields
 		typeShiftName = new JTextField();
-		typeShiftName.setBounds(158, 281, 86, 20);
+		typeShiftName.setBounds(155, 284, 86, 20);
 		shiftPanel.add(typeShiftName);
 		
-		// creting simple data format that will be applied to the Formated text fields, that takes/shows date for Shift
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy/HH/mm");
-			
-		JFormattedTextField shiftStartsField = new JFormattedTextField(sdf);
-		shiftStartsField.setBounds(158, 343, 89, 20);
-		shiftPanel.add(shiftStartsField);
+		JComboBox comboBoxDay = new JComboBox();
+		comboBoxDay.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"}));
+		comboBoxDay.setBounds(155, 343, 41, 20);
+		shiftPanel.add(comboBoxDay);
 		
-		JFormattedTextField shiftEndsField = new JFormattedTextField();
-		shiftEndsField.setBounds(158, 375, 89, 20);
-		shiftPanel.add(shiftEndsField);
+		JComboBox comboBoxDayE = new JComboBox();
+		comboBoxDayE.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"}));
+		comboBoxDayE.setBounds(155, 375, 41, 20);
+		shiftPanel.add(comboBoxDayE);
+		
+		JComboBox comboBoxMonth = new JComboBox();
+		comboBoxMonth.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"}));
+		comboBoxMonth.setBounds(206, 343, 35, 20);
+		shiftPanel.add(comboBoxMonth);
+		
+		JComboBox comboBoxMonthE = new JComboBox();
+		comboBoxMonthE.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"}));
+		comboBoxMonthE.setBounds(206, 375, 35, 20);
+		shiftPanel.add(comboBoxMonthE);
+		
+		JComboBox comboBoxYear = new JComboBox();
+		comboBoxYear.setModel(new DefaultComboBoxModel(new String[] {"2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2022", "2023", "2024", "2025"}));
+		comboBoxYear.setBounds(251, 343, 58, 20);
+		shiftPanel.add(comboBoxYear);
+		
+		JComboBox comboBoxYearE = new JComboBox();
+		comboBoxYearE.setModel(new DefaultComboBoxModel(new String[] {"2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2022", "2023", "2024", "2025"}));
+		comboBoxYearE.setBounds(251, 375, 58, 20);
+		shiftPanel.add(comboBoxYearE);
+		
+		JComboBox comboBoxH = new JComboBox();
+		comboBoxH.setModel(new DefaultComboBoxModel(new String[] {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"}));
+		comboBoxH.setBounds(337, 343, 35, 20);
+		shiftPanel.add(comboBoxH);
+		
+		JComboBox comboBoxHE = new JComboBox();
+		comboBoxHE.setModel(new DefaultComboBoxModel(new String[] {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"}));
+		comboBoxHE.setBounds(337, 375, 35, 20);
+		shiftPanel.add(comboBoxHE);
+		
+		JComboBox comboBoxM = new JComboBox();
+		comboBoxM.setModel(new DefaultComboBoxModel(new String[] {"00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"}));
+		comboBoxM.setBounds(382, 343, 41, 20);
+		shiftPanel.add(comboBoxM);
+		
+		JComboBox comboBoxME = new JComboBox();
+		comboBoxME.setModel(new DefaultComboBoxModel(new String[] {"00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"}));
+		comboBoxME.setBounds(382, 375, 41, 20);
+		shiftPanel.add(comboBoxME);
 		
 		
 		
@@ -917,11 +948,32 @@ public class Windows {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int newShiftName = Integer.parseInt(typeShiftName.getText());
-				csComBx.getSelectedItem();
-
-				Shift shift = new Shift(newShiftName, null, null, null);
-				shiftListModel.addElement(shift);
-				shiftAry.add(shift);
+				CleaningSchedule schedule=(CleaningSchedule) csComBx.getSelectedItem();
+				
+			
+				
+				
+				int day= Integer.parseInt(comboBoxDay.getSelectedItem().toString()); 
+				int month=Integer.parseInt(comboBoxMonth.getSelectedItem().toString());  
+				int year =Integer.parseInt(comboBoxYear.getSelectedItem().toString()); 
+				int hour=Integer.parseInt(comboBoxH.getSelectedItem().toString()); 
+				int minute = Integer.parseInt(comboBoxM.getSelectedItem().toString()); 
+				int dayE=Integer.parseInt(comboBoxDayE.getSelectedItem().toString());  
+				int monthE=Integer.parseInt(comboBoxMonthE.getSelectedItem().toString());  
+				int yearE =Integer.parseInt(comboBoxYearE.getSelectedItem().toString()); 
+				int hourE=Integer.parseInt(comboBoxHE.getSelectedItem().toString()); 
+				int minuteE =Integer.parseInt(comboBoxME.getSelectedItem().toString()); 
+				
+				
+				Date newStart = createDate(day,month,year,hour,minute);
+				Date newEnd = createDate(dayE,monthE,yearE,hourE,minuteE);
+				
+				Shift tempShift = new Shift(newShiftName, newStart, newEnd, schedule);
+				
+				
+				shiftListModel.addElement(tempShift);
+				shiftAry.add(tempShift);
+				System.out.println(shiftAry);
 			}
 		});
 		
@@ -940,8 +992,8 @@ public class Windows {
 				shiftListModel.getElementAt(tempShiftInd);
 				
 				typeShiftName.setText(String.valueOf(shiftName));
-				shiftStartsField.setText(String.valueOf(shiftStart));
-				shiftEndsField.setText(String.valueOf(shiftEnd));
+				//shiftStartsField.setText(String.valueOf(shiftStart));
+				//shiftEndsField.setText(String.valueOf(shiftEnd));
 				
 				csComBx.setSelectedIndex(tempShiftInd);
 				
@@ -1022,7 +1074,18 @@ public class Windows {
 			return csSkillPanel;
 	}
 	
+	public static Date createDate( int day, int month, int year, int hour, int minute) {
+		Date date = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy/HH/mm");
+			try {
+				date = sdf.parse(day + "/" + month + "/" + year + "/" + hour + "/" + minute);
+			} catch (Exception e){}
+			System.err.println("date error ");
+			return date;
+	}
 		
+	
+	
 	private static void addPopup(Component component, final JPopupMenu popup) {
 		component.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {

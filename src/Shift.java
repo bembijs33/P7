@@ -14,6 +14,10 @@ public class Shift {
 		this.Schedule = schedule;
 
 	}
+	
+	public String toString(){
+		return " " + shiftID+ "  "+ Start +"  " + End+ "  Schedule" ;
+	}
 
 	// change ID
 	public void changeShiftID(int newID){
@@ -36,6 +40,8 @@ public class Shift {
 	}
 
 	public void addEmployee() {
+		
+		
 
 	}
 }
