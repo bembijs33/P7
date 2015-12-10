@@ -195,6 +195,7 @@ public class Windows {
 		
 		
 		JButton btnAddEmp = new JButton("Add employee to Shift");
+		btnAddEmp.setToolTipText("Click on a shift. Select an employee from the list. Click \u2018Add employee to shift\u2019.");
 		btnAddEmp.setBounds(69, 389, 139, 23);
 		wsPanel.add(btnAddEmp);
 		
@@ -237,16 +238,17 @@ public class Windows {
 		skillPanel.add(btnDelete);
 		
 		JButton btnEdit = new JButton("Update");
-		btnEdit.setToolTipText("Select skill from list. Write ID & name. Click \u2018Edit\u2019 to save changes.");
+		btnEdit.setToolTipText("Select skill from list. Write ID & name. Click \u2018Update\u2019 to save changes.");
 		btnEdit.setBounds(57, 340, 89, 23);
 		skillPanel.add(btnEdit);
 		
 		JButton btnSaveSkill = new JButton("Save New");
-		btnSaveSkill.setToolTipText("Write new ID & name. Click \u2018Save\u2019 to add new skill to list.");
+		btnSaveSkill.setToolTipText("Write new ID & name. Click \u2018Save New\u2019 to add new skill to list.");
 		btnSaveSkill.setBounds(155, 340, 100, 23);
 		skillPanel.add(btnSaveSkill);
 		
 		JButton btnUpdate = new JButton("Edit");
+		btnUpdate.setToolTipText("Select skill from list. Click 'Edit' to view info.");
 		btnUpdate.setBounds(57, 217, 89, 23);
 		skillPanel.add(btnUpdate);
 		
@@ -429,7 +431,7 @@ public class Windows {
 		
 		// Creating buttons
 		JButton Saveemployeeinfo = new JButton("Save New");
-		Saveemployeeinfo.setToolTipText("Write first name, last name, phone number & checkmark skill(s). Click \u2018Save\u2019 to save changes.");
+		Saveemployeeinfo.setToolTipText("Write first name, last name, phone number & checkmark skill(s). Click \u2018Save New\u2019 to save changes.");
 		Saveemployeeinfo.setBounds(152, 490, 115, 23);
 		empPanel.add(Saveemployeeinfo);
 				
@@ -439,12 +441,13 @@ public class Windows {
 		empPanel.add(Deleteemployee);
 	
 		JButton editemployee = new JButton("Update");
-		editemployee.setToolTipText("Select employee from list. Write first name, last name, phone number & checkmark skill(s). Click \u2018Edit\u2019 to save changes.");
+		editemployee.setToolTipText("Select employee from list. Write first name, last name, phone number & checkmark skill(s). Click \u2018Update\u2019 to save changes.");
 		editemployee.setBounds(51, 490, 89, 23);
 		empPanel.add(editemployee);
 		
 		
 		JButton btnUpdate_1 = new JButton("Edit");
+		btnUpdate_1.setToolTipText("Select employee from list. Click 'Edit' to view info.");
 		btnUpdate_1.setBounds(51, 286, 89, 23);
 		empPanel.add(btnUpdate_1);
 		
@@ -664,7 +667,7 @@ public class Windows {
 		csPanel.add(DeleteCS);
 		
 		JButton EditCS = new JButton("Update");
-		EditCS.setToolTipText("Select cleaning schedule from list. Write new ID, name & checkmark skill(s). Click \u2018Edit\u2019 to save changes.");
+		EditCS.setToolTipText("Select cleaning schedule from list. Write new ID, name & checkmark skill(s). Click \u2018Update\u2019 to save changes.");
 		EditCS.setBounds(49, 462, 89, 23);
 		csPanel.add(EditCS);
 		
@@ -679,11 +682,12 @@ public class Windows {
 		csPanel.add(csNameField);
 		
 		JButton AddCS = new JButton("Save New");
-		AddCS.setToolTipText("Write new ID, name & checkmark skill(s). Click \u2018Save\u2019 to add new cleaning schedule to list.");
+		AddCS.setToolTipText("Write new ID, name & checkmark skill(s). Click \u2018Save New\u2019 to add new cleaning schedule to list.");
 		AddCS.setBounds(148, 462, 106, 23);
 		csPanel.add(AddCS);
 		
 		JButton btnUpdate_2 = new JButton("Edit");
+		btnUpdate_2.setToolTipText("Select cleaning schedule from list. Click 'Edit' to view info.");
 		btnUpdate_2.setBounds(49, 287, 89, 23);
 		csPanel.add(btnUpdate_2);
 		
@@ -863,7 +867,7 @@ public class Windows {
 		
 		//Creating buttons		
 		JButton btnEdit_1 = new JButton("Update");
-		btnEdit_1.setToolTipText("Select shift from list. Write name, date, time & choose CS. Click \u2018Edit\u2019 to save changes.");
+		btnEdit_1.setToolTipText("Select shift from list. Write name, date, time & choose CS. Click \u2018Update\u2019 to save changes.");
 		btnEdit_1.setBounds(56, 415, 89, 23);
 		shiftPanel.add(btnEdit_1);
 		
@@ -873,11 +877,12 @@ public class Windows {
 		shiftPanel.add(btnDelete_2);
 		
 		JButton btnAddShift = new JButton("Save New");
-		btnAddShift.setToolTipText("Write new name, date, time & choose CS. Click \u2018Save\u2019 to save changes.");
+		btnAddShift.setToolTipText("Write new name, date, time & choose CS. Click \u2018Save New\u2019 to save changes.");
 		btnAddShift.setBounds(155, 415, 106, 23);
 		shiftPanel.add(btnAddShift);
 		
 		JButton btnEditShift = new JButton("Edit");
+		btnEditShift.setToolTipText("Select shift from list. Click 'Edit' to view info.");
 		btnEditShift.setBounds(56, 250, 89, 23);
 		shiftPanel.add(btnEditShift);
 		
