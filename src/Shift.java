@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Shift {
@@ -6,6 +7,7 @@ public class Shift {
 	Date Start;
 	Date End;
 	CleaningSchedule Schedule;
+	ArrayList<Employee> assignedEmpAry = new ArrayList<Employee>();
 
 	public Shift(int id, Date start, Date end, CleaningSchedule schedule) {
 		this.shiftID = id;
@@ -16,9 +18,23 @@ public class Shift {
 	}
 	
 	public String toString(){
-		return " " + shiftID+ "  "+ Start +"  " + End+ "  Schedule" ;
+		return " " + shiftID+ " From:  "+ Start +"  Till:   " + End +  Schedule ;
 	}
 
+	public void setId(int shiftID){
+		this.shiftID = shiftID; 
+	}
+	
+	public void setStartDate(Date Start){
+	this.Start=Start;}
+	public void setEndDate(Date End){
+		this.End=End;
+	}
+	public void setSchedule (CleaningSchedule schedule){
+		this.Schedule=schedule;
+	}
+	
+	
 	// change ID
 	public void changeShiftID(int newID){
 		shiftID=newID;
@@ -35,11 +51,13 @@ public class Shift {
 	}
 	
 
-	public void getCleaningScheduleID() {
-
-	}
-
-	public void addEmployee() {
+	public void addEmployee(Employee emp) {
+		// get schedule ID
+		// get schedule skillRequiredAry
+		
+		
+		//emp.empSkillAry.contains(Schedule required skills)
+		assignedEmpAry.add(emp);
 		
 		
 

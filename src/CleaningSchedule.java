@@ -4,7 +4,7 @@ public class CleaningSchedule {
 
 	String Name;
 	int CsID;
-	ArrayList<Skill> skillRequired = new ArrayList<Skill>();
+	public ArrayList<Skill> skillRequiredAry = new ArrayList<Skill>();
 
 	public CleaningSchedule(int CsID, String name) {
 		this.CsID = CsID;
@@ -14,14 +14,19 @@ public class CleaningSchedule {
 	
 	public String toString(){
 		return " " + CsID
-			+ "  " + Name +"           Skills Required: "+ skillRequired; 
+			+ "  " + Name +"           Skills Required: "+ skillRequiredAry; 
 			
 		}
 	public String getName(){
 		return Name;
 	}
+	public int getCsID(){
+		return CsID;
+	}
+	
+	
 	public void AddSkill(Skill skill) {
-		skillRequired.add(skill);
+		skillRequiredAry.add(skill);
 		}
 	
 	//Creating a method that adds cleaning schedules to the schedule arrayList... 

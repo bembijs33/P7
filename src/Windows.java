@@ -30,14 +30,20 @@ import java.util.List;
 import javax.swing.JComboBox;
 import java.awt.Font;
 import javax.swing.JPopupMenu;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JTable;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import javax.swing.text.DateFormatter;
 
 import java.awt.FlowLayout;
+import java.awt.Color;
 
 
 public class Windows {
@@ -64,10 +70,13 @@ public class Windows {
 	DefaultTableModel  scheduleTabelModel = new DefaultTableModel (); 
 	
 	private JComboBox csComBx;
+	
 	private JPanel cbpanel;
 	private JPanel csSkillPanel;
-	private JTable table;
+	private JTable shiftTable;
 
+//	private static ArrayList<ArrayList<String>> table = new ArrayList();
+	
 	
 		
 	
@@ -114,6 +123,17 @@ public class Windows {
 			csAry.add(cs2);
 			csListModel.addElement(cs2);
 				
+			
+			//Creating a date  shift
+		Date start = createDate(2015, 9, 9, 12, 00);
+			Date end = createDate(2015, 10, 9, 18, 00);
+			
+			//Creating a shift
+			Shift shift00001 = new Shift(00001, start, end, cs1);
+			shiftAry.add(shift00001);
+			shiftListModel.addElement(shift00001);
+			
+			
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -163,24 +183,35 @@ public class Windows {
 		tabbedPane.addTab("Work Schedule", null, wsPanel, null);
 		wsPanel.setLayout(null);
 		
-		JScrollPane tableScrollPane = new JScrollPane();
-		tableScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-		tableScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		tableScrollPane.setBounds(69, 69, 555, 278);
-		wsPanel.add(tableScrollPane);
 		
-		table = new JTable();
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"Shift name", "Cleaning Schedule", "Starts", "Ends", "Assigned employee"
-			}
-		));
-		table.getColumnModel().getColumn(1).setPreferredWidth(106);
-		table.getColumnModel().getColumn(4).setPreferredWidth(103);
-		tableScrollPane.setViewportView(table);
-		scheduleTabelModel.addColumn(3);
+		JList wsList = new JList(shiftListModel);
+		
+		JScrollPane wsScrollPanel = new JScrollPane(wsList);
+		wsScrollPanel.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		wsScrollPanel.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		wsScrollPanel.setBounds(10, 69, 669, 278);
+		wsPanel.add(wsScrollPanel);
+		
+		
+		
+		JButton btnAddEmp = new JButton("Add employee to Shift");
+		btnAddEmp.setBounds(69, 389, 139, 23);
+		wsPanel.add(btnAddEmp);
+		
+		JLabel lblWorkGod = new JLabel("Work, god dammit !!!!");
+		lblWorkGod.setForeground(Color.RED);
+		lblWorkGod.setFont(new Font("Comic Sans MS", Font.BOLD, 30));
+		lblWorkGod.setBounds(112, 11, 395, 47);
+		wsPanel.add(lblWorkGod);
+		
+		JComboBox availableEmp = new JComboBox<Object>();
+		availableEmp.setBounds(69, 358, 139, 20);
+		availableEmp.setModel(new DefaultComboBoxModel<Object>( empAry.toArray()));
+
+			wsPanel.add(availableEmp);
+	
+	
+		
 	
 		//////////////////////////// SKILL TAB ////////////////////////////////////////////////////
 		
@@ -562,42 +593,41 @@ public class Windows {
 			
 				Employee tempEmp = (Employee) employeeList.getSelectedValue();
 				int tempEmpID =employeeList.getSelectedIndex();
-				for (int i=0; i<chbxList.size(); i++){
-					if ( chbxList.get(i).isSelected()){
-						for (int j=0; j<skillAry.size(); j++){
-							
-							if (skillAry.get(j).skillName.equals(chbxList.get(i).getName())){
-								tempEmp.AddSkill(skillAry.get(j));
-								employeeListModel.setElementAt(tempEmp, tempEmpID);
-								empAry.set(tempEmpID, tempEmp);
+				
+					for (int i=0; i<chbxList.size(); i++){
+						if ( chbxList.get(i).isSelected()){
+							for (int j=0; j<skillAry.size(); j++){
+								
+								if (skillAry.get(j).skillName.equals(chbxList.get(i).getName())){
+									
+										
+											tempEmp.AddSkill(skillAry.get(j));
+											
+									}
+									
+								}
+								chbxList.get(i).setSelected(false);
 							}
-						}
+							
 						
 					}
-				}
-				
-				
 					if (!nameOfEmployee.getText().isEmpty() ){
 							String newName = nameOfEmployee.getText();
 							tempEmp.changeFirstName(newName);
-							employeeListModel.setElementAt(tempEmp, tempEmpID);
-							empAry.set(tempEmpID, tempEmp);
 							nameOfEmployee.setText("");
 					}
 					if (!lastName.getText().isEmpty() ){
 							String newLastName = lastName.getText();
 							tempEmp.changeLastName(newLastName);
-							employeeListModel.setElementAt(tempEmp, tempEmpID);
-							empAry.set(tempEmpID, tempEmp);
 							lastName.setText("");
 							}
 					if (!phoneNumber.getText().isEmpty() ){
 							int newphone = Integer.parseInt (phoneNumber.getText());
 							tempEmp.changePhoneNumber(newphone);
-							employeeListModel.setElementAt(tempEmp, tempEmpID);
-							empAry.set(tempEmpID, tempEmp);
 							phoneNumber.setText("");
 							}
+					employeeListModel.setElementAt(tempEmp, tempEmpID);
+					empAry.set(tempEmpID, tempEmp);
 					
 					System.out.println(empAry);
 					System.out.println(skillAry);
@@ -881,7 +911,7 @@ public class Windows {
 		//setting combobox to default model to display CS
 		csComBx.setModel(new DefaultComboBoxModel<Object>( csAry.toArray()));
 		
-		csComBx.setBounds(155, 312, 422, 20);
+		csComBx.setBounds(155, 312, 456, 20);
 		shiftPanel.add(csComBx);
 		frmWindows.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{frmWindows.getContentPane()}));
 		
@@ -892,53 +922,53 @@ public class Windows {
 		shiftPanel.add(typeShiftName);
 		
 		JComboBox comboBoxDay = new JComboBox();
-		comboBoxDay.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"}));
-		comboBoxDay.setBounds(155, 343, 41, 20);
+		comboBoxDay.setModel(new DefaultComboBoxModel(new String[] {"Day", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"}));
+		comboBoxDay.setBounds(155, 343, 51, 20);
 		shiftPanel.add(comboBoxDay);
 		
 		JComboBox comboBoxDayE = new JComboBox();
-		comboBoxDayE.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"}));
-		comboBoxDayE.setBounds(155, 375, 41, 20);
+		comboBoxDayE.setModel(new DefaultComboBoxModel(new String[] {"Day", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"}));
+		comboBoxDayE.setBounds(155, 375, 51, 20);
 		shiftPanel.add(comboBoxDayE);
 		
 		JComboBox comboBoxMonth = new JComboBox();
-		comboBoxMonth.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"}));
-		comboBoxMonth.setBounds(206, 343, 35, 20);
+		comboBoxMonth.setModel(new DefaultComboBoxModel(new String[] {"Month", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"}));
+		comboBoxMonth.setBounds(216, 343, 58, 20);
 		shiftPanel.add(comboBoxMonth);
 		
 		JComboBox comboBoxMonthE = new JComboBox();
-		comboBoxMonthE.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"}));
-		comboBoxMonthE.setBounds(206, 375, 35, 20);
+		comboBoxMonthE.setModel(new DefaultComboBoxModel(new String[] {"Month", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"}));
+		comboBoxMonthE.setBounds(216, 375, 58, 20);
 		shiftPanel.add(comboBoxMonthE);
 		
 		JComboBox comboBoxYear = new JComboBox();
-		comboBoxYear.setModel(new DefaultComboBoxModel(new String[] {"2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2022", "2023", "2024", "2025"}));
-		comboBoxYear.setBounds(251, 343, 58, 20);
+		comboBoxYear.setModel(new DefaultComboBoxModel(new String[] {"Year", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2022", "2023", "2024", "2025"}));
+		comboBoxYear.setBounds(284, 343, 58, 20);
 		shiftPanel.add(comboBoxYear);
 		
 		JComboBox comboBoxYearE = new JComboBox();
-		comboBoxYearE.setModel(new DefaultComboBoxModel(new String[] {"2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2022", "2023", "2024", "2025"}));
-		comboBoxYearE.setBounds(251, 375, 58, 20);
+		comboBoxYearE.setModel(new DefaultComboBoxModel(new String[] {"Year", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2022", "2023", "2024", "2025"}));
+		comboBoxYearE.setBounds(284, 375, 58, 20);
 		shiftPanel.add(comboBoxYearE);
 		
 		JComboBox comboBoxH = new JComboBox();
-		comboBoxH.setModel(new DefaultComboBoxModel(new String[] {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"}));
-		comboBoxH.setBounds(337, 343, 35, 20);
+		comboBoxH.setModel(new DefaultComboBoxModel(new String[] {"Hour", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"}));
+		comboBoxH.setBounds(372, 343, 51, 20);
 		shiftPanel.add(comboBoxH);
 		
 		JComboBox comboBoxHE = new JComboBox();
-		comboBoxHE.setModel(new DefaultComboBoxModel(new String[] {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"}));
-		comboBoxHE.setBounds(337, 375, 35, 20);
+		comboBoxHE.setModel(new DefaultComboBoxModel(new String[] {"Hour", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"}));
+		comboBoxHE.setBounds(372, 375, 51, 20);
 		shiftPanel.add(comboBoxHE);
 		
 		JComboBox comboBoxM = new JComboBox();
-		comboBoxM.setModel(new DefaultComboBoxModel(new String[] {"00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"}));
-		comboBoxM.setBounds(382, 343, 41, 20);
+		comboBoxM.setModel(new DefaultComboBoxModel(new String[] {"Minute", "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"}));
+		comboBoxM.setBounds(428, 343, 58, 20);
 		shiftPanel.add(comboBoxM);
 		
 		JComboBox comboBoxME = new JComboBox();
-		comboBoxME.setModel(new DefaultComboBoxModel(new String[] {"00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"}));
-		comboBoxME.setBounds(382, 375, 41, 20);
+		comboBoxME.setModel(new DefaultComboBoxModel(new String[] {"Minute", "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"}));
+		comboBoxME.setBounds(428, 375, 58, 20);
 		shiftPanel.add(comboBoxME);
 		
 		
