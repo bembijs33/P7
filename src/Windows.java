@@ -57,7 +57,8 @@ public class Windows {
 	static ArrayList<Assignment> assignmentAry = new ArrayList<Assignment>();
 	static ArrayList<Shift> shiftAry = new ArrayList<Shift>();
 	static ArrayList<CleaningSchedule> csAry = new ArrayList<CleaningSchedule>();
-	
+	static private ArrayList <Employee> availableEmpAry =new ArrayList<>();
+	static private ArrayList<Skill> tempShiftSkillAry	=new ArrayList<>();
 	
 	//List models to handle lists
 	private static DefaultListModel<Employee> employeeListModel = new DefaultListModel<Employee>();
@@ -86,11 +87,12 @@ public class Windows {
 	public static void main(String[] args) {
 		Employee e1 = new Employee ("Bob", "Fan", 123456);
 			
-		//	Employee e2 = new Employee ("Kun", "Foo", 123456);
+		Employee e2 = new Employee ("Kun", "Foo", 123456);
 		empAry.add(e1);
+		empAry.add(e2);
 		employeeListModel.addElement(e1);
+		employeeListModel.addElement(e2);
 		
-			
 			Skill skill1 = new Skill("Basic", 1);
 			Skill skill2 = new Skill("Dialysis", 2);
 			Skill skill3 = new Skill("Kitchen Morning", 3);
@@ -122,6 +124,7 @@ public class Windows {
 			csListModel.addElement(cs1);
 			csAry.add(cs2);
 			csListModel.addElement(cs2);
+			cs1.skillRequiredAry.add(skill1);
 				
 			
 			//Creating a date  shift
@@ -206,12 +209,76 @@ public class Windows {
 		wsPanel.add(lblWorkGod);
 		
 		JComboBox availableEmp = new JComboBox<Object>();
+		
+		
 		availableEmp.setBounds(69, 358, 139, 20);
-		availableEmp.setModel(new DefaultComboBoxModel<Object>( empAry.toArray()));
+		//availableEmp.setModel(new DefaultComboBoxModel<Object>( empAry.toArray()));
 
 			wsPanel.add(availableEmp);
-	
-	
+			
+		
+			
+		//// Populating ComboBox availableEmp with employees, that has required skill
+			wsList.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					//Deleting all the elements form the array
+					availableEmpAry.clear();
+					//making sure that there is one shift selected
+					if (!wsList.isSelectionEmpty()){
+						// gets an exact shift
+						Shift tempShift=  (Shift) wsList.getSelectedValue(); 
+					
+						
+						// looping through cleaning schedule required skills
+					for(int i=0; i<tempShift.Schedule.skillRequiredAry.size(); i++){ 
+						// looping through all the employees
+						for (int j=0; j<empAry.size(); j++){
+							//Checking if employee skill array has an exact skill for cs
+								if (empAry.get(j).empSkillAry.containsAll(tempShift.Schedule.skillRequiredAry)){
+									//adding employee to array
+									availableEmpAry.add(empAry.get(j));
+									//setting availableEmpAry as ComboBox elements
+									availableEmp.setModel(new DefaultComboBoxModel<Object>( availableEmpAry.toArray()));
+									
+								
+								}
+								
+							}
+						}		
+					}
+				}
+			});
+			
+			
+			
+		//// Adding emp to CS in Work Schedule panel	
+			
+			btnAddEmp.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+				
+					Employee tempEmp = (Employee) availableEmp.getSelectedItem();
+					
+					Shift tempShift = (Shift) wsList.getSelectedValue();
+					
+					tempShift.assigneEmpToShift(tempEmp);
+					wsList.updateUI();
+					wsList.clearSelection();
+					availableEmpAry.clear();
+					availableEmp.setModel(new DefaultComboBoxModel<Object>( availableEmpAry.toArray()));
+					
+					System.out.println(tempShift.assignedEmpAry);
+					//TODO: 
+					/*
+					 * Get tempEmp id from the ComboBox availableEmp
+					 * compare his skillAry, to shift required array list
+					 * 	if equals(). 
+					 * 	shift.add(tempEmp)
+					 * 
+					 * */
+				}
+			});
 		
 	
 		//////////////////////////// SKILL TAB ////////////////////////////////////////////////////
@@ -352,7 +419,6 @@ public class Windows {
 			
 				skillListModel.addElement(tempSkill);
 				skillAry.add(tempSkill);
-				System.out.println(skillAry);
 				repaintChBx();
 				repaintShiftChBx();
 				}
@@ -842,8 +908,10 @@ public class Windows {
 						csListModel.setElementAt(tempCS, tempCSID);
 						csAry.set(tempCSID, tempCS);
 						}
+					
 					csNameField.setText("");
 					csIdField.setText("");
+					
 					}
 			});
 		
@@ -926,6 +994,8 @@ public class Windows {
 		typeShiftName.setBounds(155, 284, 86, 20);
 		shiftPanel.add(typeShiftName);
 		
+		
+		
 		JComboBox comboBoxDay = new JComboBox();
 		comboBoxDay.setModel(new DefaultComboBoxModel(new String[] {"Day", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"}));
 		comboBoxDay.setBounds(155, 343, 51, 20);
@@ -977,7 +1047,21 @@ public class Windows {
 		shiftPanel.add(comboBoxME);
 		
 		
+		// checking for INT in name field 
 		
+		typeShiftName.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c=e.getKeyChar();
+				if(!(Character.isDigit(c) || (c==KeyEvent.VK_BACK_SPACE) || c==KeyEvent.VK_DELETE)){		
+					Toolkit.getDefaultToolkit().beep();
+					JOptionPane.showMessageDialog(skillIDField, "Please enter numbers! ");
+					e.consume();// if wrong argument it is deleted
+				
+				
+			}
+			}
+		});
 		// save shift
 		btnAddShift.addMouseListener(new MouseAdapter() {
 			@Override

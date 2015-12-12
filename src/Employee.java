@@ -13,12 +13,17 @@ public class Employee {
 		this.phoneNumber=phoneNumber;
 		}
 
+	public String getSkillName( int x){
+		return empSkillAry.get(x).skillName;
+	}
 	public String toString(){
 		return " " + firstName
 			+ "      " + lastName + "       Phone:   " + phoneNumber + "    Skill   " + empSkillAry.toString();
 			
 		}
-	
+	public String toStringName(){
+		return " " +firstName + "    " +lastName;
+	}
 	// Adding skill to employees skill list
 	public void AddSkill(Skill skill) {
 		/*for (int i=0; i<empSkillAry.size(); i++) {

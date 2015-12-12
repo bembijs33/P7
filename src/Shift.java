@@ -1,5 +1,9 @@
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+
+import com.sun.javafx.scene.transform.TransformUtils;
 
 public class Shift {
 
@@ -18,7 +22,22 @@ public class Shift {
 	}
 	
 	public String toString(){
-		return " " + shiftID+ " From:  "+ Start +"  Till:   " + End +  Schedule ;
+		
+		String emp = null; 
+		if (assignedEmpAry.isEmpty()){
+			emp="No employee assigned";
+		}
+		else{
+			
+			for(int i=0;i<assignedEmpAry.size();i++){
+				String tempEmp= assignedEmpAry.get(i).toStringName();
+				emp=tempEmp;
+			}
+			
+		
+		}
+		
+		return " " + shiftID+"  "+ Schedule.getName() +"    From:  "+ Start +"  Till:   " + End +"  " + emp  ;
 	}
 
 	public void setId(int shiftID){
@@ -51,7 +70,7 @@ public class Shift {
 	}
 	
 
-	public void addEmployee(Employee emp) {
+	public void assigneEmpToShift(Employee emp) {
 		// get schedule ID
 		// get schedule skillRequiredAry
 		
