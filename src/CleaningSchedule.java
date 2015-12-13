@@ -26,9 +26,11 @@ public class CleaningSchedule {
 	
 	
 	public void AddSkill(Skill skill) {
+	if(!skillRequiredAry.contains(skill)){
 		skillRequiredAry.add(skill);
-		}
-	
+	}
+				
+	}
 	//Creating a method that adds cleaning schedules to the schedule arrayList... 
 	public void AddSchedule(CleaningSchedule schedule) {
 		schedule.AddSchedule(schedule);

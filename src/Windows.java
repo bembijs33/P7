@@ -57,8 +57,8 @@ public class Windows {
 	static ArrayList<Assignment> assignmentAry = new ArrayList<Assignment>();
 	static ArrayList<Shift> shiftAry = new ArrayList<Shift>();
 	static ArrayList<CleaningSchedule> csAry = new ArrayList<CleaningSchedule>();
-	static private ArrayList <Employee> availableEmpAry =new ArrayList<>();
-	static private ArrayList<Skill> tempShiftSkillAry	=new ArrayList<>();
+	static private ArrayList <Employee> availableEmpAry =new ArrayList<Employee>();
+	
 	
 	//List models to handle lists
 	private static DefaultListModel<Employee> employeeListModel = new DefaultListModel<Employee>();
@@ -67,16 +67,17 @@ public class Windows {
 	private static DefaultListModel<Shift> shiftListModel = new DefaultListModel<Shift>();
 	private static DefaultListModel <CleaningSchedule> comboList = new DefaultListModel<>(); 
 	
+	
+	
 	List<JCheckBox> chbxList = new ArrayList<JCheckBox>();
 	DefaultTableModel  scheduleTabelModel = new DefaultTableModel (); 
 	
 	private JComboBox csComBx;
-	
 	private JPanel cbpanel;
 	private JPanel csSkillPanel;
-	private JTable shiftTable;
+	
 
-//	private static ArrayList<ArrayList<String>> table = new ArrayList();
+
 	
 	
 		
@@ -117,7 +118,7 @@ public class Windows {
 			skillListModel.addElement(skill6);
 			skillListModel.addElement(skill7);
 			
-			
+			e1.AddSkill(skill7);
 		CleaningSchedule cs1 = new CleaningSchedule(1, "Something");	
 		CleaningSchedule cs2 = new CleaningSchedule(2, "SomethingElse");	
 			csAry.add(cs1);
@@ -125,16 +126,21 @@ public class Windows {
 			csAry.add(cs2);
 			csListModel.addElement(cs2);
 			cs1.skillRequiredAry.add(skill1);
-				
+				cs2.AddSkill(skill2);
+				cs2.AddSkill(skill3);
 			
 			//Creating a date  shift
-		Date start = createDate(2015, 9, 9, 12, 00);
-			Date end = createDate(2015, 10, 9, 18, 00);
-			
+		Date start = createDate(9, 12, 2015, 12, 00);
+			Date end = createDate(9, 12, 2015, 18, 00);
+			Date start2 = createDate(10, 12, 2015, 12, 00);
+			Date end2 = createDate(9, 12, 2015, 18, 00);
 			//Creating a shift
 			Shift shift00001 = new Shift(00001, start, end, cs1);
 			shiftAry.add(shift00001);
 			shiftListModel.addElement(shift00001);
+			Shift shift00002 = new Shift(00002, start2, end2, cs2);
+			shiftAry.add(shift00002);
+			shiftListModel.addElement(shift00002);
 			
 			
 		EventQueue.invokeLater(new Runnable() {
@@ -182,6 +188,7 @@ public class Windows {
 	//////////////////////   WORK SCHEDULE TAB  ////////////////////////////////////////////////////	
 			
 		JPanel wsPanel = new JPanel();
+		
 		wsPanel.setName("");
 		tabbedPane.addTab("Work Schedule", null, wsPanel, null);
 		wsPanel.setLayout(null);
@@ -199,7 +206,7 @@ public class Windows {
 		
 		JButton btnAddEmp = new JButton("Add employee to Shift");
 		btnAddEmp.setToolTipText("Click on a shift. Select an employee from the list. Click \u2018Add employee to shift\u2019.");
-		btnAddEmp.setBounds(69, 389, 139, 23);
+		btnAddEmp.setBounds(69, 389, 159, 23);
 		wsPanel.add(btnAddEmp);
 		
 		JLabel lblWorkGod = new JLabel("Work, god dammit !!!!");
@@ -209,13 +216,21 @@ public class Windows {
 		wsPanel.add(lblWorkGod);
 		
 		JComboBox availableEmp = new JComboBox<Object>();
+		availableEmp.setBounds(69, 358, 159, 20);
+		wsPanel.add(availableEmp);
 		
 		
-		availableEmp.setBounds(69, 358, 139, 20);
-		//availableEmp.setModel(new DefaultComboBoxModel<Object>( empAry.toArray()));
-
-			wsPanel.add(availableEmp);
-			
+		
+		/// clear selection in the wsList	
+		wsPanel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				wsList.clearSelection();
+				availableEmpAry.clear();
+				availableEmp.setModel(new DefaultComboBoxModel<Object>( availableEmpAry.toArray()));
+				
+			}
+		});
 		
 			
 		//// Populating ComboBox availableEmp with employees, that has required skill
@@ -236,14 +251,24 @@ public class Windows {
 						for (int j=0; j<empAry.size(); j++){
 							//Checking if employee skill array has an exact skill for cs
 								if (empAry.get(j).empSkillAry.containsAll(tempShift.Schedule.skillRequiredAry)){
-									//adding employee to array
-									availableEmpAry.add(empAry.get(j));
+									
+									
+									//looping through assignment list
+									/*for(int z=0; z<assignmentAry.size(); z++){
+										
+										if(tempShift.Start.after(assignmentAry.get(j).End)&&tempShift.End.before(assignmentAry.get(j).Start)){
+											
+										}
+									}*/
+									
+									
+									
+									
 									//setting availableEmpAry as ComboBox elements
+									availableEmpAry.add(empAry.get(j));
 									availableEmp.setModel(new DefaultComboBoxModel<Object>( availableEmpAry.toArray()));
 									
-								
 								}
-								
 							}
 						}		
 					}
@@ -268,16 +293,17 @@ public class Windows {
 					availableEmpAry.clear();
 					availableEmp.setModel(new DefaultComboBoxModel<Object>( availableEmpAry.toArray()));
 					
-					System.out.println(tempShift.assignedEmpAry);
-					//TODO: 
-					/*
-					 * Get tempEmp id from the ComboBox availableEmp
-					 * compare his skillAry, to shift required array list
-					 * 	if equals(). 
-					 * 	shift.add(tempEmp)
-					 * 
-					 * */
+					Date start = tempShift.Start;
+					Date end = tempShift.End;
+					
+					Assignment tempAs = new Assignment(tempEmp, start, end);
+					assignmentAry.add(tempAs);
+					
+					System.out.println(assignmentAry);
+					
+					
 				}
+				
 			});
 		
 	
@@ -536,21 +562,11 @@ public class Windows {
 		lblNewLabel_1.setBounds(192, 13, 115, 14);
 		empPanel.add(lblNewLabel_1);
 		
-	
-		//// CheckBox panel///////////////
-		
 		cbpanel = new JPanel();
 		cbpanel.setBounds(51, 422, 600, 57);
 		empPanel.add(cbpanel);
 		cbpanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		//adding skill check boxes
-		for(int i=0; i<skillAry.size();i++){
-			JCheckBox box = new JCheckBox(skillAry.get(i).getName());
-			box.setName(skillAry.get(i).getName());
-			chbxList.add(box);
-			cbpanel.add(box);
-			}
 		
 		
 		// key listener to input only int and length
@@ -578,6 +594,7 @@ public class Windows {
 		btnUpdate_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				Employee tempEmp=(Employee) employeeList.getSelectedValue();
 				int tempEmpInd=employeeList.getSelectedIndex();
 				int tempEmpPh = employeeListModel.getElementAt(tempEmpInd).phoneNumber;
 				String tempEmpFirstName = employeeListModel.getElementAt(tempEmpInd).firstName;
@@ -586,6 +603,19 @@ public class Windows {
 				nameOfEmployee.setText(tempEmpFirstName);
 				lastName.setText(tempEmpLastName);
 				phoneNumber.setText(String.valueOf(tempEmpPh));
+				
+				//adding skill check boxes
+				for(int i=0; i<skillAry.size();i++){
+					JCheckBox box = new JCheckBox(skillAry.get(i).getName());
+					box.setName(skillAry.get(i).getName());
+					
+					chbxList.add(box);
+					cbpanel.add(box);
+					if(tempEmp.empSkillAry.contains(i)){
+						box.doClick();
+					}
+				}
+				empPanel.updateUI();
 				
 				}
 			});
@@ -656,10 +686,13 @@ public class Windows {
 		
 		// Edit selected employee
 
-		editemployee.addMouseListener(new MouseAdapter() {
+			
+				
+				editemployee.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 			
+					
 				Employee tempEmp = (Employee) employeeList.getSelectedValue();
 				int tempEmpID =employeeList.getSelectedIndex();
 				
@@ -667,18 +700,12 @@ public class Windows {
 						if ( chbxList.get(i).isSelected()){
 							for (int j=0; j<skillAry.size(); j++){
 								
-								if (skillAry.get(j).skillName.equals(chbxList.get(i).getName())){
-									
-										
+								if (skillAry.get(j).skillName.equals(chbxList.get(i).getName())){						
 											tempEmp.AddSkill(skillAry.get(j));
-											
 									}
-									
 								}
 								chbxList.get(i).setSelected(false);
-							}
-							
-						
+						}
 					}
 					if (!nameOfEmployee.getText().isEmpty() ){
 							String newName = nameOfEmployee.getText();
@@ -697,9 +724,10 @@ public class Windows {
 							}
 					employeeListModel.setElementAt(tempEmp, tempEmpID);
 					empAry.set(tempEmpID, tempEmp);
+					employeeList.clearSelection();
+					cbpanel.removeAll();
+					cbpanel.updateUI();
 					
-					System.out.println(empAry);
-					System.out.println(skillAry);
 				}
 						
 			});
@@ -777,17 +805,11 @@ public class Windows {
 		
 		csSkillPanel = new JPanel();
 		csSkillPanel.setBounds(49, 402, 528, 58);
-		csPanel.add(csSkillPanel);		
-		// creating check boxes
-		
-			for(int i=0; i<skillAry.size();i++){
-			JCheckBox box = new JCheckBox(skillAry.get(i).getName());
-			box.setName(skillAry.get(i).getName());
-			chbxList.add(box);
-			csSkillPanel.add(box);
-			}
-				
 		csSkillPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		csPanel.add(csSkillPanel);		
+		
+				
+		
 		
 		
 		
@@ -810,18 +832,26 @@ public class Windows {
 		//update fields
 		btnUpdate_2.addMouseListener(new MouseAdapter() {
 			@Override
+			
 			public void mouseClicked(MouseEvent e) {
+			
 				
-				int tempCSInd=csList.getSelectedIndex();
-				
-				int csId = csListModel.getElementAt(tempCSInd).CsID;
-				
+				int tempCSInd=csList.getSelectedIndex();				
+				int csId = csListModel.getElementAt(tempCSInd).CsID;				
 				String csName = csListModel.getElementAt(tempCSInd).Name;
 				
 				csNameField.setText(csName);
 				csIdField.setText(String.valueOf(csId));
+					
+				// creating check boxes
 				
-				
+				for(int i=0; i<skillAry.size();i++){
+					JCheckBox box = new JCheckBox(skillAry.get(i).getName());
+					box.setName(skillAry.get(i).getName());
+					chbxList.add(box);
+					csSkillPanel.add(box);
+				}
+				csSkillPanel.updateUI();
 				
 				}
 			});
@@ -887,11 +917,11 @@ public class Windows {
 							if (skillAry.get(j).skillName.equals(chbxList.get(i).getName())){
 								tempCS.AddSkill(skillAry.get(j));
 								csListModel.setElementAt(tempCS, tempCSID);
-								csAry.set(tempCSID, tempCS);
-							
+								csAry.set(tempCSID, tempCS);					
 								}
+							
+							chbxList.get(i).setSelected(false);
 							}
-						
 						}
 					}
 				
@@ -908,10 +938,13 @@ public class Windows {
 						csListModel.setElementAt(tempCS, tempCSID);
 						csAry.set(tempCSID, tempCS);
 						}
-					
+					csList.clearSelection();
 					csNameField.setText("");
 					csIdField.setText("");
+					csSkillPanel.removeAll();
+					csPanel.updateUI();
 					
+				
 					}
 			});
 		
@@ -1008,42 +1041,42 @@ public class Windows {
 		
 		JComboBox comboBoxMonth = new JComboBox();
 		comboBoxMonth.setModel(new DefaultComboBoxModel(new String[] {"Month", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"}));
-		comboBoxMonth.setBounds(216, 343, 58, 20);
+		comboBoxMonth.setBounds(216, 343, 67, 20);
 		shiftPanel.add(comboBoxMonth);
 		
 		JComboBox comboBoxMonthE = new JComboBox();
 		comboBoxMonthE.setModel(new DefaultComboBoxModel(new String[] {"Month", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"}));
-		comboBoxMonthE.setBounds(216, 375, 58, 20);
+		comboBoxMonthE.setBounds(216, 375, 67, 20);
 		shiftPanel.add(comboBoxMonthE);
 		
 		JComboBox comboBoxYear = new JComboBox();
 		comboBoxYear.setModel(new DefaultComboBoxModel(new String[] {"Year", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2022", "2023", "2024", "2025"}));
-		comboBoxYear.setBounds(284, 343, 58, 20);
+		comboBoxYear.setBounds(293, 343, 58, 20);
 		shiftPanel.add(comboBoxYear);
 		
 		JComboBox comboBoxYearE = new JComboBox();
 		comboBoxYearE.setModel(new DefaultComboBoxModel(new String[] {"Year", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2022", "2023", "2024", "2025"}));
-		comboBoxYearE.setBounds(284, 375, 58, 20);
+		comboBoxYearE.setBounds(293, 375, 58, 20);
 		shiftPanel.add(comboBoxYearE);
 		
 		JComboBox comboBoxH = new JComboBox();
 		comboBoxH.setModel(new DefaultComboBoxModel(new String[] {"Hour", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"}));
-		comboBoxH.setBounds(372, 343, 51, 20);
+		comboBoxH.setBounds(372, 343, 67, 20);
 		shiftPanel.add(comboBoxH);
 		
 		JComboBox comboBoxHE = new JComboBox();
 		comboBoxHE.setModel(new DefaultComboBoxModel(new String[] {"Hour", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"}));
-		comboBoxHE.setBounds(372, 375, 51, 20);
+		comboBoxHE.setBounds(372, 375, 67, 20);
 		shiftPanel.add(comboBoxHE);
 		
 		JComboBox comboBoxM = new JComboBox();
 		comboBoxM.setModel(new DefaultComboBoxModel(new String[] {"Minute", "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"}));
-		comboBoxM.setBounds(428, 343, 58, 20);
+		comboBoxM.setBounds(445, 343, 77, 20);
 		shiftPanel.add(comboBoxM);
 		
 		JComboBox comboBoxME = new JComboBox();
 		comboBoxME.setModel(new DefaultComboBoxModel(new String[] {"Minute", "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"}));
-		comboBoxME.setBounds(428, 375, 58, 20);
+		comboBoxME.setBounds(445, 375, 77, 20);
 		shiftPanel.add(comboBoxME);
 		
 		

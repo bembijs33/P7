@@ -1,9 +1,5 @@
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
-import java.util.List;
-
-import com.sun.javafx.scene.transform.TransformUtils;
 
 public class Shift {
 
@@ -71,12 +67,10 @@ public class Shift {
 	
 
 	public void assigneEmpToShift(Employee emp) {
-		// get schedule ID
-		// get schedule skillRequiredAry
+		if(!assignedEmpAry.contains(emp)){
+			assignedEmpAry.add(emp);
+		}
 		
-		
-		//emp.empSkillAry.contains(Schedule required skills)
-		assignedEmpAry.add(emp);
 		
 		
 

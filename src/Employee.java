@@ -26,15 +26,15 @@ public class Employee {
 	}
 	// Adding skill to employees skill list
 	public void AddSkill(Skill skill) {
-		/*for (int i=0; i<empSkillAry.size(); i++) {
 			
-			if(!empSkillAry.get(i).skillName.equals(skill.skillName)){
-				empSkillAry.add(skill);
-				}
-			}*/		
-	empSkillAry.add(skill);
+				if(!empSkillAry.contains(skill)){
+					empSkillAry.add(skill);
+				
+			}
+	
 	}
-
+	
+	
 	//Changing first name
 	public void changeFirstName(String newName){
 		firstName=newName; 

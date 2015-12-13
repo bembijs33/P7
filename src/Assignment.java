@@ -14,19 +14,9 @@ public class Assignment {
 	}
 	
 	public String toString(){
-		return " " + employee + " " +Start + " " +End;
+		return  employee.toStringName() + " " +Start + "    " +End;
 	}
 	
-	//change Start time
-	public void changeStarTime(Date newStart){
-		Start=newStart;
-	}
-	
-	//change end time
-	public void changeEndTime (Date newEnd){
-		End=newEnd; 
-	}
-	
-	// TODO: change employee method
+
 
 }
