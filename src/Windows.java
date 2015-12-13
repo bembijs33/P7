@@ -25,23 +25,16 @@ import java.awt.event.MouseEvent;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.swing.JComboBox;
 import java.awt.Font;
 import javax.swing.JPopupMenu;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import javax.swing.JFormattedTextField;
-import javax.swing.JTable;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-import javax.swing.text.DateFormatter;
-
 import java.awt.FlowLayout;
 import java.awt.Color;
 
@@ -86,8 +79,15 @@ public class Windows {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		Employee e1 = new Employee ("Bob", "Fan", 123456);
-			
+		 Date date = Calendar.getInstance().getTime();
+
+		    // Display a date in day, month, year format
+		    //DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy/kk/mm");
+		    //String today = formatter.format(date);
+		    //System.out.println("Today : " + today);
+		
+		
+		Employee e1 = new Employee ("Bob", "Fan", 123456);	
 		Employee e2 = new Employee ("Kun", "Foo", 123456);
 		empAry.add(e1);
 		empAry.add(e2);
@@ -130,11 +130,11 @@ public class Windows {
 				cs2.AddSkill(skill3);
 			
 			//Creating a date  shift
-		Date start = createDate(9, 12, 2015, 12, 00);
-			Date end = createDate(9, 12, 2015, 18, 00);
-			Date start2 = createDate(10, 12, 2015, 12, 00);
-			Date end2 = createDate(9, 12, 2015, 18, 00);
-			//Creating a shift
+			Date start = createDate( 2015,11, 12, 12, 10);
+			Date end = createDate( 2015,11, 12, 18, 10);
+			Date start2 = createDate(2015,10, 12,  12, 10);
+			Date end2 = createDate(2015,11, 12,  18, 10);
+			//Creating a shifts
 			Shift shift00001 = new Shift(00001, start, end, cs1);
 			shiftAry.add(shift00001);
 			shiftListModel.addElement(shift00001);
@@ -142,7 +142,7 @@ public class Windows {
 			shiftAry.add(shift00002);
 			shiftListModel.addElement(shift00002);
 			
-			
+			System.out.println(shiftAry);
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -698,13 +698,13 @@ public class Windows {
 					
 				Employee tempEmp = (Employee) employeeList.getSelectedValue();
 				int tempEmpID =employeeList.getSelectedIndex();
-				
+				tempEmp.empSkillAry.clear();	
 					for (int i=0; i<chbxList.size(); i++){
 						if ( chbxList.get(i).isSelected()){
 							for (int j=0; j<skillAry.size(); j++){
 								
 								if (skillAry.get(j).skillName.equals(chbxList.get(i).getName())){						
-									tempEmp.empSkillAry.clear();		
+										
 									tempEmp.AddSkill(skillAry.get(j));
 									}
 								}
@@ -917,13 +917,13 @@ public class Windows {
 				
 				CleaningSchedule tempCS = (CleaningSchedule) csList.getSelectedValue();
 				int tempCSID =csList.getSelectedIndex();
-				
+				tempCS.skillRequiredAry.clear();
 				for (int i=0; i<chbxList.size(); i++){
 					if ( chbxList.get(i).isSelected()){
 						for (int j=0; j<skillAry.size(); j++){
 							
 							if (skillAry.get(j).skillName.equals(chbxList.get(i).getName())){
-								tempCS.skillRequiredAry.clear();
+								
 								tempCS.AddSkill(skillAry.get(j));
 								csListModel.setElementAt(tempCS, tempCSID);
 								csAry.set(tempCSID, tempCS);					
@@ -1235,13 +1235,14 @@ public class Windows {
 			return csSkillPanel;
 	}
 	
-	public static Date createDate( int day, int month, int year, int hour, int minute) {
+	public static Date createDate( int year, int month, int day, int hour, int minute) {
 		Date date = new Date();
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy/HH/mm");
+		DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy/HH:mm");
 			try {
-				date = sdf.parse(day + "/" + month + "/" + year + "/" + hour + "/" + minute);
-			} catch (Exception e){}
-			System.err.println("date error ");
+				date = sdf.parse(day + "/" + month + "/" + year + "/" + hour + ":" + minute);
+			} catch (Exception e){
+				e.printStackTrace();
+			}
 			return date;
 	}
 		
