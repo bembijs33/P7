@@ -611,8 +611,11 @@ public class Windows {
 					
 					chbxList.add(box);
 					cbpanel.add(box);
-					if(tempEmp.empSkillAry.contains(i)){
-						box.doClick();
+					
+					// Selecting Check Boxes of emp skills
+					for (int j=0; j<tempEmp.empSkillAry.size(); j++)
+					if(tempEmp.empSkillAry.get(j).skillName.equals(box.getName())){
+						box.setSelected(true);
 					}
 				}
 				empPanel.updateUI();
@@ -701,7 +704,8 @@ public class Windows {
 							for (int j=0; j<skillAry.size(); j++){
 								
 								if (skillAry.get(j).skillName.equals(chbxList.get(i).getName())){						
-											tempEmp.AddSkill(skillAry.get(j));
+									tempEmp.empSkillAry.clear();		
+									tempEmp.AddSkill(skillAry.get(j));
 									}
 								}
 								chbxList.get(i).setSelected(false);
@@ -835,7 +839,7 @@ public class Windows {
 			
 			public void mouseClicked(MouseEvent e) {
 			
-				
+				CleaningSchedule tempCs= (CleaningSchedule) csList.getSelectedValue();
 				int tempCSInd=csList.getSelectedIndex();				
 				int csId = csListModel.getElementAt(tempCSInd).CsID;				
 				String csName = csListModel.getElementAt(tempCSInd).Name;
@@ -850,6 +854,10 @@ public class Windows {
 					box.setName(skillAry.get(i).getName());
 					chbxList.add(box);
 					csSkillPanel.add(box);
+					for (int j=0; j<tempCs.skillRequiredAry.size(); j++)
+						if(tempCs.skillRequiredAry.get(j).skillName.equals(box.getName())){
+							box.setSelected(true);
+						}
 				}
 				csSkillPanel.updateUI();
 				
@@ -915,6 +923,7 @@ public class Windows {
 						for (int j=0; j<skillAry.size(); j++){
 							
 							if (skillAry.get(j).skillName.equals(chbxList.get(i).getName())){
+								tempCS.skillRequiredAry.clear();
 								tempCS.AddSkill(skillAry.get(j));
 								csListModel.setElementAt(tempCS, tempCSID);
 								csAry.set(tempCSID, tempCS);					
