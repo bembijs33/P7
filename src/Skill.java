@@ -1,5 +1,6 @@
+import java.io.Serializable;
 
-public class Skill {
+public class Skill implements Serializable {
 
 	public int skillID;
 	public String skillName;

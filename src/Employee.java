@@ -1,6 +1,8 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Employee {
+public class Employee implements Serializable{
+	
 	public  String firstName; 
 	public String lastName;
 	public int phoneNumber;
@@ -26,12 +28,10 @@ public class Employee {
 	}
 	// Adding skill to employees skill list
 	public void AddSkill(Skill skill) {
-			
-				if(!empSkillAry.contains(skill)){
-					empSkillAry.add(skill);
-				
-			}
-	
+			// checking if skill list contains the same skill
+		if(!empSkillAry.contains(skill)){
+			empSkillAry.add(skill);
+		}
 	}
 	
 	
@@ -51,6 +51,4 @@ public class Employee {
 		phoneNumber = newPhoneNumb;	
 		
 	}
-
-	
 }

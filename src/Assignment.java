@@ -1,7 +1,8 @@
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Assignment {
+public class Assignment implements Serializable {
 
 	Employee employee;
 	Date Start;

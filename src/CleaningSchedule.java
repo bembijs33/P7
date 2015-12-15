@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class CleaningSchedule {
+public class CleaningSchedule implements Serializable {
 
 	String Name;
 	int CsID;

@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Shift {
+public class Shift implements Serializable {
 
 	int shiftID;
 	Date Start;
@@ -33,7 +34,7 @@ public class Shift {
 		
 		}
 		
-		return " " + shiftID+"  "+ Schedule.getName() +"    From:  "+ Start +"  Till:   " + End +"  " + emp  ;
+		return " " + shiftID+"  "+ Schedule.getName() +"    From:  "+ Start+ "  Till: "+ End +"    " +emp;
 	}
 
 	public void setId(int shiftID){

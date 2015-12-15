@@ -2,6 +2,9 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import org.eclipse.wb.swing.FocusTraversalOnArray;
+
+
+
 import java.awt.Component;
 import javax.swing.JTabbedPane;
 import java.awt.GridLayout;
@@ -22,10 +25,16 @@ import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.text.DateFormat;
+import java.io.EOFException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.swing.JComboBox;
@@ -37,6 +46,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.table.DefaultTableModel;
 import java.awt.FlowLayout;
 import java.awt.Color;
+import javax.swing.SwingConstants;
 
 
 public class Windows {
@@ -77,14 +87,52 @@ public class Windows {
 	
 	/**
 	 * Launch the application.
+	 * @throws ClassNotFoundException 
 	 */
-	public static void main(String[] args) {
-		 Date date = Calendar.getInstance().getTime();
-
-		    // Display a date in day, month, year format
-		    //DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy/kk/mm");
-		    //String today = formatter.format(date);
-		    //System.out.println("Today : " + today);
+	public static void main(String[] args) throws ClassNotFoundException {
+		 
+		try {
+			FileOutputStream fileOut = new FileOutputStream("d:/workspace/p7/p7/emp.txt");
+			ObjectOutputStream out = new ObjectOutputStream(fileOut);
+			out.writeObject(empAry);
+			out.close();
+			fileOut.close();
+			System.out.println("\nSerialization Successful for array ... Checkout your specified output file..\n");
+ 
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+				
+		try {
+			FileInputStream fileIn = new FileInputStream("d:/workspace/p7/p7/emp.txt");
+			ObjectInputStream in = new ObjectInputStream(fileIn);
+			System.out.println("Deserialized Data: \n" + in.readObject().toString());
+			for (int i=0; i<empAry.size();i++){
+				Employee tempEmp= (Employee) in.readObject();
+				//employeeListModel.addElement(tempEmp);
+				System.out.println(tempEmp);
+			}
+			
+			in.close();
+			fileIn.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		// output serialization 
+	
+	
+		
+	
+		
+		
+		
+		
 		
 		
 		Employee e1 = new Employee ("Bob", "Fan", 123456);	
@@ -130,19 +178,20 @@ public class Windows {
 				cs2.AddSkill(skill3);
 			
 			//Creating a date  shift
-			Date start = createDate( 2015,11, 12, 12, 10);
-			Date end = createDate( 2015,11, 12, 18, 10);
-			Date start2 = createDate(2015,10, 12,  12, 10);
-			Date end2 = createDate(2015,11, 12,  18, 10);
+			Date start = createDate(2016, 11, 13, 12, 10);
+			Date end = createDate(2016, 12, 14, 13, 20);
+			
 			//Creating a shifts
 			Shift shift00001 = new Shift(00001, start, end, cs1);
 			shiftAry.add(shift00001);
 			shiftListModel.addElement(shift00001);
-			Shift shift00002 = new Shift(00002, start2, end2, cs2);
-			shiftAry.add(shift00002);
-			shiftListModel.addElement(shift00002);
+			
 			
 			System.out.println(shiftAry);
+			
+			
+			
+			
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -153,7 +202,11 @@ public class Windows {
 				}
 			}
 		});
+				
+		
+		
 	}
+		
 
 	/**
 	 * Create the application.
@@ -209,15 +262,24 @@ public class Windows {
 		btnAddEmp.setBounds(69, 389, 159, 23);
 		wsPanel.add(btnAddEmp);
 		
-		JLabel lblWorkGod = new JLabel("Work, god dammit !!!!");
-		lblWorkGod.setForeground(Color.RED);
-		lblWorkGod.setFont(new Font("Comic Sans MS", Font.BOLD, 30));
+		JLabel lblWorkGod = new JLabel("Work Schedule");
+		lblWorkGod.setHorizontalAlignment(SwingConstants.CENTER);
+		lblWorkGod.setForeground(Color.BLACK);
+		lblWorkGod.setFont(new Font("Times New Roman", Font.BOLD, 20));
 		lblWorkGod.setBounds(112, 11, 395, 47);
 		wsPanel.add(lblWorkGod);
 		
 		JComboBox availableEmp = new JComboBox<Object>();
-		availableEmp.setBounds(69, 358, 159, 20);
+		availableEmp.setBounds(69, 358, 200, 20);
 		wsPanel.add(availableEmp);
+		
+		JPanel removeEmpPanel = new JPanel();
+		removeEmpPanel.setBounds(231, 378, 224, 47);
+		wsPanel.add(removeEmpPanel);
+		removeEmpPanel.setLayout(null);
+		
+		JButton btnRemoveEmp = new JButton("Remove Employee from Shift");
+		
 		
 		
 		
@@ -244,6 +306,27 @@ public class Windows {
 						// gets an exact shift
 						Shift tempShift=  (Shift) wsList.getSelectedValue(); 
 					
+					// remove employee from the shift	
+					if(!tempShift.assignedEmpAry.isEmpty()){
+							// add button
+							btnRemoveEmp.setBounds(10, 11, 204, 23);
+							removeEmpPanel.add(btnRemoveEmp);
+							removeEmpPanel.updateUI();
+							// remove emp
+							btnRemoveEmp.addMouseListener(new MouseAdapter (){
+								@Override
+								public void mouseClicked(MouseEvent z){
+									
+									tempShift.assignedEmpAry.clear();
+									wsPanel.updateUI();
+									//remove button
+									removeEmpPanel.remove(btnRemoveEmp);
+							}
+						});
+						
+						
+						
+					}else{					
 						
 						// looping through cleaning schedule required skills
 					for(int i=0; i<tempShift.Schedule.skillRequiredAry.size(); i++){ 
@@ -251,17 +334,6 @@ public class Windows {
 						for (int j=0; j<empAry.size(); j++){
 							//Checking if employee skill array has an exact skill for cs
 								if (empAry.get(j).empSkillAry.containsAll(tempShift.Schedule.skillRequiredAry)){
-									
-									
-									//looping through assignment list
-									/*for(int z=0; z<assignmentAry.size(); z++){
-										
-										if(tempShift.Start.after(assignmentAry.get(j).End)&&tempShift.End.before(assignmentAry.get(j).Start)){
-											
-										}
-									}*/
-									
-									
 									
 									
 									//setting availableEmpAry as ComboBox elements
@@ -273,7 +345,8 @@ public class Windows {
 						}		
 					}
 				}
-			});
+			}
+				});
 			
 			
 			
@@ -974,27 +1047,15 @@ public class Windows {
 		scrollPane_2.setBounds(56, 37, 555, 200);
 		shiftPanel.add(scrollPane_2);
 		
-		
-		//Creating buttons		
-		JButton btnEdit_1 = new JButton("Update");
-		btnEdit_1.setToolTipText("Select shift from list. Write name, date, time & choose CS. Click \u2018Update\u2019 to save changes.");
-		btnEdit_1.setBounds(56, 415, 89, 23);
-		shiftPanel.add(btnEdit_1);
-		
 		JButton btnDelete_2 = new JButton("Delete");
 		btnDelete_2.setToolTipText("Select shift from list. Click \u2018Delete\u2019 to remove from list.");
-		btnDelete_2.setBounds(155, 250, 89, 23);
+		btnDelete_2.setBounds(56, 248, 89, 23);
 		shiftPanel.add(btnDelete_2);
 		
 		JButton btnAddShift = new JButton("Save New");
 		btnAddShift.setToolTipText("Write new name, date, time & choose CS. Click \u2018Save New\u2019 to save changes.");
-		btnAddShift.setBounds(155, 415, 106, 23);
+		btnAddShift.setBounds(56, 421, 106, 23);
 		shiftPanel.add(btnAddShift);
-		
-		JButton btnEditShift = new JButton("Edit");
-		btnEditShift.setToolTipText("Select shift from list. Click 'Edit' to view info.");
-		btnEditShift.setBounds(56, 250, 89, 23);
-		shiftPanel.add(btnEditShift);
 		
 		// Creating labels
 		JLabel lblShiftName = new JLabel("Shift name");
@@ -1038,7 +1099,7 @@ public class Windows {
 		
 		
 		
-		JComboBox comboBoxDay = new JComboBox();
+		JComboBox comboBoxDay = new JComboBox<Date>();
 		comboBoxDay.setModel(new DefaultComboBoxModel(new String[] {"Day", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"}));
 		comboBoxDay.setBounds(155, 343, 51, 20);
 		shiftPanel.add(comboBoxDay);
@@ -1137,52 +1198,6 @@ public class Windows {
 				System.out.println(shiftAry);
 			}
 		});
-		
-		
-		
-		// fill text field
-		
-		btnEditShift.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-			
-				int tempShiftInd=shiftList.getSelectedIndex();
-				int shiftName = shiftListModel.getElementAt(tempShiftInd).shiftID;
-				Date shiftEnd = shiftListModel.getElementAt(tempShiftInd).End;
-				Date shiftStart = shiftListModel.getElementAt(tempShiftInd).Start;
-				shiftListModel.getElementAt(tempShiftInd);
-				
-				typeShiftName.setText(String.valueOf(shiftName));
-				//shiftStartsField.setText(String.valueOf(shiftStart));
-				//shiftEndsField.setText(String.valueOf(shiftEnd));
-				
-				csComBx.setSelectedIndex(tempShiftInd);
-				
-			}
-		});
-	
-		
-	// Update shift
-	btnEdit_1.addMouseListener(new MouseAdapter() {
-		@Override
-		public void mouseClicked(MouseEvent e) {	
-			
-				 Shift tempShift =(Shift) shiftList.getSelectedValue();
-				 int tempShiftID = shiftList.getSelectedIndex();
-				
-				
-				if (!typeShiftName.getText().isEmpty() ){
-					int newshiftName = Integer.parseInt(typeShiftName.getText());
-					tempShift.changeShiftID(newshiftName);
-					shiftListModel.setElementAt(tempShift, tempShiftID);
-					shiftAry.set(tempShiftID, tempShift);
-					}
-				
-				// TODO: check for the Start date
-				// TODO: check for the End Date
-				// TODO: check for the CS change. 
-		}
-	});
 	
 	
 	// delete shift
@@ -1235,17 +1250,19 @@ public class Windows {
 			return csSkillPanel;
 	}
 	
-	public static Date createDate( int year, int month, int day, int hour, int minute) {
-		Date date = new Date();
-		DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy/HH:mm");
-			try {
-				date = sdf.parse(day + "/" + month + "/" + year + "/" + hour + ":" + minute);
-			} catch (Exception e){
-				e.printStackTrace();
-			}
-			return date;
-	}
-		
+	
+	
+		public static Date createDate( int year, int month, int day, int hour, int minute) {
+			Date date = new Date();
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy/HH/mm");
+				try {
+					date = sdf.parse(day + "/" + month + "/" + year + "/" + hour + ":" + minute);
+				} catch (Exception e){}
+				
+				return date;
+		}
+	
 	
 	
 	private static void addPopup(Component component, final JPopupMenu popup) {

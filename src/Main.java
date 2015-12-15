@@ -1,3 +1,4 @@
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -133,15 +134,17 @@ public class Main {
 	//}
 	
 	//
-	public static Date createDate( int day, int month, int year, int hour, int minute) {
-		Date date = new Date();
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy/HH/mm");
+	public String createDate( String dateString) {
+		Date date =null;
+		String formattedDate = null;
+		DateFormat df= new SimpleDateFormat("dd/MM/yyyy HH:mm");
 			try {
-				date = sdf.parse(day + "/" + month + "/" + year + "/" + hour + "/" + minute);
+				date=df.parse(dateString);
+				formattedDate=df.format(date);
 			} catch (Exception e){
-				
+				System.out.println(e);
 			}
-			System.err.println("date error ");
-			return date;
+			
+			return formattedDate;
 	}
 }
