@@ -25,14 +25,13 @@ import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.EOFException;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -47,14 +46,18 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.FlowLayout;
 import java.awt.Color;
 import javax.swing.SwingConstants;
+import com.oracle.jrockit.jfr.DataType;
+import java.time.DayOfWeek;
 
 
-public class Windows {
+public class Windows  {
 
 	private JFrame frmWindows;
 	private JTextField typeShiftName;
 	protected Skill skill1;
 	
+	
+	// ArrayLists to store information
 	static ArrayList<Employee> empAry = new ArrayList<Employee>();
 	static ArrayList<Skill> skillAry = new ArrayList<Skill>();
 	static ArrayList<Assignment> assignmentAry = new ArrayList<Assignment>();
@@ -71,28 +74,24 @@ public class Windows {
 	private static DefaultListModel <CleaningSchedule> comboList = new DefaultListModel<>(); 
 	
 	
-	
+	// list to store check boxes
 	List<JCheckBox> chbxList = new ArrayList<JCheckBox>();
-	DefaultTableModel  scheduleTabelModel = new DefaultTableModel (); 
 	
 	private JComboBox csComBx;
 	private JPanel cbpanel;
 	private JPanel csSkillPanel;
 	
 
-
-	
-	
-		
 	
 	/**
 	 * Launch the application.
 	 * @throws ClassNotFoundException 
 	 */
+	@SuppressWarnings("resource")
 	public static void main(String[] args) throws ClassNotFoundException {
-		 
+		 // serialize an object
 		try {
-			FileOutputStream fileOut = new FileOutputStream("d:/workspace/p7/p7/emp.txt");
+			FileOutputStream fileOut = new FileOutputStream("d:/workspace/p7/p7/emp.ser");
 			ObjectOutputStream out = new ObjectOutputStream(fileOut);
 			out.writeObject(empAry);
 			out.close();
@@ -104,34 +103,22 @@ public class Windows {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+					
 		
-				
+		// deserialize an object
 		try {
-			FileInputStream fileIn = new FileInputStream("d:/workspace/p7/p7/emp.txt");
+			FileInputStream fileIn = new FileInputStream("d:/workspace/p7/p7/emp.ser");
 			ObjectInputStream in = new ObjectInputStream(fileIn);
 			System.out.println("Deserialized Data: \n" + in.readObject().toString());
-			for (int i=0; i<empAry.size();i++){
-				Employee tempEmp= (Employee) in.readObject();
-				//employeeListModel.addElement(tempEmp);
-				System.out.println(tempEmp);
-			}
 			
-			in.close();
-			fileIn.close();
+			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-		// output serialization 
-	
-	
-		
-	
-		
-		
-		
+			
 		
 		
 		
@@ -150,6 +137,7 @@ public class Windows {
 			Skill skill6 = new Skill("Kitchen Help Evening", 6);
 			Skill skill7 = new Skill("AMA Kitchen Morning", 7);
 			e1.AddSkill(skill1);
+			e2.AddSkill(skill1);
 			skillAry.add(skill1);
 			skillAry.add(skill2);
 			skillAry.add(skill3);
@@ -166,7 +154,7 @@ public class Windows {
 			skillListModel.addElement(skill6);
 			skillListModel.addElement(skill7);
 			
-			e1.AddSkill(skill7);
+			
 		CleaningSchedule cs1 = new CleaningSchedule(1, "Something");	
 		CleaningSchedule cs2 = new CleaningSchedule(2, "SomethingElse");	
 			csAry.add(cs1);
@@ -187,7 +175,13 @@ public class Windows {
 			shiftListModel.addElement(shift00001);
 			
 			
-			System.out.println(shiftAry);
+			Date start2 = createDate(2016, 11, 13, 13, 10);
+			Date end2 = createDate(2016, 12, 14, 14, 20);
+			
+			Shift shift00002 = new Shift(00001, start2, end2, cs1);
+			shiftAry.add(shift00002);
+			shiftListModel.addElement(shift00002);
+		
 			
 			
 			
@@ -230,6 +224,7 @@ public class Windows {
 		frmWindows.getContentPane().setLayout(new GridLayout(0, 1, 0, 0));
 		frmWindows.setResizable(false); // Does that the frame cannot maximize or change size in any way. 
 		frmWindows.setLocation(200, 50);
+		
 		// adding tab panel to Windows
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
@@ -266,7 +261,7 @@ public class Windows {
 		lblWorkGod.setHorizontalAlignment(SwingConstants.CENTER);
 		lblWorkGod.setForeground(Color.BLACK);
 		lblWorkGod.setFont(new Font("Times New Roman", Font.BOLD, 20));
-		lblWorkGod.setBounds(112, 11, 395, 47);
+		lblWorkGod.setBounds(10, 11, 669, 47);
 		wsPanel.add(lblWorkGod);
 		
 		JComboBox availableEmp = new JComboBox<Object>();
@@ -290,6 +285,9 @@ public class Windows {
 				wsList.clearSelection();
 				availableEmpAry.clear();
 				availableEmp.setModel(new DefaultComboBoxModel<Object>( availableEmpAry.toArray()));
+				removeEmpPanel.remove(btnRemoveEmp);
+				removeEmpPanel.updateUI();
+				wsPanel.updateUI();
 				
 			}
 		});
@@ -306,7 +304,7 @@ public class Windows {
 						// gets an exact shift
 						Shift tempShift=  (Shift) wsList.getSelectedValue(); 
 					
-					// remove employee from the shift	
+					// remove employee from the shift add button	
 					if(!tempShift.assignedEmpAry.isEmpty()){
 							// add button
 							btnRemoveEmp.setBounds(10, 11, 204, 23);
@@ -325,7 +323,8 @@ public class Windows {
 						});
 						
 						
-						
+				// Adding employee to available emp check box
+							
 					}else{					
 						
 						// looping through cleaning schedule required skills
@@ -334,19 +333,40 @@ public class Windows {
 						for (int j=0; j<empAry.size(); j++){
 							//Checking if employee skill array has an exact skill for cs
 								if (empAry.get(j).empSkillAry.containsAll(tempShift.Schedule.skillRequiredAry)){
-									
-									
-									//setting availableEmpAry as ComboBox elements
-									availableEmpAry.add(empAry.get(j));
-									availableEmp.setModel(new DefaultComboBoxModel<Object>( availableEmpAry.toArray()));
-									
-								}
-							}
-						}		
-					}
+									//looping through assignment ary					
+										if(assignmentAry.contains(j)){
+											for (int z=0; z<assignmentAry.size(); z++){
+												Date shiftStart= tempShift.Start;
+												Date shiftEnd=tempShift.End;
+												Date empAsStart=assignmentAry.get(z).Start;
+												Date empAsEnd=assignmentAry.get(z).End;
+												
+												if(empAsStart.before(shiftEnd) && empAsEnd.after(shiftStart)){
+													
+													JOptionPane.showMessageDialog(availableEmp, "No available employee");
+													
+												}else{
+													availableEmpAry.add(empAry.get(j));
+													availableEmp.setModel(new DefaultComboBoxModel<Object>( availableEmpAry.toArray()));
+													}
+										
+											
+												
+												}
+										}else{
+										availableEmpAry.add(empAry.get(j));
+										availableEmp.setModel(new DefaultComboBoxModel<Object>( availableEmpAry.toArray()));
+										}
+										
+									}
+							
+						}
+						
+					}			
 				}
 			}
-				});
+				
+				}}); 
 			
 			
 			
@@ -368,8 +388,8 @@ public class Windows {
 					
 					Date start = tempShift.Start;
 					Date end = tempShift.End;
-					
-					Assignment tempAs = new Assignment(tempEmp, start, end);
+					Shift shift= tempShift;
+					Assignment tempAs = new Assignment(tempEmp, shift,start, end);
 					assignmentAry.add(tempAs);
 					
 					System.out.println(assignmentAry);
@@ -394,53 +414,54 @@ public class Windows {
 		// creating scroll panel that shows skill List
 		JScrollPane skillScrollPane = new JScrollPane(skillList);
 		skillScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		skillScrollPane.setBounds(57, 38, 555, 167);
+		skillScrollPane.setBounds(57, 69, 555, 167);
 		skillPanel.add(skillScrollPane);
 		
 		// creating buttons
 		JButton btnDelete = new JButton("Delete");
 		btnDelete.setToolTipText("Select skill from list. Click \u2018Delete\u2019 to remove from list.");
-		btnDelete.setBounds(152, 217, 89, 23);
+		btnDelete.setBounds(154, 295, 89, 23);
 		skillPanel.add(btnDelete);
 		
 		JButton btnEdit = new JButton("Update");
 		btnEdit.setToolTipText("Select skill from list. Write ID & name. Click \u2018Update\u2019 to save changes.");
-		btnEdit.setBounds(57, 340, 89, 23);
+		btnEdit.setBounds(59, 419, 89, 23);
 		skillPanel.add(btnEdit);
 		
 		JButton btnSaveSkill = new JButton("Save New");
 		btnSaveSkill.setToolTipText("Write new ID & name. Click \u2018Save New\u2019 to add new skill to list.");
-		btnSaveSkill.setBounds(155, 340, 100, 23);
+		btnSaveSkill.setBounds(157, 419, 100, 23);
 		skillPanel.add(btnSaveSkill);
 		
 		JButton btnUpdate = new JButton("Edit");
 		btnUpdate.setToolTipText("Select skill from list. Click 'Edit' to view info.");
-		btnUpdate.setBounds(57, 217, 89, 23);
+		btnUpdate.setBounds(59, 295, 89, 23);
 		skillPanel.add(btnUpdate);
 		
 		
 		// creating labels
 		JLabel lblSkillId = new JLabel("Skill ID");
-		lblSkillId.setBounds(57, 257, 46, 14);
+		lblSkillId.setBounds(59, 336, 46, 14);
 		skillPanel.add(lblSkillId);
 		
 		JLabel lblSkillName = new JLabel("Skill name");
-		lblSkillName.setBounds(57, 285, 76, 14);
+		lblSkillName.setBounds(59, 364, 76, 14);
 		skillPanel.add(lblSkillName);
 		
 		JLabel lblSkillList = new JLabel("Skill list");
-		lblSkillList.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblSkillList.setBounds(57, 13, 167, 14);
+		lblSkillList.setHorizontalAlignment(SwingConstants.CENTER);
+		lblSkillList.setFont(new Font("Times New Roman", Font.BOLD, 20));
+		lblSkillList.setBounds(10, 13, 669, 44);
 		skillPanel.add(lblSkillList);
 	
 	
 		// creating text fields (editor panel), where user can enter text
 		JEditorPane skillIDField = new JEditorPane();
-		skillIDField.setBounds(123, 254, 106, 20);
+		skillIDField.setBounds(125, 333, 106, 20);
 		skillPanel.add(skillIDField);
 		
 		JEditorPane skillNameField = new JEditorPane();
-		skillNameField.setBounds(123, 279, 106, 20);
+		skillNameField.setBounds(125, 358, 106, 20);
 		skillPanel.add(skillNameField);
 		
 		
@@ -574,7 +595,7 @@ public class Windows {
 		
 		JScrollPane scrollListEmployee = new JScrollPane(employeeList);
 		scrollListEmployee.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollListEmployee .setBounds(51, 38, 555, 200);
+		scrollListEmployee .setBounds(51, 69, 555, 200);
 		empPanel.add(scrollListEmployee );
 		employeeList.setVisibleRowCount(10);
 		employeeList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -631,8 +652,9 @@ public class Windows {
 		empPanel.add(lblPhoneNumber);
 		
 		JLabel lblNewLabel_1 = new JLabel("Employee list");
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblNewLabel_1.setBounds(192, 13, 115, 14);
+		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_1.setFont(new Font("Times New Roman", Font.BOLD, 20));
+		lblNewLabel_1.setBounds(0, 13, 679, 45);
 		empPanel.add(lblNewLabel_1);
 		
 		cbpanel = new JPanel();
@@ -827,7 +849,7 @@ public class Windows {
 		csPanel.add(csList);
 		JScrollPane scrollPane_4 = new JScrollPane(csList);
 		scrollPane_4.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPane_4.setBounds(49, 44, 555, 200);
+		scrollPane_4.setBounds(49, 69, 555, 200);
 		csPanel.add(scrollPane_4);
 
 		
@@ -873,8 +895,9 @@ public class Windows {
 		csPanel.add(lblNewLabel);
 		
 		JLabel lblCleaningSchedules = new JLabel("Cleaning schedules");
-		lblCleaningSchedules.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblCleaningSchedules.setBounds(49, 19, 170, 14);
+		lblCleaningSchedules.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCleaningSchedules.setFont(new Font("Times New Roman", Font.BOLD, 20));
+		lblCleaningSchedules.setBounds(0, 19, 679, 39);
 		csPanel.add(lblCleaningSchedules);
 		
 		
@@ -1044,39 +1067,40 @@ public class Windows {
 		
 		JScrollPane scrollPane_2 = new JScrollPane(shiftList);
 		scrollPane_2.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPane_2.setBounds(56, 37, 555, 200);
+		scrollPane_2.setBounds(56, 69, 555, 200);
 		shiftPanel.add(scrollPane_2);
 		
 		JButton btnDelete_2 = new JButton("Delete");
 		btnDelete_2.setToolTipText("Select shift from list. Click \u2018Delete\u2019 to remove from list.");
-		btnDelete_2.setBounds(56, 248, 89, 23);
+		btnDelete_2.setBounds(56, 302, 89, 23);
 		shiftPanel.add(btnDelete_2);
 		
 		JButton btnAddShift = new JButton("Save New");
 		btnAddShift.setToolTipText("Write new name, date, time & choose CS. Click \u2018Save New\u2019 to save changes.");
-		btnAddShift.setBounds(56, 421, 106, 23);
+		btnAddShift.setBounds(56, 475, 106, 23);
 		shiftPanel.add(btnAddShift);
 		
 		// Creating labels
 		JLabel lblShiftName = new JLabel("Shift name");
-		lblShiftName.setBounds(56, 284, 67, 14);
+		lblShiftName.setBounds(56, 338, 67, 14);
 		shiftPanel.add(lblShiftName);
 		
 		JLabel lblChooseCs = new JLabel("Choose CS");
-		lblChooseCs.setBounds(56, 315, 77, 14);
+		lblChooseCs.setBounds(56, 369, 77, 14);
 		shiftPanel.add(lblChooseCs);
 		
 		JLabel lblDate = new JLabel("Starts");
-		lblDate.setBounds(56, 346, 67, 14);
+		lblDate.setBounds(56, 400, 67, 14);
 		shiftPanel.add(lblDate);
 		
 		JLabel lblTime = new JLabel("Ends");
-		lblTime.setBounds(56, 378, 67, 14);
+		lblTime.setBounds(56, 432, 67, 14);
 		shiftPanel.add(lblTime);
 		
 		JLabel lblShifts = new JLabel("Shifts");
-		lblShifts.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblShifts.setBounds(56, 12, 58, 14);
+		lblShifts.setHorizontalAlignment(SwingConstants.CENTER);
+		lblShifts.setFont(new Font("Times New Roman", Font.BOLD, 20));
+		lblShifts.setBounds(0, 12, 689, 40);
 		shiftPanel.add(lblShifts);
 
 		
@@ -1087,66 +1111,66 @@ public class Windows {
 		//setting combobox to default model to display CS
 		csComBx.setModel(new DefaultComboBoxModel<Object>( csAry.toArray()));
 		
-		csComBx.setBounds(155, 312, 456, 20);
+		csComBx.setBounds(155, 366, 456, 20);
 		shiftPanel.add(csComBx);
 		frmWindows.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{frmWindows.getContentPane()}));
 		
 		
 		// creating text fields
 		typeShiftName = new JTextField();
-		typeShiftName.setBounds(155, 284, 86, 20);
+		typeShiftName.setBounds(155, 338, 86, 20);
 		shiftPanel.add(typeShiftName);
 		
 		
 		
 		JComboBox comboBoxDay = new JComboBox<Date>();
 		comboBoxDay.setModel(new DefaultComboBoxModel(new String[] {"Day", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"}));
-		comboBoxDay.setBounds(155, 343, 51, 20);
+		comboBoxDay.setBounds(155, 397, 51, 20);
 		shiftPanel.add(comboBoxDay);
 		
 		JComboBox comboBoxDayE = new JComboBox();
 		comboBoxDayE.setModel(new DefaultComboBoxModel(new String[] {"Day", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"}));
-		comboBoxDayE.setBounds(155, 375, 51, 20);
+		comboBoxDayE.setBounds(155, 429, 51, 20);
 		shiftPanel.add(comboBoxDayE);
 		
 		JComboBox comboBoxMonth = new JComboBox();
 		comboBoxMonth.setModel(new DefaultComboBoxModel(new String[] {"Month", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"}));
-		comboBoxMonth.setBounds(216, 343, 67, 20);
+		comboBoxMonth.setBounds(216, 397, 67, 20);
 		shiftPanel.add(comboBoxMonth);
 		
 		JComboBox comboBoxMonthE = new JComboBox();
 		comboBoxMonthE.setModel(new DefaultComboBoxModel(new String[] {"Month", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"}));
-		comboBoxMonthE.setBounds(216, 375, 67, 20);
+		comboBoxMonthE.setBounds(216, 429, 67, 20);
 		shiftPanel.add(comboBoxMonthE);
 		
 		JComboBox comboBoxYear = new JComboBox();
 		comboBoxYear.setModel(new DefaultComboBoxModel(new String[] {"Year", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2022", "2023", "2024", "2025"}));
-		comboBoxYear.setBounds(293, 343, 58, 20);
+		comboBoxYear.setBounds(293, 397, 58, 20);
 		shiftPanel.add(comboBoxYear);
 		
 		JComboBox comboBoxYearE = new JComboBox();
 		comboBoxYearE.setModel(new DefaultComboBoxModel(new String[] {"Year", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2022", "2023", "2024", "2025"}));
-		comboBoxYearE.setBounds(293, 375, 58, 20);
+		comboBoxYearE.setBounds(293, 429, 58, 20);
 		shiftPanel.add(comboBoxYearE);
 		
 		JComboBox comboBoxH = new JComboBox();
 		comboBoxH.setModel(new DefaultComboBoxModel(new String[] {"Hour", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"}));
-		comboBoxH.setBounds(372, 343, 67, 20);
+		comboBoxH.setBounds(372, 397, 67, 20);
 		shiftPanel.add(comboBoxH);
 		
 		JComboBox comboBoxHE = new JComboBox();
 		comboBoxHE.setModel(new DefaultComboBoxModel(new String[] {"Hour", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"}));
-		comboBoxHE.setBounds(372, 375, 67, 20);
+		comboBoxHE.setBounds(372, 429, 67, 20);
 		shiftPanel.add(comboBoxHE);
 		
 		JComboBox comboBoxM = new JComboBox();
 		comboBoxM.setModel(new DefaultComboBoxModel(new String[] {"Minute", "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"}));
-		comboBoxM.setBounds(445, 343, 77, 20);
+		comboBoxM.setBounds(445, 397, 77, 20);
 		shiftPanel.add(comboBoxM);
 		
 		JComboBox comboBoxME = new JComboBox();
 		comboBoxME.setModel(new DefaultComboBoxModel(new String[] {"Minute", "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"}));
-		comboBoxME.setBounds(445, 375, 77, 20);
+		comboBoxME.setBounds(445, 429, 77, 20);
 		shiftPanel.add(comboBoxME);
 		
 		
@@ -1187,7 +1211,7 @@ public class Windows {
 				int minuteE =Integer.parseInt(comboBoxME.getSelectedItem().toString()); 
 				
 				
-				Date newStart = createDate(day,month,year,hour,minute);
+				Date newStart = createDate(day, month,year,hour,minute);
 				Date newEnd = createDate(dayE,monthE,yearE,hourE,minuteE);
 				
 				Shift tempShift = new Shift(newShiftName, newStart, newEnd, schedule);
@@ -1206,7 +1230,7 @@ public class Windows {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int tempShiftID = shiftList.getSelectedIndex();
-				shiftList.remove(tempShiftID);
+				shiftListModel.remove(tempShiftID);
 				shiftAry.remove(tempShiftID);
 				
 			}
@@ -1251,17 +1275,20 @@ public class Windows {
 	}
 	
 	
-	
-		public static Date createDate( int year, int month, int day, int hour, int minute) {
-			Date date = new Date();
-			
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy/HH/mm");
-				try {
-					date = sdf.parse(day + "/" + month + "/" + year + "/" + hour + ":" + minute);
-				} catch (Exception e){}
+	public static Date createDate( int day, int month, int year, int hour, int minute) {
+		Date date =new Date();
+		
+		DateFormat df= new SimpleDateFormat("dd/MM/yyyy/HH/mm");
+			try {
+				date=df.parse(day+"/"+month+"/"+year+"/"+hour+"/"+minute);
 				
-				return date;
-		}
+			} catch (Exception e){
+				System.err.println("error");
+			}
+			
+			return date;
+	}
+		
 	
 	
 	

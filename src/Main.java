@@ -101,8 +101,8 @@ public class Main {
 		
 		
 		//Creating a date  shift
-	//	Date start = createDate(2015, 9, 9, 12, 00);
-	//	Date end = createDate(2015, 10, 9, 18, 00);
+		//Date start = createDate(2015, 9, 9, 12, 00);
+		// Date end = createDate(2015, 10, 9, 18, 00);
 		
 		//Creating a shift
 	//	Shift shift00001 = new Shift(00001, start, end, schedule7W);	
@@ -134,17 +134,17 @@ public class Main {
 	//}
 	
 	//
-	public String createDate( String dateString) {
-		Date date =null;
-		String formattedDate = null;
-		DateFormat df= new SimpleDateFormat("dd/MM/yyyy HH:mm");
+	public Date createDate( int day, int month, int year, int hour, int minute) {
+		Date date =new Date();
+		
+		DateFormat df= new SimpleDateFormat("dd/MM/yyyy/HH/mm");
 			try {
-				date=df.parse(dateString);
-				formattedDate=df.format(date);
+				date=df.parse(day+"/"+month+"/"+year+"/"+hour+"/"+minute);
+				
 			} catch (Exception e){
-				System.out.println(e);
+				System.err.println("error");
 			}
 			
-			return formattedDate;
+			return date;
 	}
 }

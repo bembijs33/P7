@@ -51,4 +51,15 @@ public class Employee implements Serializable{
 		phoneNumber = newPhoneNumb;	
 		
 	}
+	public void setName(String name){
+		this.firstName=name;
+	}
+	public void setLastName (String lastName){
+		this.lastName=lastName;
+	}
+	
+	public void setPhoneNumber(int phoneNumber){
+		this.phoneNumber=phoneNumber;
+	}
+	
 }
