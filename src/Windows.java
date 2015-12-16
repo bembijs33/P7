@@ -48,6 +48,8 @@ import java.awt.Color;
 import javax.swing.SwingConstants;
 import com.oracle.jrockit.jfr.DataType;
 import java.time.DayOfWeek;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 
 public class Windows  {
@@ -87,104 +89,10 @@ public class Windows  {
 	 * Launch the application.
 	 * @throws ClassNotFoundException 
 	 */
-	@SuppressWarnings("resource")
+	
 	public static void main(String[] args) throws ClassNotFoundException {
-		 // serialize an object
-		try {
-			FileOutputStream fileOut = new FileOutputStream("d:/workspace/p7/p7/emp.ser");
-			ObjectOutputStream out = new ObjectOutputStream(fileOut);
-			out.writeObject(empAry);
-			out.close();
-			fileOut.close();
-			System.out.println("\nSerialization Successful for array ... Checkout your specified output file..\n");
- 
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-					
+	
 		
-		// deserialize an object
-		try {
-			FileInputStream fileIn = new FileInputStream("d:/workspace/p7/p7/emp.ser");
-			ObjectInputStream in = new ObjectInputStream(fileIn);
-			System.out.println("Deserialized Data: \n" + in.readObject().toString());
-			
-			
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-			
-		
-		
-		
-		Employee e1 = new Employee ("Bob", "Fan", 123456);	
-		Employee e2 = new Employee ("Kun", "Foo", 123456);
-		empAry.add(e1);
-		empAry.add(e2);
-		employeeListModel.addElement(e1);
-		employeeListModel.addElement(e2);
-		
-			Skill skill1 = new Skill("Basic", 1);
-			Skill skill2 = new Skill("Dialysis", 2);
-			Skill skill3 = new Skill("Kitchen Morning", 3);
-			Skill skill4 = new Skill("Kitchen Evening", 4);
-			Skill skill5 = new Skill("Kitchen Help Morning", 5);
-			Skill skill6 = new Skill("Kitchen Help Evening", 6);
-			Skill skill7 = new Skill("AMA Kitchen Morning", 7);
-			e1.AddSkill(skill1);
-			e2.AddSkill(skill1);
-			skillAry.add(skill1);
-			skillAry.add(skill2);
-			skillAry.add(skill3);
-			skillAry.add(skill4);
-			skillAry.add(skill5);
-			skillAry.add(skill6);
-			skillAry.add(skill7);
-			
-			skillListModel.addElement(skill1);
-			skillListModel.addElement(skill2);
-			skillListModel.addElement(skill3);
-			skillListModel.addElement(skill4);
-			skillListModel.addElement(skill5);
-			skillListModel.addElement(skill6);
-			skillListModel.addElement(skill7);
-			
-			
-		CleaningSchedule cs1 = new CleaningSchedule(1, "Something");	
-		CleaningSchedule cs2 = new CleaningSchedule(2, "SomethingElse");	
-			csAry.add(cs1);
-			csListModel.addElement(cs1);
-			csAry.add(cs2);
-			csListModel.addElement(cs2);
-			cs1.skillRequiredAry.add(skill1);
-				cs2.AddSkill(skill2);
-				cs2.AddSkill(skill3);
-			
-			//Creating a date  shift
-			Date start = createDate(2016, 11, 13, 12, 10);
-			Date end = createDate(2016, 12, 14, 13, 20);
-			
-			//Creating a shifts
-			Shift shift00001 = new Shift(00001, start, end, cs1);
-			shiftAry.add(shift00001);
-			shiftListModel.addElement(shift00001);
-			
-			
-			Date start2 = createDate(2016, 11, 13, 13, 10);
-			Date end2 = createDate(2016, 12, 14, 14, 20);
-			
-			Shift shift00002 = new Shift(00001, start2, end2, cs1);
-			shiftAry.add(shift00002);
-			shiftListModel.addElement(shift00002);
-		
-			
-			
-			
 			
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -194,13 +102,15 @@ public class Windows  {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-			}
+			
+			
+			}	
 		});
-				
-		
 		
 	}
-		
+	
+					
+	
 
 	/**
 	 * Create the application.
@@ -217,6 +127,125 @@ public class Windows  {
 		
 		// Creating windows for application
 		frmWindows = new JFrame();
+		frmWindows.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+			
+				// when closing the window all arays are serialized and stored. 
+				serializeAry(empAry,"emp.ser");
+				serializeAry(skillAry,"skill.ser");
+				serializeAry(csAry,"cs.ser");
+				serializeAry(shiftAry,"shift.ser");
+				serializeAry(assignmentAry,"assi.ser");
+				
+			}
+				
+			
+			
+			@Override
+			public void windowOpened(WindowEvent e) {
+				//when window is active all arrays are deserialized and elements from them added to the defaultModelLists
+				
+				try{
+					FileInputStream fileIn = new FileInputStream("assi.ser");
+					ObjectInputStream in = new ObjectInputStream(fileIn);
+					assignmentAry = (ArrayList<Assignment>) in.readObject();
+					System.out.println(assignmentAry);
+				} catch (FileNotFoundException e1) {
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				
+				try{
+					FileInputStream fileIn = new FileInputStream("cs.ser");
+					ObjectInputStream in = new ObjectInputStream(fileIn);
+					csAry = (ArrayList<CleaningSchedule>) in.readObject();
+					System.out.println(csAry);
+					
+					for(int i=0; i<csAry.size();i++){
+						csListModel.addElement(csAry.get(i));
+					}
+
+				} catch (FileNotFoundException e1) {
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				
+				try{
+				FileInputStream fileIn = new FileInputStream("emp.ser");
+				ObjectInputStream in = new ObjectInputStream(fileIn);
+				empAry = (ArrayList<Employee>) in.readObject();
+				System.out.println(empAry);
+				
+				for(int i=0; i<empAry.size();i++){
+					employeeListModel.addElement(empAry.get(i));
+				}
+				
+				
+				} catch (FileNotFoundException e1) {
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				
+				
+				
+				try{
+					FileInputStream fileIn = new FileInputStream("shift.ser");
+					ObjectInputStream in = new ObjectInputStream(fileIn);
+					shiftAry = (ArrayList<Shift>) in.readObject();
+					System.out.println(shiftAry );
+					
+					for(int i=0; i<empAry.size();i++){
+						shiftListModel.addElement(shiftAry .get(i));
+					}
+					
+					
+				} catch (FileNotFoundException e1) {
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				try{
+					FileInputStream fileIn = new FileInputStream("skill.ser");
+					ObjectInputStream in = new ObjectInputStream(fileIn);
+					skillAry = (ArrayList<Skill>) in.readObject();
+					System.out.println(skillAry);
+					
+					for(int i=0; i<skillAry.size();i++){
+						skillListModel.addElement(skillAry.get(i));
+					}
+					
+					
+				} catch (FileNotFoundException e1) {
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+		});
 		frmWindows.setTitle("Windows");
 		frmWindows.setBounds(150, 150, 700, 600);
 		frmWindows.setResizable(false);
@@ -333,40 +362,38 @@ public class Windows  {
 						for (int j=0; j<empAry.size(); j++){
 							//Checking if employee skill array has an exact skill for cs
 								if (empAry.get(j).empSkillAry.containsAll(tempShift.Schedule.skillRequiredAry)){
-									//looping through assignment ary					
-										if(assignmentAry.contains(j)){
-											for (int z=0; z<assignmentAry.size(); z++){
+													
+									availableEmpAry.add(empAry.get(j));
+									availableEmp.setModel(new DefaultComboBoxModel<Object>( availableEmpAry.toArray()));
+								
+									
+									
+									//looping through assignment ary	
+											/*for (int z=0; z<assignmentAry.size(); z++){
+												if(assignmentAry.get(z).getEmp().equals(j)){
 												Date shiftStart= tempShift.Start;
 												Date shiftEnd=tempShift.End;
 												Date empAsStart=assignmentAry.get(z).Start;
 												Date empAsEnd=assignmentAry.get(z).End;
 												
-												if(empAsStart.before(shiftEnd) && empAsEnd.after(shiftStart)){
-													
-													JOptionPane.showMessageDialog(availableEmp, "No available employee");
+													if(empAsStart.before(shiftEnd) || empAsEnd.after(shiftStart)){
+														JOptionPane.showMessageDialog(availableEmp, "No available employee");
+													}
 													
 												}else{
 													availableEmpAry.add(empAry.get(j));
 													availableEmp.setModel(new DefaultComboBoxModel<Object>( availableEmpAry.toArray()));
 													}
-										
-											
-												
-												}
-										}else{
-										availableEmpAry.add(empAry.get(j));
-										availableEmp.setModel(new DefaultComboBoxModel<Object>( availableEmpAry.toArray()));
-										}
-										
+												}*/
 									}
-							
+							}
+												
 						}
-						
 					}			
 				}
 			}
 				
-				}}); 
+		}); 
 			
 			
 			
@@ -463,10 +490,6 @@ public class Windows  {
 		JEditorPane skillNameField = new JEditorPane();
 		skillNameField.setBounds(125, 358, 106, 20);
 		skillPanel.add(skillNameField);
-		
-		
-		
-		
 		
 		// check for int in ID field
 		
@@ -1239,7 +1262,45 @@ public class Windows  {
 	
 	
 	
+	private static   void deserializeAry(ArrayList arrayToDesirialize, DefaultListModel list, String filePath){
+		try {
+			FileInputStream fileIn = new FileInputStream(filePath);
+			ObjectInputStream in = new ObjectInputStream(fileIn);
+			arrayToDesirialize = (ArrayList) in.readObject();
+			System.out.println(arrayToDesirialize);
+			
+			for(int i=0; i<arrayToDesirialize.size();i++){
+				list.addElement( arrayToDesirialize.get(i));
+			}
+			//System.out.println("Deserialized Data: \n" + in.readObject().toString());
+			in.close();
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 	
+	private static void serializeAry(ArrayList arrayToSerialize, String filePath){
+		try {
+			FileOutputStream fileOut = new FileOutputStream(filePath);
+			ObjectOutputStream out = new ObjectOutputStream(fileOut);
+			System.out.println(arrayToSerialize.toString());
+			out.writeObject(arrayToSerialize);
+			out.close();
+			fileOut.close();
+ 
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		}
 	
 
 	// This method repaints Combo box of CS in Shift tab	

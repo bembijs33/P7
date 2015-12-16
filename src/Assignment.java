@@ -1,5 +1,6 @@
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Assignment implements Serializable {
@@ -8,6 +9,8 @@ public class Assignment implements Serializable {
 	Date Start;
 	Date End;
 	Shift shift;
+	
+	
 	public Assignment(Employee employee, Shift shift,Date Start, Date End) {
 		this.employee=employee;
 		this.Start=Start;
@@ -16,7 +19,14 @@ public class Assignment implements Serializable {
 	}
 	
 	public String toString(){
-		return  employee.toStringName() + " " +Start + "    " +End + "   Shift ID: "+shift.shiftID;
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+		String start = formatter.format(Start);
+		
+		SimpleDateFormat formatter2 = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+		String end = formatter2.format(End);
+		
+		return  employee.toStringName() + " " +start + "    " +end + "   Shift ID: "+shift.shiftID;
 	}
 	public Employee getEmp(){
 		return employee;

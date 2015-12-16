@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.sun.glass.ui.Pixels.Format;
+
 public class Shift implements Serializable {
 
 	int shiftID;
@@ -22,6 +24,13 @@ public class Shift implements Serializable {
 	
 	public String toString(){
 		
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+		String start = formatter.format(Start);
+		
+		SimpleDateFormat formatter2 = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+		String end = formatter2.format(End);
+		
+		
 		String emp = null; 
 		if (assignedEmpAry.isEmpty()){
 			emp="No employee assigned";
@@ -36,7 +45,11 @@ public class Shift implements Serializable {
 		
 		}
 		
-		return " " + shiftID+"  "+ Schedule.getName() +"    From:  "+ Start+ "  Till: "+ End +"    " +emp;
+		// TODO: call method to change data output
+		
+		
+		
+		return " " + shiftID+"  "+ Schedule.getName() +"    From:  "+ start + "  Till: "+ end +"    " +emp;
 	}
 
 
