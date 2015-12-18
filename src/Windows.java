@@ -42,12 +42,9 @@ import javax.swing.JPopupMenu;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import javax.swing.table.DefaultTableModel;
 import java.awt.FlowLayout;
 import java.awt.Color;
 import javax.swing.SwingConstants;
-import com.oracle.jrockit.jfr.DataType;
-import java.time.DayOfWeek;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -65,7 +62,9 @@ public class Windows  {
 	static ArrayList<Assignment> assignmentAry = new ArrayList<Assignment>();
 	static ArrayList<Shift> shiftAry = new ArrayList<Shift>();
 	static ArrayList<CleaningSchedule> csAry = new ArrayList<CleaningSchedule>();
-	static private ArrayList <Employee> availableEmpAry =new ArrayList<Employee>();
+	
+	static private ArrayList <Employee> availableEmpAry =new ArrayList<Employee>();	
+	static private ArrayList<Employee> skilledEmp = new ArrayList<Employee>();
 	
 	
 	//List models to handle lists
@@ -91,7 +90,57 @@ public class Windows  {
 	 */
 	
 	public static void main(String[] args) throws ClassNotFoundException {
+	 
+		Skill s1= new Skill ("Basic",1); 
+		Skill s2= new Skill ("Advanced",2);
+		Skill s3= new Skill("Superb",3);
+		skillListModel.addElement(s1);
+		skillListModel.addElement(s2);
+		skillListModel.addElement(s3);	
+		skillAry.add(s1);
+		skillAry.add(s2);
+		skillAry.add(s3);
+		
+		
+		Employee e1 = new Employee ("Rob","Rak",123456);
+		Employee e2 = new Employee ("Jak","Pol",654321); 
+		employeeListModel.addElement(e1);
+		employeeListModel.addElement(e2);
+		empAry.add(e1);
+		empAry.add(e2);
+		e1.AddSkill(s1);
+		e2.AddSkill(s1);
+		e2.AddSkill(s2);
+		
 	
+		
+		CleaningSchedule cs1 = new CleaningSchedule(22, "First Floor");
+		CleaningSchedule cs2 = new CleaningSchedule(44, "Second Floor");
+		csAry.add(cs1);
+		csAry.add(cs2);
+		cs1.AddSkill(s1);
+		cs2.AddSkill(s2);
+		cs2.AddSkill(s1);
+		csListModel.addElement(cs1);
+		csListModel.addElement(cs2);
+		
+		Date start1= createDate(1,1,2016,8,00);
+		Date end1= createDate(1,1,2016,9,00);
+		
+		Date start2= createDate(1,1,2016,8,50);
+		Date end2= createDate(1,1,2016,9,50);
+		
+		Shift sh1 = new Shift(423,start1,end1,cs1); 
+		Shift sh2 = new Shift(523,start2,end2,cs2); 
+		shiftAry.add(sh1);
+		shiftAry.add(sh2);
+		shiftListModel.addElement(sh1);
+		shiftListModel.addElement(sh2);
+		
+		Assignment as1= new Assignment(e1, sh1);
+	//	assignmentAry.add(as1);
+		
+		
 		
 			
 		EventQueue.invokeLater(new Runnable() {
@@ -132,25 +181,46 @@ public class Windows  {
 			public void windowClosing(WindowEvent e) {
 			
 				// when closing the window all arays are serialized and stored. 
-				serializeAry(empAry,"emp.ser");
-				serializeAry(skillAry,"skill.ser");
-				serializeAry(csAry,"cs.ser");
-				serializeAry(shiftAry,"shift.ser");
-				serializeAry(assignmentAry,"assi.ser");
+				/*
 				
+				System.out.println("ARRAYS SERIALIZED");
+				
+				System.out.println("Emp array");
+				serializeAry(empAry,"emp.ser");
+				
+				System.out.println("Skill Ary");
+				serializeAry(skillAry,"skill.ser");
+				
+				System.out.println("CS Ary");
+				serializeAry(csAry,"cs.ser");
+				
+				System.out.println("ShiftAry");
+				serializeAry(shiftAry,"shift.ser");
+				
+				System.out.println("Assignment Ary");
+				serializeAry(assignmentAry,"assi.ser");
+				*/
 			}
 				
 			
 			
 			@Override
 			public void windowOpened(WindowEvent e) {
+				
 				//when window is active all arrays are deserialized and elements from them added to the defaultModelLists
 				
+				
+				//deserializeAry(empAry, employeeListModel, "emp.ser"); 
+				// right now deserealization method gives a trouble, therefore it is hard coded
+				/*	
+				System.out.println("Skill array");
+				
 				try{
-					FileInputStream fileIn = new FileInputStream("assi.ser");
+					FileInputStream fileIn = new FileInputStream("skill.ser");
 					ObjectInputStream in = new ObjectInputStream(fileIn);
-					assignmentAry = (ArrayList<Assignment>) in.readObject();
-					System.out.println(assignmentAry);
+					skillAry = (ArrayList<Skill>) in.readObject();
+					System.out.println(skillAry);
+					in.close();
 				} catch (FileNotFoundException e1) {
 					e1.printStackTrace();
 				} catch (IOException e1) {
@@ -161,15 +231,30 @@ public class Windows  {
 				}
 				
 				
+				System.out.println("Assignment array");
+				try{
+					FileInputStream fileIn = new FileInputStream("assi.ser");
+					ObjectInputStream in = new ObjectInputStream(fileIn);
+					assignmentAry = (ArrayList<Assignment>) in.readObject();
+					System.out.println(assignmentAry);
+					in.close();
+				} catch (FileNotFoundException e1) {
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				System.out.println("CS array");
 				try{
 					FileInputStream fileIn = new FileInputStream("cs.ser");
 					ObjectInputStream in = new ObjectInputStream(fileIn);
 					csAry = (ArrayList<CleaningSchedule>) in.readObject();
 					System.out.println(csAry);
 					
-					for(int i=0; i<csAry.size();i++){
-						csListModel.addElement(csAry.get(i));
-					}
+					in.close();
 
 				} catch (FileNotFoundException e1) {
 					e1.printStackTrace();
@@ -181,17 +266,14 @@ public class Windows  {
 				}
 				
 				
+							
 				try{
 				FileInputStream fileIn = new FileInputStream("emp.ser");
 				ObjectInputStream in = new ObjectInputStream(fileIn);
 				empAry = (ArrayList<Employee>) in.readObject();
 				System.out.println(empAry);
 				
-				for(int i=0; i<empAry.size();i++){
-					employeeListModel.addElement(empAry.get(i));
-				}
-				
-				
+				in.close();
 				} catch (FileNotFoundException e1) {
 					e1.printStackTrace();
 				} catch (IOException e1) {
@@ -200,9 +282,9 @@ public class Windows  {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+				System.out.println(employeeListModel);
 				
-				
-				
+				System.out.println("Shift array");
 				
 				try{
 					FileInputStream fileIn = new FileInputStream("shift.ser");
@@ -210,9 +292,7 @@ public class Windows  {
 					shiftAry = (ArrayList<Shift>) in.readObject();
 					System.out.println(shiftAry );
 					
-					for(int i=0; i<empAry.size();i++){
-						shiftListModel.addElement(shiftAry .get(i));
-					}
+					in.close();
 					
 					
 				} catch (FileNotFoundException e1) {
@@ -224,25 +304,17 @@ public class Windows  {
 					e1.printStackTrace();
 				}
 				
-				try{
-					FileInputStream fileIn = new FileInputStream("skill.ser");
-					ObjectInputStream in = new ObjectInputStream(fileIn);
-					skillAry = (ArrayList<Skill>) in.readObject();
-					System.out.println(skillAry);
-					
-					for(int i=0; i<skillAry.size();i++){
-						skillListModel.addElement(skillAry.get(i));
-					}
-					
-					
-				} catch (FileNotFoundException e1) {
-					e1.printStackTrace();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				} catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				
+			
+				
+				//update all model lists
+				updateListModel(skillAry,skillListModel);
+				updateListModel(empAry, employeeListModel);
+				updateListModel(csAry,csListModel);
+				updateListModel(shiftAry,shiftListModel);
+				repaintCS();
+				
+				*/
 				
 			}
 		});
@@ -254,7 +326,7 @@ public class Windows  {
 		frmWindows.setResizable(false); // Does that the frame cannot maximize or change size in any way. 
 		frmWindows.setLocation(200, 50);
 		
-		// adding tab panel to Windows
+		// adding tasb panel to Windows
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		frmWindows.getContentPane().add(tabbedPane);
@@ -346,6 +418,7 @@ public class Windows  {
 									
 									tempShift.assignedEmpAry.clear();
 									wsPanel.updateUI();
+									wsList.clearSelection();
 									//remove button
 									removeEmpPanel.remove(btnRemoveEmp);
 							}
@@ -354,46 +427,65 @@ public class Windows  {
 						
 				// Adding employee to available emp check box
 							
-					}else{					
+					}else{	
+						boolean freeEmp = false;
+						boolean requiredSkill = false;
 						
-						// looping through cleaning schedule required skills
-					for(int i=0; i<tempShift.Schedule.skillRequiredAry.size(); i++){ 
-						// looping through all the employees
 						for (int j=0; j<empAry.size(); j++){
+							
 							//Checking if employee skill array has an exact skill for cs
-								if (empAry.get(j).empSkillAry.containsAll(tempShift.Schedule.skillRequiredAry)){
-													
+							if (empAry.get(j).empSkillAry.containsAll(tempShift.Schedule.skillRequiredAry)){
+								requiredSkill = true;
+								if(assignmentAry.isEmpty()){
 									availableEmpAry.add(empAry.get(j));
 									availableEmp.setModel(new DefaultComboBoxModel<Object>( availableEmpAry.toArray()));
-								
+										
 									
-									
-									//looping through assignment ary	
-											/*for (int z=0; z<assignmentAry.size(); z++){
-												if(assignmentAry.get(z).getEmp().equals(j)){
-												Date shiftStart= tempShift.Start;
-												Date shiftEnd=tempShift.End;
-												Date empAsStart=assignmentAry.get(z).Start;
-												Date empAsEnd=assignmentAry.get(z).End;
+								}else{
+									for(int i=0; i<assignmentAry.size();i++){
+									 if(assignmentAry.get(i).getEmp().equals(empAry.get(j))){
+										
+														
+										Date shiftStart= tempShift.Start;
+										Date shiftEnd=tempShift.End;
+										Date empAsStart=assignmentAry.get(i).getStart();
+										Date empAsEnd=assignmentAry.get(i).getEnd();
+										
+										if(empAsStart.before(shiftEnd) || empAsEnd.after(shiftStart)){
 												
-													if(empAsStart.before(shiftEnd) || empAsEnd.after(shiftStart)){
-														JOptionPane.showMessageDialog(availableEmp, "No available employee");
-													}
-													
-												}else{
-													availableEmpAry.add(empAry.get(j));
-													availableEmp.setModel(new DefaultComboBoxModel<Object>( availableEmpAry.toArray()));
-													}
-												}*/
+											}
+							
+									}else{
+										freeEmp = true;
+										availableEmpAry.add(empAry.get(j));
+										availableEmp.setModel(new DefaultComboBoxModel<Object>( availableEmpAry.toArray()));
 									}
-							}
-												
+									}
+								}
+									//closing assignment loop
+								
+						
+								
 						}
-					}			
+									
+			} 
+					
+				if(!freeEmp){
+					JOptionPane.showMessageDialog(availableEmp, "No available employee!"); }
+				else if
+				(!requiredSkill){
+					JOptionPane.showMessageDialog(availableEmp, "No available employee with required skill!");
 				}
-			}
 				
-		}); 
+		
+		} // closing else		
+					
+				}// closing If list selected 
+					availableEmpAry.clear();
+					
+			}// closing event
+				
+		}); //closing listener
 			
 			
 			
@@ -413,10 +505,9 @@ public class Windows  {
 					availableEmpAry.clear();
 					availableEmp.setModel(new DefaultComboBoxModel<Object>( availableEmpAry.toArray()));
 					
-					Date start = tempShift.Start;
-					Date end = tempShift.End;
+					
 					Shift shift= tempShift;
-					Assignment tempAs = new Assignment(tempEmp, shift,start, end);
+					Assignment tempAs = new Assignment(tempEmp, shift);
 					assignmentAry.add(tempAs);
 					
 					System.out.println(assignmentAry);
@@ -430,6 +521,12 @@ public class Windows  {
 		//////////////////////////// SKILL TAB ////////////////////////////////////////////////////
 		
 		JPanel skillPanel = new JPanel();
+		skillPanel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				skillPanel.updateUI();
+			}
+		});
 		tabbedPane.addTab("Skill", null, skillPanel, null);
 		skillPanel.setLayout(null);
 		
@@ -562,8 +659,7 @@ public class Windows  {
 			
 				skillListModel.addElement(tempSkill);
 				skillAry.add(tempSkill);
-				repaintChBx();
-				repaintShiftChBx();
+				
 				}
 			}
 		});
@@ -584,6 +680,9 @@ public class Windows  {
 					tempSkill.changeName(newSkillName);
 					skillListModel.setElementAt(tempSkill, tempSkillID);
 					skillAry.set(tempSkillID, tempSkill);
+					empAry.get(0).empSkillAry.get(tempSkillID).changeName(newSkillName);
+					csAry.get(0).skillRequiredAry.get(tempSkillID).changeName(newSkillName);
+					shiftAry.get(0).Schedule.skillRequiredAry.get(tempSkillID).changeName(newSkillName);
 					skillNameField.setText("");
 					
 					}
@@ -593,10 +692,13 @@ public class Windows  {
 					tempSkill.changeID(newSkillID);
 					skillListModel.setElementAt(tempSkill, tempSkillID);
 					skillAry.set(tempSkillID, tempSkill);
-					skillIDField.setText("");
-					
+					empAry.get(0).empSkillAry.get(tempSkillID).changeID(newSkillID);
+					csAry.get(0).skillRequiredAry.get(tempSkillID).changeID(newSkillID);
+					shiftAry.get(0).Schedule.skillRequiredAry.get(tempSkillID).changeID(newSkillID);
+					skillIDField.setText("");			
 					
 				}
+				
 				repaintChBx();
 				repaintShiftChBx();
 				System.out.println(skillAry);
@@ -607,6 +709,7 @@ public class Windows  {
 ////////////////////////////////// EMPLOYEE TAB /////////////////////////////////////////////////////////
 		
 		JPanel empPanel = new JPanel();
+		
 		tabbedPane.addTab("Employee", null, empPanel, null);
 		empPanel.setLayout(null);
 		
@@ -684,7 +787,14 @@ public class Windows  {
 		cbpanel.setBounds(51, 422, 600, 57);
 		empPanel.add(cbpanel);
 		cbpanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		
+		empPanel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				empPanel.updateUI();
+				cbpanel.updateUI();
+				
+			}
+		});
 		
 		
 		// key listener to input only int and length
@@ -846,6 +956,7 @@ public class Windows  {
 							}
 					employeeListModel.setElementAt(tempEmp, tempEmpID);
 					empAry.set(tempEmpID, tempEmp);
+					
 					employeeList.clearSelection();
 					cbpanel.removeAll();
 					cbpanel.updateUI();
@@ -862,6 +973,12 @@ public class Windows  {
 		
 		
 		JPanel csPanel = new JPanel();
+		csPanel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				csPanel.updateUI();
+			}
+		});
 		tabbedPane.addTab("Cleaning Schedule", null, csPanel, null);
 		csPanel.setLayout(null);
 		
@@ -1081,6 +1198,12 @@ public class Windows  {
 /////////////////////////////////// shift TAB //////////////////////////////////////////////////////////		
 		
 		JPanel shiftPanel = new JPanel();
+		shiftPanel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				shiftPanel.updateUI();
+			}
+		});
 		tabbedPane.addTab("Shift", null, shiftPanel, null);
 		shiftPanel.setLayout(null);
 		
@@ -1129,10 +1252,9 @@ public class Windows  {
 		
 		// creating combo  box
 		csComBx = new JComboBox( );
+		repaintCS();
 		csComBx.setMaximumRowCount(10);
 		
-		//setting combobox to default model to display CS
-		csComBx.setModel(new DefaultComboBoxModel<Object>( csAry.toArray()));
 		
 		csComBx.setBounds(155, 366, 456, 20);
 		shiftPanel.add(csComBx);
@@ -1202,6 +1324,10 @@ public class Windows  {
 		typeShiftName.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
+				
+				csComBx.setModel(new DefaultComboBoxModel<Object>( csAry.toArray()));
+				
+				
 				char c=e.getKeyChar();
 				if(!(Character.isDigit(c) || (c==KeyEvent.VK_BACK_SPACE) || c==KeyEvent.VK_DELETE)){		
 					Toolkit.getDefaultToolkit().beep();
@@ -1216,6 +1342,7 @@ public class Windows  {
 		btnAddShift.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				
 				int newShiftName = Integer.parseInt(typeShiftName.getText());
 				CleaningSchedule schedule=(CleaningSchedule) csComBx.getSelectedItem();
 				
@@ -1262,19 +1389,13 @@ public class Windows  {
 	
 	
 	
-	private static   void deserializeAry(ArrayList arrayToDesirialize, DefaultListModel list, String filePath){
+	private static   void deserializeAry(ArrayList arrayToDesirialize,  String filePath){
 		try {
 			FileInputStream fileIn = new FileInputStream(filePath);
 			ObjectInputStream in = new ObjectInputStream(fileIn);
 			arrayToDesirialize = (ArrayList) in.readObject();
 			System.out.println(arrayToDesirialize);
-			
-			for(int i=0; i<arrayToDesirialize.size();i++){
-				list.addElement( arrayToDesirialize.get(i));
-			}
-			//System.out.println("Deserialized Data: \n" + in.readObject().toString());
-			in.close();
-			
+						
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -1302,7 +1423,15 @@ public class Windows  {
 		}
 		}
 	
-
+	
+	// update default list models after deserialization
+private static void updateListModel(ArrayList ary,DefaultListModel list){
+	for (int i=0; i<ary.size();i++){
+		list.addElement(ary.get(i));
+	}
+	
+}
+	
 	// This method repaints Combo box of CS in Shift tab	
 	private JComboBox repaintCS(){
 		csComBx.removeAll();

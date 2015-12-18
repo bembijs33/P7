@@ -15,7 +15,7 @@ public class CleaningSchedule implements Serializable {
 	
 	public String toString(){
 		return " " + CsID
-			+ "  " + Name +"           Skills Required: "+ skillRequiredAry; 
+			+ "  " + Name +"           Skills Required: " + skillRequiredAry; 
 			
 		}
 	public String getName(){

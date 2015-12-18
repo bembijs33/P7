@@ -20,7 +20,7 @@ public class Employee implements Serializable{
 	}
 	public String toString(){
 		return " " + firstName
-			+ "      " + lastName + "       Phone:   " + phoneNumber + "    Skill   " + empSkillAry.toString();
+			+ "      " + lastName + "       Phone:   " + phoneNumber + "    Skill   " + empSkillAry;
 			
 		}
 	public String toStringName(){
@@ -61,5 +61,7 @@ public class Employee implements Serializable{
 	public void setPhoneNumber(int phoneNumber){
 		this.phoneNumber=phoneNumber;
 	}
-	
+	public ArrayList<Skill> getSkillAry(){
+		return empSkillAry;
+	}
 }
