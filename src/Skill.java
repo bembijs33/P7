@@ -19,11 +19,26 @@ public class Skill implements Serializable {
 		return skillName;
 		
 	}
+	private int getID() {
+		return skillID;
+	}
 	public void changeName(String newName){
 		skillName=newName;
 	}
 	public void changeID(int newID){
 		skillID=newID;
 	}
+	@Override
+	public boolean equals(Object o) {
+
+		if(o instanceof Skill) {
+			
+			if(this.getID() == ((Skill)o).getID() && this.getName().equals(((Skill)o).getName()))
+				return true;
+		}
+		
+		return false;
+	}
+
 	
 }

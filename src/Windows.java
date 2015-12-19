@@ -90,7 +90,9 @@ public class Windows  {
 	 */
 	
 	public static void main(String[] args) throws ClassNotFoundException {
-	 
+		
+		
+	 /*
 		Skill s1= new Skill ("Basic",1); 
 		Skill s2= new Skill ("Advanced",2);
 		Skill s3= new Skill("Superb",3);
@@ -139,7 +141,7 @@ public class Windows  {
 		
 		Assignment as1= new Assignment(e1, sh1);
 	//	assignmentAry.add(as1);
-		
+		*/
 		
 		
 			
@@ -181,7 +183,7 @@ public class Windows  {
 			public void windowClosing(WindowEvent e) {
 			
 				// when closing the window all arays are serialized and stored. 
-				/*
+				
 				
 				System.out.println("ARRAYS SERIALIZED");
 				
@@ -199,7 +201,7 @@ public class Windows  {
 				
 				System.out.println("Assignment Ary");
 				serializeAry(assignmentAry,"assi.ser");
-				*/
+				
 			}
 				
 			
@@ -212,7 +214,7 @@ public class Windows  {
 				
 				//deserializeAry(empAry, employeeListModel, "emp.ser"); 
 				// right now deserealization method gives a trouble, therefore it is hard coded
-				/*	
+				
 				System.out.println("Skill array");
 				
 				try{
@@ -314,8 +316,6 @@ public class Windows  {
 				updateListModel(shiftAry,shiftListModel);
 				repaintCS();
 				
-				*/
-				
 			}
 		});
 		frmWindows.setTitle("Windows");
@@ -415,12 +415,21 @@ public class Windows  {
 							btnRemoveEmp.addMouseListener(new MouseAdapter (){
 								@Override
 								public void mouseClicked(MouseEvent z){
-									
+									for(int i=0; i<tempShift.assignedEmpAry.size();i++){
+										for (int j=0; j<assignmentAry.size();j++){
+											if(assignmentAry.get(j).employee.toStringName().equals(tempShift.assignedEmpAry.get(i).toStringName())){
+												assignmentAry.remove(j);
+												System.out.println(assignmentAry);
+											}
+										}
+									}
 									tempShift.assignedEmpAry.clear();
+									
 									wsPanel.updateUI();
 									wsList.clearSelection();
 									//remove button
 									removeEmpPanel.remove(btnRemoveEmp);
+									
 							}
 						});
 						
@@ -430,16 +439,20 @@ public class Windows  {
 					}else{	
 						boolean freeEmp = false;
 						boolean requiredSkill = false;
-						
+					
 						for (int j=0; j<empAry.size(); j++){
-							
-							//Checking if employee skill array has an exact skill for cs
-							if (empAry.get(j).empSkillAry.containsAll(tempShift.Schedule.skillRequiredAry)){
-								requiredSkill = true;
-								if(assignmentAry.isEmpty()){
-									availableEmpAry.add(empAry.get(j));
-									availableEmp.setModel(new DefaultComboBoxModel<Object>( availableEmpAry.toArray()));
-										
+						
+							for (Skill reqSkill : tempShift.Schedule.skillRequiredAry){
+								
+								if(!empAry.get(j).getSkillAry().contains(reqSkill)){
+									requiredSkill = false;
+								}else{
+									requiredSkill = true;
+									if(assignmentAry.isEmpty()){
+										if(!availableEmpAry.contains(empAry.get(j))){
+										availableEmpAry.add(empAry.get(j));
+										availableEmp.setModel(new DefaultComboBoxModel<Object>( availableEmpAry.toArray()));
+										}
 									
 								}else{
 									for(int i=0; i<assignmentAry.size();i++){
@@ -452,31 +465,29 @@ public class Windows  {
 										Date empAsEnd=assignmentAry.get(i).getEnd();
 										
 										if(empAsStart.before(shiftEnd) || empAsEnd.after(shiftStart)){
-												
+												JOptionPane.showMessageDialog(availableEmp, "No available employee!");
 											}
 							
-									}else{
-										freeEmp = true;
+									else{
+										
 										availableEmpAry.add(empAry.get(j));
 										availableEmp.setModel(new DefaultComboBoxModel<Object>( availableEmpAry.toArray()));
-									}
+										}	
 									}
 								}
 									//closing assignment loop
 								
-						
+								}
 								
-						}
-									
-			} 
-					
-				if(!freeEmp){
-					JOptionPane.showMessageDialog(availableEmp, "No available employee!"); }
-				else if
-				(!requiredSkill){
-					JOptionPane.showMessageDialog(availableEmp, "No available employee with required skill!");
-				}
+						}	
+					}
+						
 				
+			
+			}
+				if(!requiredSkill){
+				JOptionPane.showMessageDialog(availableEmp, "No employee with required skill!");			
+			} 
 		
 		} // closing else		
 					
