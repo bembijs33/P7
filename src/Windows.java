@@ -125,16 +125,26 @@ public class Windows  {
 		
 		// Creating windows for application
 		frmWindows = new JFrame();
+		frmWindows.getContentPane().setForeground(Color.WHITE);
+		frmWindows.setBackground(Color.WHITE);
+		frmWindows.setForeground(Color.WHITE);
+		frmWindows.getContentPane().setFont(new Font("Viner Hand ITC", Font.PLAIN, 11));
+		frmWindows.setFont(new Font("Baskerville Old Face", Font.PLAIN, 12));
 		frmWindows.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
 			
 				// when closing the window all arays are serialized and stored. 
-			
+				System.out.println("SERIALIZED array");
+				System.out.println("Employee array");
 				serializeAry(empAry,"emp.ser");
+				System.out.println("Skill array");
 				serializeAry(skillAry,"skill.ser");
+				System.out.println("CS array");
 				serializeAry(csAry,"cs.ser");
+				System.out.println("Shift array");
 				serializeAry(shiftAry,"shift.ser");
+				System.out.println("Assignment array");
 				serializeAry(assignmentAry,"assi.ser");
 				
 			}
@@ -145,7 +155,7 @@ public class Windows  {
 			public void windowOpened(WindowEvent e) {
 				
 				//when window is active all arrays are deserialized and elements from them added to the defaultModelLists
-		
+				System.out.println("Skill array");
 				try{
 					FileInputStream fileIn = new FileInputStream("skill.ser");
 					ObjectInputStream in = new ObjectInputStream(fileIn);
@@ -178,6 +188,7 @@ public class Windows  {
 					e1.printStackTrace();
 				}
 				
+				
 				System.out.println("CS array");
 				try{
 					FileInputStream fileIn = new FileInputStream("cs.ser");
@@ -197,7 +208,7 @@ public class Windows  {
 				}
 				
 				
-							
+				System.out.println("Employee array");			
 				try{
 				FileInputStream fileIn = new FileInputStream("emp.ser");
 				ObjectInputStream in = new ObjectInputStream(fileIn);
@@ -213,14 +224,16 @@ public class Windows  {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				System.out.println(employeeListModel);
+			
 				
 				System.out.println("Shift array");
 				
 				try{
 					FileInputStream fileIn = new FileInputStream("shift.ser");
 					ObjectInputStream in = new ObjectInputStream(fileIn);
+					
 					shiftAry = (ArrayList<Shift>) in.readObject();
+					
 					System.out.println(shiftAry );
 					
 					in.close();
@@ -236,23 +249,22 @@ public class Windows  {
 				}
 				
 				
-		
+		//assignmentAry.clear();
 				
 				//update all model lists
 				updateListModel(skillAry,skillListModel);
 				updateListModel(empAry, employeeListModel);
 				updateListModel(csAry,csListModel);
 				updateListModel(shiftAry,shiftListModel);
-				repaintCS();
+				
+				
 				
 			}
 		});
 		frmWindows.setTitle("Windows");
 		frmWindows.setBounds(150, 150, 700, 600);
-		frmWindows.setResizable(false);
 		frmWindows.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmWindows.getContentPane().setLayout(new GridLayout(0, 1, 0, 0));
-		frmWindows.setResizable(false); // Does that the frame cannot maximize or change size in any way. 
 		frmWindows.setLocation(200, 50);
 		
 		// adding tasb panel to Windows
@@ -327,13 +339,16 @@ public class Windows  {
 			wsList.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					//Deleting all the elements form the array
+					
+						//Deleting all the elements form the array
 					availableEmpAry.clear();
 					//making sure that there is one shift selected
+					boolean requiredSkill = true;
+					boolean noAvailableEmp = true;
 					if (!wsList.isSelectionEmpty()){
 						// gets an exact shift
-						Shift tempShift=  (Shift) wsList.getSelectedValue(); 
-					
+						Shift tempShift=  (Shift) wsList.getSelectedValue();
+						
 					// remove employee from the shift add button	
 					if(!tempShift.assignedEmpAry.isEmpty()){
 							// add button
@@ -344,80 +359,97 @@ public class Windows  {
 							btnRemoveEmp.addMouseListener(new MouseAdapter (){
 								@Override
 								public void mouseClicked(MouseEvent z){
-									for(int i=0; i<tempShift.assignedEmpAry.size();i++){
-										for (int j=0; j<assignmentAry.size();j++){
-											if(assignmentAry.get(j).employee.toStringName().equals(tempShift.assignedEmpAry.get(i).toStringName())){
-												assignmentAry.remove(j);
-												System.out.println(assignmentAry);
-											}
-										}
-									}
-									tempShift.assignedEmpAry.clear();
+																		
+										
+										removeAssignment(tempShift);
+										System.out.println(assignmentAry);
 									
+									tempShift.assignedEmpAry.clear();
 									wsPanel.updateUI();
 									wsList.clearSelection();
 									//remove button
 									removeEmpPanel.remove(btnRemoveEmp);
-									
-							}
-						});
+									}
+							
+								});
 						
 						
 				// Adding employee to available emp check box
 							
 					}else{	
 						
-						boolean requiredSkill = false;
-					
-						for (int j=0; j<empAry.size(); j++){
 						
-							for (Skill reqSkill : tempShift.Schedule.skillRequiredAry){
-								
-								if(!empAry.get(j).getSkillAry().contains(reqSkill)){
+					//loop through all employees
+						for (int j=0; j<empAry.size(); j++){
+							// checking if employee DOES NOT contain all required skills 
+							if(!empAry.get(j).empSkillAry.containsAll(tempShift.Schedule.skillRequiredAry)){
+									
 									requiredSkill = false;
+									
+								//if it DOES contains
 								}else{
 									requiredSkill = true;
+									// add employee if assignment Array is empty anyway
 									if(assignmentAry.isEmpty()){
-										if(!availableEmpAry.contains(empAry.get(j))){
-										availableEmpAry.add(empAry.get(j));
-										availableEmp.setModel(new DefaultComboBoxModel<Object>( availableEmpAry.toArray()));
-										}
-									
-								}else{
-									for(int i=0; i<assignmentAry.size();i++){
-									 if(assignmentAry.get(i).getEmp().equals(empAry.get(j))){
+										addEmployeToComboBox(empAry.get(j));
 										
-														
+										
+									// if assignment array contains employee
+									}else{
+										//loop through assignment array
+									for(int i=0; i<assignmentAry.size();i++){
+										//if employee "j" has an assignment.
+										if(assignmentAry.get(i).getEmp().toStringName().equals(empAry.get(j).toStringName())){
+										
+										// get date/time for shift and "j" assignment				
 										Date shiftStart= tempShift.Start;
 										Date shiftEnd=tempShift.End;
 										Date empAsStart=assignmentAry.get(i).getStart();
 										Date empAsEnd=assignmentAry.get(i).getEnd();
 										
+										//check if employee is available on shift time
 										if(empAsStart.before(shiftEnd) || empAsEnd.after(shiftStart)){
-												JOptionPane.showMessageDialog(availableEmp, "No available employee!");
-											}
-							
-									else{
 										
-										availableEmpAry.add(empAry.get(j));
-										availableEmp.setModel(new DefaultComboBoxModel<Object>( availableEmpAry.toArray()));
-										}	
-									}
+										
+											noAvailableEmp = false;
+											
+											
+										// if employee is available on shifts time
+										}else{
+											
+											noAvailableEmp = true;
+										addEmployeToComboBox(empAry.get(j));
+											}
+										
+									// if employee "j" does not have an assignment add it to availableEmpAry		
+									}else{
+										
+										addEmployeToComboBox(empAry.get(j));
+										}
 								}
 							}
 								
 						}	
-					}
+					
 				}
-				if(!requiredSkill){
-				JOptionPane.showMessageDialog(availableEmp, "No employee with required skill!");			
-			} 
-		
+						
+					
+				
 		}		
+			availableEmp.setModel(new DefaultComboBoxModel<Object>( availableEmpAry.toArray()));
+				if(availableEmpAry.isEmpty()){
+						if(!requiredSkill){
 					
+						JOptionPane.showMessageDialog(availableEmp, "No employee with required skill!");			
+						}else if(!noAvailableEmp){
+						JOptionPane.showMessageDialog(availableEmp, "No available employee!");
+						}
+				
 				}// closing If list selected 
-					availableEmpAry.clear();
+					}
 					
+				
+						availableEmpAry.clear();
 			}// closing event
 				
 		}); //closing listener
@@ -435,15 +467,15 @@ public class Windows  {
 					Shift tempShift = (Shift) wsList.getSelectedValue();
 					
 					tempShift.assigneEmpToShift(tempEmp);
+					Assignment newAsi = new Assignment (tempEmp,tempShift); 
+					assignmentAry.add(newAsi);
 					wsList.updateUI();
 					wsList.clearSelection();
 					availableEmpAry.clear();
 					availableEmp.setModel(new DefaultComboBoxModel<Object>( availableEmpAry.toArray()));
 					
 					
-					Shift shift= tempShift;
-					Assignment tempAs = new Assignment(tempEmp, shift);
-					assignmentAry.add(tempAs);
+					
 					
 					System.out.println(assignmentAry);
 					
@@ -456,12 +488,7 @@ public class Windows  {
 		//////////////////////////// SKILL TAB ////////////////////////////////////////////////////
 		
 		JPanel skillPanel = new JPanel();
-		skillPanel.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				skillPanel.updateUI();
-			}
-		});
+	
 		tabbedPane.addTab("Skill", null, skillPanel, null);
 		skillPanel.setLayout(null);
 		
@@ -585,18 +612,25 @@ public class Windows  {
 				
 				// saving skill
 				else {
-				Skill tempSkill = new Skill (skillsname, skillIDnumber);
+							Skill tempSkill = new Skill (skillsname, skillIDnumber);
+							skillListModel.addElement(tempSkill);
+							skillAry.add(tempSkill);
+						
+					
+					
+				
 				
 				// clear text fields
 				skillIDField.setText("");
 				skillNameField.setText("");
 				
 			
-				skillListModel.addElement(tempSkill);
-				skillAry.add(tempSkill);
 				
+						
 				}
-			}
+				}
+				
+			
 		});
 	
 		
@@ -640,7 +674,14 @@ public class Windows  {
 			}
 		});
 		
-		
+			skillPanel.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					skillPanel.updateUI();
+					skillIDField.setText(null);
+					skillNameField.setText(null);
+				}
+			});
 ////////////////////////////////// EMPLOYEE TAB /////////////////////////////////////////////////////////
 		
 		JPanel empPanel = new JPanel();
@@ -914,12 +955,7 @@ public class Windows  {
 		
 		
 		JPanel csPanel = new JPanel();
-		csPanel.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				csPanel.updateUI();
-			}
-		});
+		
 		tabbedPane.addTab("Cleaning Schedule", null, csPanel, null);
 		csPanel.setLayout(null);
 		
@@ -1063,6 +1099,9 @@ public class Windows  {
 				}
 				// saving CS
 				else {
+					
+						
+						
 					CleaningSchedule tempCS = new CleaningSchedule(csID, csName);
 					csListModel.addElement(tempCS);
 					csAry.add(tempCS);
@@ -1070,11 +1109,20 @@ public class Windows  {
 					csNameField.setText("");
 					csIdField.setText("");
 					System.out.println(csAry);
-					repaintCS();
-					}
+					
+						}						
+					
+					
 				}
 			});
-			
+		csPanel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				csPanel.updateUI();
+				csNameField.setText(null);
+				csIdField.setText(null);
+			}
+		});
 		
 		//Delete CS
 		DeleteCS.addMouseListener(new MouseAdapter() {
@@ -1083,6 +1131,11 @@ public class Windows  {
 				CleaningSchedule tempCS = (CleaningSchedule) csList.getSelectedValue();
 				csListModel.removeElement(tempCS);
 				csAry.remove(tempCS);
+				
+				chbxList.clear();
+				csSkillPanel.removeAll();
+				csPanel.updateUI();
+				csPanel.updateUI();
 				}
 			});
 		
@@ -1129,7 +1182,7 @@ public class Windows  {
 					csIdField.setText("");
 					csSkillPanel.removeAll();
 					csPanel.updateUI();
-					
+				
 				
 					}
 			});
@@ -1139,12 +1192,7 @@ public class Windows  {
 /////////////////////////////////// shift TAB //////////////////////////////////////////////////////////		
 		
 		JPanel shiftPanel = new JPanel();
-		shiftPanel.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				shiftPanel.updateUI();
-			}
-		});
+		
 		tabbedPane.addTab("Shift", null, shiftPanel, null);
 		shiftPanel.setLayout(null);
 		
@@ -1193,7 +1241,8 @@ public class Windows  {
 		
 		// creating combo  box
 		csComBx = new JComboBox( );
-		repaintCS();
+		
+	
 		csComBx.setMaximumRowCount(10);
 		
 		
@@ -1204,6 +1253,12 @@ public class Windows  {
 		
 		// creating text fields
 		typeShiftName = new JTextField();
+		typeShiftName.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				repaintCS();
+			}
+		});
 		typeShiftName.setBounds(155, 338, 86, 20);
 		shiftPanel.add(typeShiftName);
 		
@@ -1261,6 +1316,14 @@ public class Windows  {
 		
 		
 		// checking for INT in name field 
+		shiftPanel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				shiftPanel.updateUI();
+				typeShiftName.setText(null);
+				csComBx.removeAllItems();
+			}
+		});
 		
 		typeShiftName.addKeyListener(new KeyAdapter() {
 			@Override
@@ -1275,8 +1338,8 @@ public class Windows  {
 					JOptionPane.showMessageDialog(skillIDField, "Please enter numbers! ");
 					e.consume();// if wrong argument it is deleted
 				
-				
-			}
+					}
+		
 			}
 		});
 		// save shift
@@ -1311,12 +1374,21 @@ public class Windows  {
 					
 				}
 				else{
+					
 					Shift tempShift = new Shift(newShiftName, newStart, newEnd, schedule);
 				
 				
 				shiftListModel.addElement(tempShift);
 				shiftAry.add(tempShift);
-				System.out.println(shiftAry);}
+				System.out.println(shiftAry);
+				typeShiftName.setText(null);
+				csComBx.removeAllItems();
+				
+				
+				
+				
+						}
+					
 			}
 		});
 	
@@ -1327,11 +1399,21 @@ public class Windows  {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int tempShiftID = shiftList.getSelectedIndex();
+				Shift tempShift = (Shift) shiftList.getSelectedValue();
+				for(int i=0; i<(tempShift.assignedEmpAry.size());i++){
+					Employee tempEmp = tempShift.assignedEmpAry.get(i);
+					
+				 removeAssignment(tempShift);
+				}
+				
+				
 				shiftListModel.remove(tempShiftID);
 				shiftAry.remove(tempShiftID);
+				  
 				
 			}
 		});
+		
 }
 	
 	
@@ -1426,7 +1508,29 @@ private static void updateListModel(ArrayList ary,DefaultListModel list){
 			return date;
 	}
 		
+	// Checking, if availableEmpAry contains temEmp, else add emp
+	private void addEmployeToComboBox(Employee tempEmp){
+		if(!availableEmpAry.isEmpty()){		
+			for(int i=0; i<availableEmpAry.size();i++){
+				if(!availableEmpAry.contains(tempEmp)){
+					availableEmpAry.add(tempEmp);
+				}
+			}
+		}else{
+			availableEmpAry.add(tempEmp);
+		}
+	}
 	
+	private void removeAssignment(Shift removableShift){
+		
+		for(int i=0; i<assignmentAry.size(); i++){
+			
+			if (removableShift.equals(assignmentAry.get(i).shift)&&removableShift.assignedEmpAry.contains(assignmentAry.get(i).employee)){
+				assignmentAry.remove(i);
+			}
+		}
+		
+	}
 	
 	
 	private static void addPopup(Component component, final JPopupMenu popup) {

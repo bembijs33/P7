@@ -13,6 +13,7 @@ public class Shift implements Serializable {
 	Date End;
 	CleaningSchedule Schedule;
 	ArrayList<Employee> assignedEmpAry = new ArrayList<Employee>();
+	
 
 	public Shift(int id, Date start, Date end, CleaningSchedule schedule) {
 		this.shiftID = id;
@@ -55,6 +56,29 @@ public class Shift implements Serializable {
 
 			
 			
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object o) {
+if(o instanceof Shift) {
+			
+			if((this.getID() == ((Shift)o).getID()) && (this.getStart().equals(((Shift)o).getStart()))&&(this.getEnd().equals(((Shift)o).getEnd())))
+				return true;
+		}
+		
+		return false;}
+	
+	private int getID(){
+		return shiftID;
+	}
+	private Date getStart(){
+		return Start;
+	}
+	private Date getEnd(){
+		return End;
+	}
+
 	public void setId(int shiftID){
 		this.shiftID = shiftID; 
 	}
@@ -88,6 +112,7 @@ public class Shift implements Serializable {
 	public void assigneEmpToShift(Employee emp) {
 		if(!assignedEmpAry.contains(emp)){
 			assignedEmpAry.add(emp);
+			
 		}
 		
 		

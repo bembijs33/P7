@@ -26,6 +26,26 @@ public class Employee implements Serializable{
 	public String toStringName(){
 		return " " +firstName + "    " +lastName;
 	}
+	
+/*	@Override
+	public boolean equals(Object o) {
+
+		if(o instanceof Employee) {
+			
+			if(this.getFirstName() == ((Employee)o).getFirstName() && this.getLastName().equals(((Employee)o).getLastName()))
+				return true;
+		}
+		
+		return false;
+	}
+	*/
+	private String getFirstName(){
+		return firstName;
+	}
+	private String getLastName(){
+		return lastName;
+	}
+	
 	// Adding skill to employees skill list
 	public void AddSkill(Skill skill) {
 			// checking if skill list contains the same skill
